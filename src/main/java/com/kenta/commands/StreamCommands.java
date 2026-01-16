@@ -3,6 +3,7 @@ package com.kenta.commands;
 import static com.kenta.StreamLink.*;
 
 import com.kenta.data.StreamData;
+import com.kenta.libs.SLMessage;
 import com.kenta.pages.DashboardPage;
 import com.kenta.services.twitch.Twitch;
 
@@ -17,6 +18,7 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.kenta.services.twitch.TwitchAuth;
 
 import javax.annotation.Nonnull;
 
@@ -26,8 +28,8 @@ public class StreamCommands extends AbstractCommandCollection {
         super("streamlink", "Stream service integration.");
 
         this.addAliases("sl");
-        this.addSubCommand(new TwitchCommands());
         this.addSubCommand(new SLDashboard());
+        this.addSubCommand(new TwitchCommands());
     }
 
     static class SLDashboard extends AbstractPlayerCommand {
@@ -58,9 +60,41 @@ public class StreamCommands extends AbstractCommandCollection {
         TwitchCommands() {
             super("twitch", "Twitch integration commands.");
 
+            this.addSubCommand(new TwitchSetupCommands());
             this.addSubCommand(new TwitchInitCommands());
             this.addSubCommand(new TwitchLaunchCommands());
             this.addSubCommand(new TwitchStopCommands());
+        }
+    }
+
+    static class TwitchSetupCommands extends AbstractPlayerCommand {
+
+        TwitchSetupCommands() {
+            super("setup", "Set up your Twitch Client ID and Access Token.", false);
+
+            this.withRequiredArg("client_id", "Your Twitch Client ID", ArgTypes.STRING);
+            this.withRequiredArg("access_token", "Your User Access Token", ArgTypes.STRING);
+        }
+
+        @Override
+        protected void execute(
+                @Nonnull CommandContext context,
+                @Nonnull Store<EntityStore> store,
+                @Nonnull Ref<EntityStore> ref,
+                @Nonnull PlayerRef playerRef,
+                @Nonnull World world
+        ) {
+            StreamData streamData = store.getComponent(ref, streamDataComponentType);
+            String clientId = (String) context.get(this.getRequiredArguments().get(0));
+            String accessToken = (String) context.get(this.getRequiredArguments().get(1));
+
+            assert streamData != null;
+
+            streamData.setTwitchClientId(clientId);
+            streamData.setTwitchAccessToken(accessToken);
+
+            context.sendMessage(SLMessage.formatMessage("Twitch credentials saved!"));
+            context.sendMessage(SLMessage.formatMessage("Next: Set your channel with /streamlink twitch set <name>"));
         }
     }
 
@@ -86,14 +120,14 @@ public class StreamCommands extends AbstractCommandCollection {
             assert streamData != null;
 
             streamData.setTwitchChannel(channel);
-            context.sendMessage(Message.translation("Twitch channel set to: " + channel));
+            context.sendMessage(SLMessage.formatMessage("Twitch channel set to: " + channel));
         }
     }
 
     static class TwitchLaunchCommands extends AbstractPlayerCommand {
 
         TwitchLaunchCommands() {
-            super("connect", "Connect to your Twitch chat.", false);
+            super("connect", "Connect to your Twitch chat and events.", false);
         }
 
         @Override
@@ -111,18 +145,54 @@ public class StreamCommands extends AbstractCommandCollection {
             assert streamData != null;
 
             if (streamData.getTwitchChannel().isEmpty()) {
-                context.sendMessage(Message.translation("[Error] Set your channel first: /streamlink twitch set <channel>"));
-                return;
-            }
-            
-            if (getPlayersTwitch().containsKey(username)) {
-                context.sendMessage(Message.translation("[Error] Already connected! Disconnect first: /streamlink twitch disconnect"));
+                playerRef.sendMessage(SLMessage.formatMessageWithError("Set your channel first: /streamlink twitch channel <name>"));
                 return;
             }
 
-            Twitch twitch = new Twitch();
-            addPlayersTwitch(username, twitch);
-            connectPlayersTwitch(player, streamData, username);
+            if (streamData.getTwitchClientId().isEmpty() || streamData.getTwitchAccessToken().isEmpty()) {
+                playerRef.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink twitch setup <client_id> <access_token>"));
+                playerRef.sendMessage(SLMessage.formatMessageWithLink("Please check this link: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                return;
+            }
+
+            if (getPlayersTwitch().containsKey(username)) {
+                playerRef.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
+                return;
+            }
+
+            playerRef.sendMessage(SLMessage.formatMessage("Validating credentials..."));
+
+            new Thread(() -> {
+                try {
+                    if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
+                        playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
+                        playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com"));
+                        return;
+                    }
+
+                    playerRef.sendMessage(SLMessage.formatMessage("Token validated!"));
+                    playerRef.sendMessage(SLMessage.formatMessage("Connecting to Twitch..."));
+
+                    String broadcasterId = TwitchAuth.getBroadcasterId(
+                            streamData.getTwitchChannel(),
+                            streamData.getTwitchClientId(),
+                            streamData.getTwitchAccessToken()
+                    );
+
+                    streamData.setBroadcasterId(broadcasterId);
+
+                    playerRef.sendMessage(SLMessage.formatMessage("Authentication successful!"));
+                    playerRef.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
+
+                    Twitch twitch = new Twitch();
+                    addPlayersTwitch(username, twitch);
+                    twitch.connectWithEvents(streamData, player);
+
+                } catch (Exception e) {
+                    playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 
@@ -143,7 +213,7 @@ public class StreamCommands extends AbstractCommandCollection {
             String username = playerRef.getUsername();
 
             if (!getPlayersTwitch().containsKey(username)) {
-                context.sendMessage(Message.translation("[Error] Not connected! Connect first: /streamlink twitch connect"));
+                playerRef.sendMessage(SLMessage.formatMessageWithError("Not connected! Connect first: /streamlink twitch connect"));
                 return;
             }
 

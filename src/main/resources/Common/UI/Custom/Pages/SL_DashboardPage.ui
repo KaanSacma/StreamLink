@@ -2,89 +2,238 @@ $C = "../Common.ui";
 $DS = "../SL_DashboardStyle.ui";
 
 Group #Dashboard {
-    Anchor: (Width: 500, Height: 320);
-    LayoutMode: Left;
+    Anchor: (Width: 750, Height: 750);
+    LayoutMode: Top;
 
-    Group #LeftPanel {
-        Anchor: (Width: 150);
+    // Header Section
+    Group #TopBar {
+        Anchor: (Height: 60);
         Background: #0a1119(0.95);
-        LayoutMode: Top;
-        Padding: (Full: 16);
+        LayoutMode: Left;
+        Padding: (Horizontal: 24, Vertical: 16);
 
-        Label {
-            Text: %streamlink.ui.dashboard.title;
-            Anchor: (Height: 25);
-            Style: (FontSize: 11, TextColor: #4a5568, RenderUppercase: true, LetterSpacing: 2);
-        }
-
-        Group { Anchor: (Height: 8); }
-
-        Label #LabelTwitch {
-            Text: %streamlink.ui.dashboard.twitch.label;
-            Anchor: (Height: 30);
-            Style: $DS.@SelectedLabel;
-        }
-    }
-
-    Group #RightPanel {
-        FlexWeight: 1;
-        Background: #141c26(0.98);
-        LayoutMode: Top;
-        Padding: (Full: 20);
-
-        Label {
-            Text: %streamlink.ui.dashboard.twitch.title;
-            Anchor: (Height: 40);
-            Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
-        }
-
-        Group {
-            Anchor: (Height: 1);
-            Background: #2b3542;
-        }
-
-        Group { Anchor: (Height: 16); }
-
-        Group #StatusGroup {
+        // Logo/Brand Area
+        Group #BrandSection {
             LayoutMode: Left;
-            Anchor: (Height: 20);
+            Anchor: (Width: 200);
+
             Label {
-                Text: %streamlink.ui.dashboard.status.label;
-                Anchor: (Height: 25);
-                Style: (FontSize: 16, TextColor: #cccccc);
+                Text: %streamlink.ui.dashboard.title;
+                Anchor: (Height: 30);
+                Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, LetterSpacing: 1);
             }
-
-            Group { Anchor: (Width: 4); }
-
-            Label #StatusLabel {
-                Text: "";
-                Anchor: (Height: 25);
-                Style: (FontSize: 16, TextColor: #cccccc);
-            }
-        }
-
-        Group { Anchor: (Height: 16); }
-
-        Label {
-            Text: %streamlink.ui.dashboard.twitch.channel.label;
-            Anchor: (Height: 25);
-            Style: (FontSize: 16, TextColor: #cccccc);
-        }
-
-        $C.@TextField #TwitchChannelInput {
-            Anchor: (Height: 40);
-            PlaceholderText: %streamlink.ui.dashboard.twitch.channel.placeholder;
         }
 
         Group { FlexWeight: 1; }
 
-        Group {
+        // Status Indicator
+        Group #StatusIndicator {
             LayoutMode: Left;
+            Anchor: (Height: 30);
+            Padding: (Horizontal: 16, Vertical: 6);
+            Background: #1a2332(0.8);
+
+            Group #StatusDot {
+                Anchor: (Width: 10, Height: 10);
+                Background: $DS.@DisconnectedColor;
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #StatusLabel {
+                Text: %streamlink.ui.dashboard.status.disconnected;
+                Anchor: (Height: 30);
+                Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+            }
+        }
+    }
+
+    // Main Content Area
+    Group #Content {
+        FlexWeight: 1;
+        Background: #141c26(0.98);
+        LayoutMode: Top;
+        Padding: (Full: 32);
+
+        // Platform Tabs Section (Future-proofing for YouTube, Kick, etc.)
+        Group #PlatformTabs {
+            Anchor: (Height: 50);
+            LayoutMode: Left;
+
+            Label #LabelTwitch {
+                Text: %streamlink.ui.dashboard.twitch.label;
+                Anchor: (Height: 50, Width: 120);
+                Padding: (Horizontal: 20, Vertical: 12);
+                Style: $DS.@SelectedTabLabel;
+                Background: #1a2332(0.6);
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            // Placeholder for future platforms
+            Label #LabelYouTube {
+                Text: "YouTube";
+                Anchor: (Height: 50, Width: 120);
+                Padding: (Horizontal: 20, Vertical: 12);
+                Style: $DS.@UnselectedTabLabel;
+                Background: #0f1621(0.4);
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            Label #LabelKick {
+                Text: "Kick";
+                Anchor: (Height: 50, Width: 120);
+                Padding: (Horizontal: 20, Vertical: 12);
+                Style: $DS.@UnselectedTabLabel;
+                Background: #0f1621(0.4);
+            }
+        }
+
+        Group { Anchor: (Height: 24); }
+
+
+        // Section Title
+        Group #SectionHeader {
             Anchor: (Height: 40);
+            LayoutMode: Left;
+
+            Label {
+                Text: %streamlink.ui.dashboard.twitch.title;
+                Anchor: (Height: 40);
+                Style: (FontSize: 24, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+            }
+
+            Group { FlexWeight: 1; }
+
+            // Help/Info icon could go here
+        }
+
+        Group { Anchor: (Height: 2); Background: #2b3542; }
+        Group { Anchor: (Height: 24); }
+
+        // Credentials Section
+        Group #CredentialsCard {
+            Anchor: (Height: 180);
+            Background: #0f1621(0.6);
+            Padding: (Full: 24);
+            LayoutMode: Top;
+
+            Label {
+                Text: %streamlink.ui.dashboard.credentials.title;
+                Anchor: (Height: 24);
+                Style: (FontSize: 16, TextColor: #8a9ab0, RenderBold: true);
+            }
+
+            Group { Anchor: (Height: 16); }
+
+
+            Group #CredentialsRow {
+                Anchor: (Height: 80);
+                LayoutMode: Left;
+
+                Group #AccessTokenGroup {
+                    FlexWeight: 1;
+                    LayoutMode: Top;
+
+                    Label {
+                        Text: %streamlink.ui.dashboard.twitch.accessToken.label;
+                        Anchor: (Height: 24);
+                        Style: (FontSize: 14, TextColor: #96a9be);
+                    }
+
+                    Group { Anchor: (Height: 4); }
+
+                    $C.@TextField #TwitchAccessTokenInput {
+                        Anchor: (Height: 44);
+                        PlaceholderText: %streamlink.ui.dashboard.twitch.accessToken.placeholder;
+                    }
+                }
+
+                Group { Anchor: (Width: 16); }
+
+                Group #ClientIdGroup {
+                    FlexWeight: 1;
+                    LayoutMode: Top;
+
+                    Label {
+                        Text: %streamlink.ui.dashboard.twitch.clientID.label;
+                        Anchor: (Height: 24);
+                        Style: (FontSize: 14, TextColor: #96a9be);
+                    }
+
+                    Group { Anchor: (Height: 4); }
+
+                    $C.@TextField #TwitchClientIdInput {
+                        Anchor: (Height: 44);
+                        PlaceholderText: %streamlink.ui.dashboard.twitch.clientID.placeholder;
+                    }
+                }
+            }
+
+            Group { Anchor: (Height: 12); }
+
+            Group #HelpTextRow {
+                Anchor: (Height: 20);
+                LayoutMode: Left;
+
+                Label {
+                    Text: %streamlink.ui.dashboard.credentials.help;
+                    Anchor: (Height: 20);
+                    Style: (FontSize: 12, TextColor: #5a6a85, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                TextButton #HelpLink {
+                    Text: %streamlink.ui.dashboard.credentials.link;
+                    Anchor: (Height: 20);
+                    Style: $DS.@HelpLinkButtonStyle;                }
+            }
+        }
+
+        Group { Anchor: (Height: 24); }
+
+        // Channel Section
+        Group #ChannelCard {
+            Anchor: (Height: 140);
+            Background: #0f1621(0.6);
+            Padding: (Full: 24);
+            LayoutMode: Top;
+
+            Label {
+                Text: %streamlink.ui.dashboard.channel.title;
+                Anchor: (Height: 24);
+                Style: (FontSize: 16, TextColor: #8a9ab0, RenderBold: true);
+            }
+
+            Group { Anchor: (Height: 12); }
+
+            Group #ChannelRow {
+                Anchor: (Height: 44);
+                LayoutMode: Left;
+
+                Group #ChannelInputGroup {
+                    Anchor: (Width: 350);
+                    LayoutMode: Top;
+
+                    $C.@TextField #TwitchChannelInput {
+                        Anchor: (Height: 44);
+                        PlaceholderText: %streamlink.ui.dashboard.twitch.channel.placeholder;
+                    }
+                }
+            }
+        }
+
+        Group { FlexWeight: 1; }
+
+        // Action Buttons Section
+        Group #ActionBar {
+            LayoutMode: Left;
+            Anchor: (Height: 50);
 
             TextButton #TwitchDisconnectButton {
-                Anchor: (Height: 45);
-                Padding: (Full: 16);
+                Anchor: (Height: 50, Width: 160);
                 Text: %streamlink.ui.dashboard.button.disconnect;
                 Style: $DS.@DisconnectButtonStyle;
             }
@@ -92,8 +241,7 @@ Group #Dashboard {
             Group { FlexWeight: 1; }
 
             TextButton #TwitchConnectButton {
-                Anchor: (Height: 45);
-                Padding: (Full: 16);
+                Anchor: (Height: 50, Width: 160);
                 Text: %streamlink.ui.dashboard.button.connect;
                 Style: $DS.@ConnectButtonStyle;
             }

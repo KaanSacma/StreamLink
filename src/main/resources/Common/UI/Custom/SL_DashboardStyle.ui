@@ -1,46 +1,93 @@
 $C = "Common.ui";
 $S = "Sounds.ui";
 
+// Color Palette
+@BrandPrimary = #9146FF;
+@TwitchPurple = #9146FF;
+@ConnectedColor = #00D166;
+@DisconnectedColor = #E74C3C;
+@BackgroundDark = #0a1119;
+@BackgroundMid = #141c26;
+@BackgroundLight = #1a2332;
+@TextPrimary = #ffffff;
+@TextSecondary = #96a9be;
+@TextMuted = #5a6a85;
+@AccentBlue = #4a8be5;
+@BorderColor = #2b3542;
+
+// Typography
 @LabelSize = 14;
+@HeaderSize = 24;
+@SubheaderSize = 16;
 
-@ConnectedColor = #3a7bd5;
-@DisconnectedColor = #d53a3a;
+// Tab Styles
+@SelectedTabLabel = (
+    FontSize: @SubheaderSize,
+    TextColor: @TextPrimary,
+    RenderBold: true,
+    VerticalAlignment: Center,
+    HorizontalAlignment: Center
+);
 
-@SelectedLabel = (FontSize: @LabelSize, TextColor: #ffffff, RenderBold: true);
-@UnselectedLabel = (FontSize: @LabelSize, TextColor: #6e7da1);
+@UnselectedTabLabel = (
+    FontSize: @SubheaderSize,
+    TextColor: @TextMuted,
+    VerticalAlignment: Center,
+    HorizontalAlignment: Center
+);
 
+// Button Styles - Connect
 @ConnectTextButtonStyle = TextButtonStyle(
     Default: (
-        Background: #3a7bd5,
+        Background: @ConnectedColor,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     ),
     Hovered: (
-        Background: #4a8be5,
+        Background: #00E675,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     ),
     Pressed: (
-        Background: #2a6bc5,
+        Background: #00B957,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
+        )
+    ),
+    Disabled: (
+        Background: #2b3542,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #5a6a85,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     )
 );
+
 @ConnectButtonStyle = (
     ...@ConnectTextButtonStyle,
     Sounds: (
@@ -48,41 +95,137 @@ $S = "Sounds.ui";
     )
 );
 
+// Button Styles - Disconnect
 @DisconnectTextButtonStyle = TextButtonStyle(
     Default: (
-        Background: #d53a3a,
+        Background: @DisconnectedColor,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     ),
     Hovered: (
-        Background: #e54a4a,
+        Background: #EC5B4E,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     ),
     Pressed: (
-        Background: #c52a2a,
+        Background: #C0392B,
         LabelStyle: (
             FontSize: 16,
-            TextColor: #ffffff,
+            TextColor: @TextPrimary,
             RenderBold: true,
             HorizontalAlignment: Center,
-            VerticalAlignment: Center
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
+        )
+    ),
+    Disabled: (
+        Background: #2b3542,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #5a6a85,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center,
+            RenderUppercase: true,
+            LetterSpacing: 1
         )
     )
 );
+
 @DisconnectButtonStyle = (
     ...@DisconnectTextButtonStyle,
     Sounds: (
         ...$C.@ButtonSounds,
     )
 );
+
+// Secondary Button Style (for future use)
+@SecondaryButtonStyle = TextButtonStyle(
+    Default: (
+        Background: @BackgroundLight,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: @TextSecondary,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Hovered: (
+        Background: #2a3748,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: @TextPrimary,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Pressed: (
+        Background: #1a2332,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: @TextSecondary,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    )
+);
+
+// Input Field Styles (if needed for customization)
+@InputFieldStyle = (
+    Background: @BackgroundDark,
+    Border: (Color: @BorderColor, Width: 1),
+    Padding: (Horizontal: 12, Vertical: 10),
+    TextColor: @TextPrimary,
+    PlaceholderColor: @TextMuted,
+    FontSize: 14
+);
+
+@HelpLinkButtonStyle = TextButtonStyle(
+    Default: (
+        Background: #00000000,
+        LabelStyle: (FontSize: 12, TextColor: @AccentBlue, VerticalAlignment: Center)
+    ),
+    Hovered: (
+        Background: #00000000,
+        LabelStyle: (FontSize: 12, TextColor: #5a9fff, VerticalAlignment: Center)
+    ),
+    Pressed: (
+        Background: #00000000,
+        LabelStyle: (FontSize: 12, TextColor: #3a7bd5, VerticalAlignment: Center)
+    )
+);
+
+// Card Styles
+@CardBackground = #1a2332(0.6);
+@CardPadding = 24;
+@CardBorderRadius = 8;
+
+// Status Indicator Colors
+@StatusConnected = @ConnectedColor;
+@StatusDisconnected = @DisconnectedColor;
+@StatusConnecting = #F39C12;
+
+// Spacing Constants
+@SpacingXS = 4;
+@SpacingS = 8;
+@SpacingM = 16;
+@SpacingL = 24;
+@SpacingXL = 32;

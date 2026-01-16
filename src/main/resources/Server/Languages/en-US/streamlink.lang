@@ -1,11 +1,23 @@
 ui.dashboard.title = StreamLink
 
 ui.dashboard.twitch.label = Twitch
-ui.dashboard.twitch.title = Twitch Settings
+ui.dashboard.twitch.title = Twitch Integration
 ui.dashboard.twitch.channel.label = Enter your channel
 ui.dashboard.twitch.channel.placeholder = Channel Name
 
-ui.dashboard.status.label = Status :
+ui.dashboard.twitch.accessToken.label = Access Token
+ui.dashboard.twitch.accessToken.placeholder = Enter your access token
+
+ui.dashboard.twitch.clientID.label = Client ID
+ui.dashboard.twitch.clientID.placeholder = Enter your client ID
+
+ui.dashboard.credentials.title = Authentication Credentials
+ui.dashboard.credentials.help = Need credentials?
+ui.dashboard.credentials.link = Get them here
+
+ui.dashboard.channel.title = Channel Settings
+
+ui.dashboard.status.label = Status
 ui.dashboard.status.connected = Connected
 ui.dashboard.status.disconnected = Disconnected
 

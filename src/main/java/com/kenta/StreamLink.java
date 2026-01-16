@@ -81,6 +81,9 @@ public class StreamLink extends JavaPlugin {
                 PlayerReadyEvent.class, e -> {
                     Store<EntityStore> entityStore = e.getPlayerRef().getStore();
                     entityStore.ensureComponent(e.getPlayerRef(), streamDataComponentType);
+                    StreamData streamData = entityStore.getComponent(e.getPlayerRef(), streamDataComponentType);
+                    assert streamData != null;
+                    streamData.setIsTwitchRunning(false);
                 }
         );
     }
