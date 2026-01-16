@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.kenta"
-version = "1.0.0"
+version = "1.1.0"
 
 java {
     toolchain {
@@ -25,7 +25,7 @@ dependencies {
 tasks.jar {
     // Set the archive name
     archiveBaseName.set("streamlink")
-    archiveVersion.set("1.0.0")
+    archiveVersion.set("1.1.0")
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
 
