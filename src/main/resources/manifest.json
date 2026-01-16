@@ -1,0 +1,20 @@
+{
+  "Group": "com.kenta",
+  "Name": "StreamLink",
+  "Version": "1.0.0",
+  "Description": "Stream services integration in Hytale.",
+  "Main": "com.kenta.StreamLink",
+  "Authors": [
+    {
+      "Name": "KentaTetsu",
+      "Website": ""
+    }
+  ],
+  "Website": "",
+  "ServerVersion": ">=0.0.1",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "LoadBefore": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true
+}

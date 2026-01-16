@@ -1,0 +1,102 @@
+$C = "../Common.ui";
+$DS = "../SL_DashboardStyle.ui";
+
+Group #Dashboard {
+    Anchor: (Width: 500, Height: 320);
+    LayoutMode: Left;
+
+    Group #LeftPanel {
+        Anchor: (Width: 150);
+        Background: #0a1119(0.95);
+        LayoutMode: Top;
+        Padding: (Full: 16);
+
+        Label {
+            Text: %streamlink.ui.dashboard.title;
+            Anchor: (Height: 25);
+            Style: (FontSize: 11, TextColor: #4a5568, RenderUppercase: true, LetterSpacing: 2);
+        }
+
+        Group { Anchor: (Height: 8); }
+
+        Label #LabelTwitch {
+            Text: %streamlink.ui.dashboard.twitch.label;
+            Anchor: (Height: 30);
+            Style: $DS.@SelectedLabel;
+        }
+    }
+
+    Group #RightPanel {
+        FlexWeight: 1;
+        Background: #141c26(0.98);
+        LayoutMode: Top;
+        Padding: (Full: 20);
+
+        Label {
+            Text: %streamlink.ui.dashboard.twitch.title;
+            Anchor: (Height: 40);
+            Style: (FontSize: 22, TextColor: #ffffff, RenderBold: true);
+        }
+
+        Group {
+            Anchor: (Height: 1);
+            Background: #2b3542;
+        }
+
+        Group { Anchor: (Height: 16); }
+
+        Group #StatusGroup {
+            LayoutMode: Left;
+            Anchor: (Height: 20);
+            Label {
+                Text: %streamlink.ui.dashboard.status.label;
+                Anchor: (Height: 25);
+                Style: (FontSize: 16, TextColor: #cccccc);
+            }
+
+            Group { Anchor: (Width: 4); }
+
+            Label #StatusLabel {
+                Text: "";
+                Anchor: (Height: 25);
+                Style: (FontSize: 16, TextColor: #cccccc);
+            }
+        }
+
+        Group { Anchor: (Height: 16); }
+
+        Label {
+            Text: %streamlink.ui.dashboard.twitch.channel.label;
+            Anchor: (Height: 25);
+            Style: (FontSize: 16, TextColor: #cccccc);
+        }
+
+        $C.@TextField #TwitchChannelInput {
+            Anchor: (Height: 40);
+            PlaceholderText: %streamlink.ui.dashboard.twitch.channel.placeholder;
+        }
+
+        Group { FlexWeight: 1; }
+
+        Group {
+            LayoutMode: Left;
+            Anchor: (Height: 40);
+
+            TextButton #TwitchDisconnectButton {
+                Anchor: (Height: 45);
+                Padding: (Full: 16);
+                Text: %streamlink.ui.dashboard.button.disconnect;
+                Style: $DS.@DisconnectButtonStyle;
+            }
+
+            Group { FlexWeight: 1; }
+
+            TextButton #TwitchConnectButton {
+                Anchor: (Height: 45);
+                Padding: (Full: 16);
+                Text: %streamlink.ui.dashboard.button.connect;
+                Style: $DS.@ConnectButtonStyle;
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+ui.dashboard.title = StreamLink
+
+ui.dashboard.twitch.label = Twitch
+ui.dashboard.twitch.title = Twitch Settings
+ui.dashboard.twitch.channel.label = Enter your channel
+ui.dashboard.twitch.channel.placeholder = Channel Name
+
+ui.dashboard.status.label = Status :
+ui.dashboard.status.connected = Connected
+ui.dashboard.status.disconnected = Disconnected
+
+ui.dashboard.button.connect = Connect
+ui.dashboard.button.disconnect = Disconnect

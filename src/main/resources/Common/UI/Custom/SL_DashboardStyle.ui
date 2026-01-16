@@ -1,0 +1,88 @@
+$C = "Common.ui";
+$S = "Sounds.ui";
+
+@LabelSize = 14;
+
+@ConnectedColor = #3a7bd5;
+@DisconnectedColor = #d53a3a;
+
+@SelectedLabel = (FontSize: @LabelSize, TextColor: #ffffff, RenderBold: true);
+@UnselectedLabel = (FontSize: @LabelSize, TextColor: #6e7da1);
+
+@ConnectTextButtonStyle = TextButtonStyle(
+    Default: (
+        Background: #3a7bd5,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Hovered: (
+        Background: #4a8be5,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Pressed: (
+        Background: #2a6bc5,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    )
+);
+@ConnectButtonStyle = (
+    ...@ConnectTextButtonStyle,
+    Sounds: (
+        ...$C.@ButtonSounds,
+    )
+);
+
+@DisconnectTextButtonStyle = TextButtonStyle(
+    Default: (
+        Background: #d53a3a,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Hovered: (
+        Background: #e54a4a,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    ),
+    Pressed: (
+        Background: #c52a2a,
+        LabelStyle: (
+            FontSize: 16,
+            TextColor: #ffffff,
+            RenderBold: true,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+        )
+    )
+);
+@DisconnectButtonStyle = (
+    ...@DisconnectTextButtonStyle,
+    Sounds: (
+        ...$C.@ButtonSounds,
+    )
+);
