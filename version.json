@@ -1,0 +1,5 @@
+{
+  "latest_version": "1.1.1", // FOR TESTING, REAL VERSION IS 1.1.0
+  "download_url": "https://www.curseforge.com/hytale/mods/streamlink/download/7471020",
+  "changelog": "Initial release with Twitch integration and dashboard UI"
+}

@@ -166,7 +166,7 @@ public class StreamCommands extends AbstractCommandCollection {
                 try {
                     if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
                         playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
-                        playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com"));
+                        playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
                         return;
                     }
 
