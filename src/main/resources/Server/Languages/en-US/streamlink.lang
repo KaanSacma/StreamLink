@@ -23,3 +23,6 @@ ui.dashboard.status.disconnected = Disconnected
 
 ui.dashboard.button.connect = Connect
 ui.dashboard.button.disconnect = Disconnect
+
+ui.dashboard.comingsoon.message = Coming Soon...
+ui.dashboard.comingsoon.description = This platform integration is currently in development. Stay tuned for updates!

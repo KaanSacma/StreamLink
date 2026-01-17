@@ -36,6 +36,71 @@ $S = "Sounds.ui";
     HorizontalAlignment: Center
 );
 
+// Tab Button Styles - Selected
+@SelectedTabButtonStyle = TextButtonStyle(
+    Default: (
+        Background: #1a2332(0.6),
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: @TextPrimary,
+            RenderBold: true,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    ),
+    Hovered: (
+        Background: #243444(0.7),
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: @TextPrimary,
+            RenderBold: true,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    ),
+    Pressed: (
+        Background: #1a2332(0.8),
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: @TextPrimary,
+            RenderBold: true,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    )
+);
+
+// Single tab button style
+@TabButtonStyle = TextButtonStyle(
+    Default: (
+        Background: #00000000,  // Transparent - background set on button itself
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: #8a9ab0,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    ),
+    Hovered: (
+        Background: #1a2332(0.3),
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: #ffffff,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    ),
+    Pressed: (
+        Background: #0f1621(0.6),
+        LabelStyle: (
+            FontSize: @SubheaderSize,
+            TextColor: #96a9be,
+            VerticalAlignment: Center,
+            HorizontalAlignment: Center
+        )
+    )
+);
+
 // Button Styles - Connect
 @ConnectTextButtonStyle = TextButtonStyle(
     Default: (

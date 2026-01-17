@@ -63,6 +63,28 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     }
 
     private void setupEventBindings(UIEventBuilder uiEventBuilder) {
+        // Platform Tab Buttons
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#TabTwitch",
+                new EventData().append("EventType", "tab_twitch_clicked"),
+                false
+        );
+
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#TabYouTube",
+                new EventData().append("EventType", "tab_youtube_clicked"),
+                false
+        );
+
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#TabKick",
+                new EventData().append("EventType", "tab_kick_clicked"),
+                false
+        );
+
         // Channel Input
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.FocusLost,
@@ -157,6 +179,16 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             DashboardData data
     ) {
         switch (data.eventType) {
+            case "tab_twitch_clicked":
+                switchToTab("twitch");
+                break;
+            case "tab_youtube_clicked":
+                switchToTab("youtube");
+                break;
+            case "tab_kick_clicked":
+                switchToTab("kick");
+                break;
+
             case "twitch_channel_input":
                 handleChannelInput(data.twitchChannelInput);
                 break;
@@ -343,6 +375,35 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 : this.streamData.getTwitchClientId();
 
         builder.set("#TwitchClientIdInput.Value", displayValue);
+        this.sendUpdate(builder, null, false);
+    }
+
+    private void switchToTab(String platform) {
+        UICommandBuilder builder = new UICommandBuilder();
+
+        builder.set("#TwitchContent.Visible", false);
+        builder.set("#YouTubeContent.Visible", false);
+        builder.set("#KickContent.Visible", false);
+
+        builder.set("#TabTwitchActive.Visible", false);
+        builder.set("#TabYouTubeActive.Visible", false);
+        builder.set("#TabKickActive.Visible", false);
+
+        switch (platform) {
+            case "twitch":
+                builder.set("#TwitchContent.Visible", true);
+                builder.set("#TabTwitchActive.Visible", true);
+                break;
+            case "youtube":
+                builder.set("#YouTubeContent.Visible", true);
+                builder.set("#TabYouTubeActive.Visible", true);
+                break;
+            case "kick":
+                builder.set("#KickContent.Visible", true);
+                builder.set("#TabKickActive.Visible", true);
+                break;
+        }
+
         this.sendUpdate(builder, null, false);
     }
 
