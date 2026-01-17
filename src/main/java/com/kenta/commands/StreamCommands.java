@@ -5,6 +5,7 @@ import static com.kenta.StreamLink.*;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
 import com.kenta.pages.DashboardPage;
+import com.kenta.services.StreamThread;
 import com.kenta.services.twitch.Twitch;
 
 import com.hypixel.hytale.component.Ref;
@@ -155,7 +156,7 @@ public class StreamCommands extends AbstractCommandCollection {
                 return;
             }
 
-            if (getPlayersTwitch().containsKey(username)) {
+            if (StreamThread.isUserHasTwitchThread(username)) {
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
                 return;
             }
@@ -185,7 +186,7 @@ public class StreamCommands extends AbstractCommandCollection {
                     playerRef.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
 
                     Twitch twitch = new Twitch();
-                    addPlayersTwitch(username, twitch);
+                    StreamThread.putToTwitch(username, twitch);
                     twitch.connectWithEvents(streamData, player);
 
                 } catch (Exception e) {
@@ -212,12 +213,12 @@ public class StreamCommands extends AbstractCommandCollection {
         ) {
             String username = playerRef.getUsername();
 
-            if (!getPlayersTwitch().containsKey(username)) {
+            if (!StreamThread.isUserHasTwitchThread(username)) {
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Not connected! Connect first: /streamlink twitch connect"));
                 return;
             }
 
-            disconnectPlayersTwitch(username);
+            StreamThread.disconnectTwitch(username);
         }
     }
 }

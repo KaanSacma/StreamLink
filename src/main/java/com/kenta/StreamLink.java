@@ -10,6 +10,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.commands.StreamCommands;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
+import com.kenta.services.StreamThread;
 import com.kenta.services.UpdateChecker;
 import com.kenta.services.twitch.Twitch;
 
@@ -25,28 +26,14 @@ import java.util.logging.Level;
 public class StreamLink extends JavaPlugin {
 
     private static StreamLink instance;
-    public static ComponentType<EntityStore, StreamData> streamDataComponentType;
     private static final String CURRENT_VERSION = "1.1.0";
     private static UpdateChecker.VersionInfo currentVersionInfo;
 
-    public StreamLink(@Nonnull JavaPluginInit init) {
-        super(init);
-    }
+    public static ComponentType<EntityStore, StreamData> streamDataComponentType;
 
-    public static StreamLink get() {
-        return instance;
-    }
+    public StreamLink(@Nonnull JavaPluginInit init) { super(init); }
 
-    private static final Map<String, Twitch> playersTwitch = new HashMap<>();
-
-    public static Map<String, Twitch> getPlayersTwitch() { return playersTwitch; }
-    public static void addPlayersTwitch(String username, Twitch twitch) {
-        playersTwitch.put(username, twitch);
-    }
-    public static void disconnectPlayersTwitch(String username) {
-        playersTwitch.get(username).disconnect();
-        playersTwitch.remove(username);
-    }
+    public static StreamLink get() { return instance; }
 
     @Override
     protected void setup() {
@@ -92,7 +79,7 @@ public class StreamLink extends JavaPlugin {
 
     private void broadcastUpdateNotification(Player player) {
         boolean isOP = player.hasPermission("OP");
-        if (!isOP) return;
+        if (!isOP && !currentVersionInfo.updateAvailable) return;
 
         try {
             Thread.sleep(3000);
@@ -103,7 +90,7 @@ public class StreamLink extends JavaPlugin {
 
         Message updateMessage = Message.join(
                 SLMessage.formatMessage("A new version is available!"),
-                Message.translation(" (v" + CURRENT_VERSION + " → v" + currentVersionInfo.latestVersion + ")")
+                Message.translation(" (v" + CURRENT_VERSION + " -> v" + currentVersionInfo.latestVersion + ")")
         );
         Message downloadMessage = SLMessage.formatMessageWithLink("Download here: ", currentVersionInfo.downloadUrl);
         player.sendMessage(updateMessage);
@@ -112,36 +99,29 @@ public class StreamLink extends JavaPlugin {
 
     @Override
     protected void shutdown() {
-        for (Map.Entry<String, Twitch> entry : playersTwitch.entrySet()) {
-            Twitch twitch = entry.getValue();
-            twitch.disconnect();
-        }
-        playersTwitch.clear();
         getLogger().at(Level.INFO).log("StreamLink shutting down!");
+        StreamThread.disconnectAllTwitch();
     }
 
     private void registerEvents() {
-        getEventRegistry().registerGlobal(
-                PlayerDisconnectEvent.class,
-                this::onPlayerDisconnectEvent
-        );
-        getEventRegistry().registerGlobal(
-                PlayerReadyEvent.class, e -> {
-                    Store<EntityStore> entityStore = e.getPlayerRef().getStore();
-                    entityStore.ensureComponent(e.getPlayerRef(), streamDataComponentType);
-                    StreamData streamData = entityStore.getComponent(e.getPlayerRef(), streamDataComponentType);
-                    assert streamData != null;
-                    streamData.setIsTwitchRunning(false);
-                    broadcastUpdateNotification(e.getPlayer());
-                }
-        );
+        getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, this::onPlayerDisconnectEvent);
+        getEventRegistry().registerGlobal(PlayerReadyEvent.class, this::onPlayerReadyEvent);
     }
 
     private void onPlayerDisconnectEvent(PlayerDisconnectEvent event) {
         String username = event.getPlayerRef().getUsername();
 
-        if (playersTwitch.containsKey(username)) {
-            disconnectPlayersTwitch(username);
+        if (StreamThread.isUserHasTwitchThread(username)) {
+            StreamThread.disconnectTwitch(username);
         }
+    }
+
+    private void onPlayerReadyEvent(PlayerReadyEvent event) {
+        Store<EntityStore> entityStore = event.getPlayerRef().getStore();
+        entityStore.ensureComponent(event.getPlayerRef(), streamDataComponentType);
+        StreamData streamData = entityStore.getComponent(event.getPlayerRef(), streamDataComponentType);
+        assert streamData != null;
+        streamData.setIsTwitchRunning(false);
+        broadcastUpdateNotification(event.getPlayer());
     }
 }

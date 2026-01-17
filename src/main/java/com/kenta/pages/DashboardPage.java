@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.data.DashboardData;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
+import com.kenta.services.StreamThread;
 import com.kenta.services.twitch.Twitch;
 import com.kenta.services.twitch.TwitchAuth;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -229,7 +230,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             return;
         }
 
-        if (getPlayersTwitch().containsKey(username)) {
+        if (StreamThread.isUserHasTwitchThread(username)) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
             return;
         }
@@ -260,7 +261,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 playerRef.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
 
                 Twitch twitch = new Twitch();
-                addPlayersTwitch(username, twitch);
+                StreamThread.putToTwitch(username, twitch);
                 twitch.connectWithEvents(streamData, player);
                 setConnectedState();
             } catch (Exception e) {
@@ -274,12 +275,12 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     private void handleDisconnectButton() {
         String username = playerRef.getUsername();
 
-        if (!getPlayersTwitch().containsKey(username)) {
+        if (!StreamThread.isUserHasTwitchThread(username)) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Not connected! Connect first: /streamlink twitch connect"));
             return;
         }
 
-        disconnectPlayersTwitch(username);
+        StreamThread.disconnectTwitch(username);
         setDisconnectedState();
     }
 
