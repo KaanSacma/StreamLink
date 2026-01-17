@@ -4,7 +4,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -19,8 +18,6 @@ import com.kenta.services.StreamThread;
 import com.kenta.services.twitch.Twitch;
 import com.kenta.services.twitch.TwitchAuth;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-
-import static com.kenta.StreamLink.*;
 
 public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
 

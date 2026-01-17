@@ -12,14 +12,11 @@ import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
 import com.kenta.services.StreamThread;
 import com.kenta.services.UpdateChecker;
-import com.kenta.services.twitch.Twitch;
 
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 
 @SuppressWarnings({"null", "removal"})
