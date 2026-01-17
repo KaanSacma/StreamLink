@@ -39,6 +39,7 @@ public class Twitch {
     private final Color CHEER_COLOR = ColorHelper.parseHexColor("#9C27B0");
     private final Color POINT_COLOR = ColorHelper.parseHexColor("#00D9CC");
 
+    @Deprecated
     public void connectToChannel(StreamData streamData, Player player) {
         if (running) {
             sendMessageToPlayer(player, SLMessage.formatMessageWithError("Already connected!"));
