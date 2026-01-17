@@ -1,7 +1,6 @@
 package com.kenta;
 
 import com.hypixel.hytale.component.ComponentType;
-import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -92,6 +91,9 @@ public class StreamLink extends JavaPlugin {
     }
 
     private void broadcastUpdateNotification(Player player) {
+        boolean isOP = player.hasPermission("OP");
+        if (!isOP) return;
+
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
