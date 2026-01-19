@@ -5,11 +5,17 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 
 public class DashboardData {
+    // Twitch fields
     public String twitchChannelInput;
     public String twitchAccessTokenInput;
     public String twitchClientIdInput;
-    public String eventType;
 
+    // YouTube fields
+    public String youtubeChannelIdInput;
+    public String youtubeApiKeyInput;
+
+    // Common fields
+    public String eventType;
 
     public static final BuilderCodec<DashboardData> CODEC =
             BuilderCodec.builder(DashboardData.class, DashboardData::new)
@@ -18,6 +24,7 @@ public class DashboardData {
                             (data, value) -> data.eventType = value,
                             data -> data.eventType
                     ).add()
+                    // Twitch fields
                     .append(
                             new KeyedCodec<>("@TwitchChannelInput", Codec.STRING),
                             (data, value) -> data.twitchChannelInput = value,
@@ -32,6 +39,17 @@ public class DashboardData {
                             new KeyedCodec<>("@TwitchClientIdInput", Codec.STRING),
                             (data, value) -> data.twitchClientIdInput = value,
                             data -> data.twitchClientIdInput
+                    ).add()
+                    // YouTube fields
+                    .append(
+                            new KeyedCodec<>("@YouTubeChannelIdInput", Codec.STRING),
+                            (data, value) -> data.youtubeChannelIdInput = value,
+                            data -> data.youtubeChannelIdInput
+                    ).add()
+                    .append(
+                            new KeyedCodec<>("@YouTubeApiKeyInput", Codec.STRING),
+                            (data, value) -> data.youtubeApiKeyInput = value,
+                            data -> data.youtubeApiKeyInput
                     ).add()
                     .build();
 }

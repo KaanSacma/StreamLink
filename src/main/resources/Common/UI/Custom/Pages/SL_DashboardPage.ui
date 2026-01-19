@@ -292,74 +292,151 @@ Group #Dashboard {
         }
 
         // ==========================================
-        // YOUTUBE CONTENT (Coming Soon)
+        // YOUTUBE CONTENT (Active Implementation)
         // ==========================================
         Group #YouTubeContent {
             FlexWeight: 1;
             LayoutMode: Top;
             Visible: false;
 
-            // Centered Coming Soon Message
-            Group {
-                FlexWeight: 1;
-            }
+            // Section Title
+            Group #SectionHeader {
+                Anchor: (Height: 40);
+                LayoutMode: Left;
 
-            Group #ComingSoonCard {
-                Anchor: (Height: 300);
-                LayoutMode: Top;
-
-                // YouTube Logo/Icon Area
-                Group #YouTubeBrand {
-                    Anchor: (Height: 80);
-                    LayoutMode: Top;
-
-                    Label {
-                        Text: "YouTube";
-                        Anchor: (Height: 40);
-                        Style: (
-                            FontSize: 32,
-                            TextColor: #FF0000,
-                            RenderBold: true,
-                            HorizontalAlignment: Center,
-                            VerticalAlignment: Center
-                        );
-                    }
+                Label {
+                    Text: %streamlink.ui.dashboard.youtube.title;
+                    Anchor: (Height: 40);
+                    Style: (FontSize: 24, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
                 }
 
-                Group { Anchor: (Height: 32); }
+                Group { FlexWeight: 1; }
+            }
 
-                // Coming Soon Text
+            Group { Anchor: (Height: 2); Background: #2b3542; }
+            Group { Anchor: (Height: 24); }
+
+            // Credentials Section
+            Group #CredentialsCard {
+                Anchor: (Height: 180);
+                Background: #0f1621(0.6);
+                Padding: (Full: 24);
+                LayoutMode: Top;
+
                 Label {
-                    Text: %streamlink.ui.dashboard.comingsoon.message;
-                    Anchor: (Height: 50);
-                    Style: (
-                        FontSize: 28,
-                        TextColor: #ffffff,
-                        RenderBold: true,
-                        HorizontalAlignment: Center,
-                        VerticalAlignment: Center
-                    );
+                    Text: %streamlink.ui.dashboard.credentials.title;
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #8a9ab0, RenderBold: true);
                 }
 
                 Group { Anchor: (Height: 16); }
 
-                // Description
-                Label {
-                    Text: %streamlink.ui.dashboard.comingsoon.description;
-                    Anchor: (Height: 60);
-                    Style: (
-                        FontSize: 14,
-                        TextColor: #96a9be,
-                        HorizontalAlignment: Center,
-                        VerticalAlignment: Center,
-                        Wrap: true
-                    );
-                    Padding: (Horizontal: 100);
+                Group #CredentialsRow {
+                    Anchor: (Height: 80);
+                    LayoutMode: Left;
+
+                    Group #ApiKeyGroup {
+                        FlexWeight: 1;
+                        LayoutMode: Top;
+
+                        Label {
+                            Text: %streamlink.ui.dashboard.youtube.apiKey.label;
+                            Anchor: (Height: 24);
+                            Style: (FontSize: 14, TextColor: #96a9be);
+                        }
+
+                        Group { Anchor: (Height: 4); }
+
+                        $C.@TextField #YouTubeApiKeyInput {
+                            Anchor: (Height: 44);
+                            PlaceholderText: %streamlink.ui.dashboard.youtube.apiKey.placeholder;
+                        }
+                    }
+                }
+
+                Group { Anchor: (Height: 12); }
+
+                Group #HelpTextRow {
+                    Anchor: (Height: 20);
+                    LayoutMode: Left;
+
+                    Label {
+                        Text: %streamlink.ui.dashboard.credentials.help;
+                        Anchor: (Height: 20);
+                        Style: (FontSize: 12, TextColor: #5a6a85, VerticalAlignment: Center);
+                    }
+
+                    Group { Anchor: (Width: 8); }
+
+                    TextButton #YouTubeHelpLink {
+                        Text: %streamlink.ui.dashboard.credentials.link;
+                        Anchor: (Height: 20);
+                        Style: $DS.@HelpLinkButtonStyle;
+                    }
                 }
             }
 
-            Group {
-                FlexWeight: 1;
+            Group { Anchor: (Height: 24); }
+
+            // Channel Section
+            Group #ChannelCard {
+                Anchor: (Height: 180);
+                Background: #0f1621(0.6);
+                Padding: (Full: 24);
+                LayoutMode: Top;
+
+                Label {
+                    Text: %streamlink.ui.dashboard.channel.title;
+                    Anchor: (Height: 24);
+                    Style: (FontSize: 16, TextColor: #8a9ab0, RenderBold: true);
+                }
+
+                Group { Anchor: (Height: 12); }
+
+                Group #ChannelRow {
+                    Anchor: (Height: 44);
+                    LayoutMode: Left;
+
+                    Group #ChannelInputGroup {
+                        Anchor: (Width: 350);
+                        LayoutMode: Top;
+
+                        Label {
+                            Text: %streamlink.ui.dashboard.youtube.channelId.label;
+                            Anchor: (Height: 24);
+                            Style: (FontSize: 14, TextColor: #96a9be);
+                        }
+
+                        Group { Anchor: (Height: 4); }
+
+                        $C.@TextField #YouTubeChannelIdInput {
+                            Anchor: (Height: 44);
+                            PlaceholderText: %streamlink.ui.dashboard.youtube.channelId.placeholder;
+                        }
+                    }
+                }
+            }
+
+            Group { FlexWeight: 1; }
+
+            // Action Buttons Section
+            Group #ActionBar {
+                LayoutMode: Left;
+                Anchor: (Height: 50);
+
+                TextButton #YouTubeDisconnectButton {
+                    Anchor: (Height: 50, Width: 160);
+                    Text: %streamlink.ui.dashboard.button.disconnect;
+                    Style: $DS.@DisconnectButtonStyle;
+                }
+
+                Group { FlexWeight: 1; }
+
+                TextButton #YouTubeConnectButton {
+                    Anchor: (Height: 50, Width: 160);
+                    Text: %streamlink.ui.dashboard.button.connect;
+                    Style: $DS.@ConnectButtonStyle;
+                }
             }
         }
 

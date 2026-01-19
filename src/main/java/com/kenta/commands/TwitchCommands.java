@@ -109,39 +109,38 @@ public class TwitchCommands {
                 @Nonnull World world
         ) {
             StreamData streamData = store.getComponent(ref, streamDataComponentType);
-            Player player = store.getComponent(ref, Player.getComponentType());
             String username = playerRef.getUsername();
 
             assert streamData != null;
 
             if (streamData.getTwitchChannel().isEmpty()) {
-                playerRef.sendMessage(SLMessage.formatMessageWithError("Set your channel first: /streamlink twitch channel <name>"));
+                context.sendMessage(SLMessage.formatMessageWithError("Set your channel first: /streamlink twitch channel <name>"));
                 return;
             }
 
             if (streamData.getTwitchClientId().isEmpty() || streamData.getTwitchAccessToken().isEmpty()) {
-                playerRef.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink twitch setup <client_id> <access_token>"));
-                playerRef.sendMessage(SLMessage.formatMessageWithLink("Please check this link: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                context.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink twitch setup <client_id> <access_token>"));
+                context.sendMessage(SLMessage.formatMessageWithLink("Please check this link: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
                 return;
             }
 
             if (StreamThread.isUserHasTwitchThread(username)) {
-                playerRef.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
+                context.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
                 return;
             }
 
-            playerRef.sendMessage(SLMessage.formatMessage("Validating credentials..."));
+            context.sendMessage(SLMessage.formatMessage("Validating credentials..."));
 
             new Thread(() -> {
                 try {
                     if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
-                        playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
-                        playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                        context.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
+                        context.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
                         return;
                     }
 
-                    playerRef.sendMessage(SLMessage.formatMessage("Token validated!"));
-                    playerRef.sendMessage(SLMessage.formatMessage("Connecting to Twitch..."));
+                    context.sendMessage(SLMessage.formatMessage("Token validated!"));
+                    context.sendMessage(SLMessage.formatMessage("Connecting to Twitch..."));
 
                     String broadcasterId = TwitchAuth.getBroadcasterId(
                             streamData.getTwitchChannel(),
@@ -151,15 +150,17 @@ public class TwitchCommands {
 
                     streamData.setBroadcasterId(broadcasterId);
 
-                    playerRef.sendMessage(SLMessage.formatMessage("Authentication successful!"));
-                    playerRef.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
+                    context.sendMessage(SLMessage.formatMessage("Authentication successful!"));
+                    context.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
 
-                    Twitch twitch = new Twitch();
+                    Twitch twitch = new Twitch(streamData, playerRef);
                     StreamThread.putToTwitch(username, twitch);
-                    twitch.connectWithEvents(streamData, player);
+                    twitch.connect();
 
                 } catch (Exception e) {
-                    playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                    context.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                    if (StreamThread.isUserHasTwitchThread(username))
+                        StreamThread.disconnectTwitch(username);
                     e.printStackTrace();
                 }
             }).start();

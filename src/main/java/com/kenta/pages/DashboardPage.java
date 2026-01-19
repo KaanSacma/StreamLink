@@ -4,7 +4,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -14,9 +13,12 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.data.DashboardData;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
+import com.kenta.services.Status;
 import com.kenta.services.StreamThread;
 import com.kenta.services.twitch.Twitch;
 import com.kenta.services.twitch.TwitchAuth;
+import com.kenta.services.youtube.YouTube;
+import com.kenta.services.youtube.YouTubeAuth;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
@@ -45,25 +47,34 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     }
 
     private void initializeValues(UICommandBuilder uiCommandBuilder) {
-        String channel = this.streamData.getTwitchChannel();
-        String accessToken = safeValue(this.streamData.getTwitchAccessToken());
-        String clientId = safeValue(this.streamData.getTwitchClientId());
-        boolean isRunning = this.streamData.getIsTwitchRunning();
+        // Twitch values
+        String twitchChannel = this.streamData.getTwitchChannel();
+        String twitchAccessToken = safeValue(this.streamData.getTwitchAccessToken());
+        String twitchClientId = safeValue(this.streamData.getTwitchClientId());
+        boolean isTwitchRunning = this.streamData.getIsTwitchRunning();
 
-        // Set form values
-        uiCommandBuilder.set("#TwitchChannelInput.Value", channel);
-        uiCommandBuilder.set("#TwitchAccessTokenInput.Value", accessToken);
-        uiCommandBuilder.set("#TwitchClientIdInput.Value", clientId);
+        // YouTube values
+        String youtubeChannelId = safeValue(this.streamData.getYouTubeChannelId());
+        String youtubeApiKey = safeValue(this.streamData.getYouTubeApiKey());
+        boolean isYouTubeRunning = this.streamData.getIsYouTubeRunning();
 
-        // Update status indicator
-        updateStatusIndicator(uiCommandBuilder, isRunning);
+        // Set Twitch form values
+        uiCommandBuilder.set("#TwitchChannelInput.Value", twitchChannel);
+        uiCommandBuilder.set("#TwitchAccessTokenInput.Value", twitchAccessToken);
+        uiCommandBuilder.set("#TwitchClientIdInput.Value", twitchClientId);
 
-        // Update button states
-        updateButtonStates(uiCommandBuilder, isRunning);
+        // Set YouTube form values
+        uiCommandBuilder.set("#YouTubeChannelIdInput.Value", youtubeChannelId);
+        uiCommandBuilder.set("#YouTubeApiKeyInput.Value", youtubeApiKey);
+        
+        updateStatusIndicator(uiCommandBuilder, isTwitchRunning);
+        updateTwitchButtonStates(uiCommandBuilder, isTwitchRunning);
+
+        updateYoutubeButtonStates(uiCommandBuilder, isYouTubeRunning);
     }
 
     private void setupEventBindings(UIEventBuilder uiEventBuilder) {
-        // Platform Tab Buttons
+        // ========== PLATFORM TAB BUTTONS ==========
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#TabTwitch",
@@ -85,6 +96,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 false
         );
 
+        // ========== TWITCH BINDINGS ==========
         // Channel Input
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.FocusLost,
@@ -147,7 +159,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 false
         );
 
-        // Connect Button
+        // Connect/Disconnect Buttons
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#TwitchConnectButton",
@@ -155,7 +167,6 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 false
         );
 
-        // Disconnect Button
         uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#TwitchDisconnectButton",
@@ -170,6 +181,82 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 new EventData().append("EventType", "help_link_clicked"),
                 false
         );
+
+        // ========== YOUTUBE BINDINGS ==========
+        // Channel ID Input
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.ValueChanged,
+                "#YouTubeChannelIdInput",
+                new EventData()
+                        .append("EventType", "youtube_channelId_input")
+                        .append("@YouTubeChannelIdInput", "#YouTubeChannelIdInput.Value"),
+                false
+        );
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.FocusGained,
+                "#YouTubeChannelIdInput",
+                new EventData()
+                        .append("EventType", "youtube_channelId_focus_gained")
+                        .append("@YouTubeChannelIdInput", "#YouTubeChannelIdInput.Value"),
+                false
+        );
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.FocusLost,
+                "#YouTubeChannelIdInput",
+                new EventData()
+                        .append("EventType", "youtube_channelId_focus_lost")
+                        .append("@YouTubeChannelIdInput", "#YouTubeChannelIdInput.Value"),
+                false
+        );
+
+        // API Key Input
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.ValueChanged,
+                "#YouTubeApiKeyInput",
+                new EventData()
+                        .append("EventType", "youtube_apiKey_input")
+                        .append("@YouTubeApiKeyInput", "#YouTubeApiKeyInput.Value"),
+                false
+        );
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.FocusGained,
+                "#YouTubeApiKeyInput",
+                new EventData()
+                        .append("EventType", "youtube_apiKey_focus_gained")
+                        .append("@YouTubeApiKeyInput", "#YouTubeApiKeyInput.Value"),
+                false
+        );
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.FocusLost,
+                "#YouTubeApiKeyInput",
+                new EventData()
+                        .append("EventType", "youtube_apiKey_focus_lost")
+                        .append("@YouTubeApiKeyInput", "#YouTubeApiKeyInput.Value"),
+                false
+        );
+
+        // Connect/Disconnect Buttons
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#YouTubeConnectButton",
+                new EventData().append("EventType", "youtube_button_connect"),
+                false
+        );
+
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#YouTubeDisconnectButton",
+                new EventData().append("EventType", "youtube_button_disconnect"),
+                false
+        );
+
+        // Help Link
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#YouTubeHelpLink",
+                new EventData().append("EventType", "youtube_help_link_clicked"),
+                false
+        );
     }
 
     @Override
@@ -179,6 +266,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             DashboardData data
     ) {
         switch (data.eventType) {
+            // ========== TAB SWITCHING ==========
             case "tab_twitch_clicked":
                 switchToTab("twitch");
                 break;
@@ -189,61 +277,94 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 switchToTab("kick");
                 break;
 
+            // ========== TWITCH EVENTS ==========
             case "twitch_channel_input":
-                handleChannelInput(data.twitchChannelInput);
+                handleTwitchChannelInput(data.twitchChannelInput);
                 break;
 
             case "twitch_accessToken_input":
-                handleAccessTokenInput(data.twitchAccessTokenInput);
+                handleTwitchAccessTokenInput(data.twitchAccessTokenInput);
                 break;
             case "twitch_accessToken_focus_gained":
-                updateAccessTokenDisplay(false);
+                updateTwitchAccessTokenDisplay(false);
                 break;
             case "twitch_accessToken_focus_lost":
-                updateAccessTokenDisplay(true);
+                updateTwitchAccessTokenDisplay(true);
                 break;
 
             case "twitch_clientID_input":
-                handleClientIdInput(data.twitchClientIdInput);
+                handleTwitchClientIdInput(data.twitchClientIdInput);
                 break;
             case "twitch_clientID_focus_gained":
-                updateClientIdDisplay(false);
+                updateTwitchClientIdDisplay(false);
                 break;
             case "twitch_clientID_focus_lost":
-                updateClientIdDisplay(true);
+                updateTwitchClientIdDisplay(true);
                 break;
 
             case "twitch_button_connect":
-                handleConnectButton(ref, store);
+                handleTwitchConnectButton();
                 break;
             case "twitch_button_disconnect":
-                handleDisconnectButton();
+                handleTwitchDisconnectButton();
                 break;
             case "help_link_clicked":
-                handleHelpLinkClick();
+                handleTwitchHelpLinkClick();
                 break;
+
+            // ========== YOUTUBE EVENTS ==========
+            case "youtube_channelId_input":
+                handleYouTubeChannelIdInput(data.youtubeChannelIdInput);
+                break;
+            case "youtube_channelId_focus_gained":
+                updateYouTubeChannelIdDisplay(false);
+                break;
+            case "youtube_channelId_focus_lost":
+                updateYouTubeChannelIdDisplay(true);
+                break;
+
+            case "youtube_apiKey_input":
+                handleYouTubeApiKeyInput(data.youtubeApiKeyInput);
+                break;
+            case "youtube_apiKey_focus_gained":
+                updateYouTubeApiKeyDisplay(false);
+                break;
+            case "youtube_apiKey_focus_lost":
+                updateYouTubeApiKeyDisplay(true);
+                break;
+
+            case "youtube_button_connect":
+                handleYouTubeConnectButton();
+                break;
+            case "youtube_button_disconnect":
+                handleYouTubeDisconnectButton();
+                break;
+            case "youtube_help_link_clicked":
+                handleYouTubeHelpLinkClick();
+                break;
+
             default:
                 break;
         }
     }
 
-    private void handleChannelInput(String input) {
+    // ========== TWITCH HANDLERS ==========
+    private void handleTwitchChannelInput(String input) {
         String channel = (input != null && !input.isEmpty()) ? input : "";
         this.streamData.setTwitchChannel(channel);
     }
 
-    private void handleAccessTokenInput(String input) {
+    private void handleTwitchAccessTokenInput(String input) {
         String accessToken = (input != null && !input.isEmpty()) ? input : "";
         this.streamData.setTwitchAccessToken(accessToken);
     }
 
-    private void handleClientIdInput(String input) {
+    private void handleTwitchClientIdInput(String input) {
         String clientId = (input != null && !input.isEmpty()) ? input : "";
         this.streamData.setTwitchClientId(clientId);
     }
 
-    private void handleConnectButton(Ref<EntityStore> ref, Store<EntityStore> store) {
-        Player player = store.getComponent(ref, Player.getComponentType());
+    private void handleTwitchConnectButton() {
         String username = playerRef.getUsername();
 
         assert streamData != null;
@@ -264,7 +385,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             return;
         }
 
-        setConnectingState();
+        setTwitchConnectingState();
         playerRef.sendMessage(SLMessage.formatMessage("Validating credentials..."));
 
         new Thread(() -> {
@@ -272,6 +393,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
                     playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
                     playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new access token with ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                    setTwitchDisconnectedState();
                     return;
                 }
 
@@ -289,19 +411,19 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
                 playerRef.sendMessage(SLMessage.formatMessage("Authentication successful!"));
                 playerRef.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
 
-                Twitch twitch = new Twitch();
+                Twitch twitch = new Twitch(streamData, playerRef);
                 StreamThread.putToTwitch(username, twitch);
-                twitch.connectWithEvents(streamData, player);
-                setConnectedState();
+                twitch.connect();
+                setTwitchConnectedState();
             } catch (Exception e) {
-                setDisconnectedState();
+                setTwitchDisconnectedState();
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
                 e.printStackTrace();
             }
         }).start();
     }
 
-    private void handleDisconnectButton() {
+    private void handleTwitchDisconnectButton() {
         String username = playerRef.getUsername();
 
         if (!StreamThread.isUserHasTwitchThread(username)) {
@@ -310,55 +432,133 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
         }
 
         StreamThread.disconnectTwitch(username);
-        setDisconnectedState();
+        setTwitchDisconnectedState();
     }
 
-    private void handleHelpLinkClick() {
+    private void handleTwitchHelpLinkClick() {
         playerRef.sendMessage(SLMessage.formatMessageWithLink("Get your credentials here: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
     }
 
+    // ========== YOUTUBE HANDLERS ==========
+    private void handleYouTubeChannelIdInput(String input) {
+        String channelId = (input != null && !input.isEmpty()) ? input : "";
+        this.streamData.setYouTubeChannelId(channelId);
+    }
 
-    // UI Update Methods
-    private void setConnectingState() {
+    private void handleYouTubeApiKeyInput(String input) {
+        String apiKey = (input != null && !input.isEmpty()) ? input : "";
+        this.streamData.setYouTubeApiKey(apiKey);
+    }
+
+    private void handleYouTubeConnectButton() {
+        String username = playerRef.getUsername();
+
+        assert streamData != null;
+
+        if (streamData.getYouTubeChannelId().isEmpty()) {
+            playerRef.sendMessage(SLMessage.formatMessageWithError("Set your channel ID first"));
+            return;
+        }
+
+        if (streamData.getYouTubeApiKey().isEmpty()) {
+            playerRef.sendMessage(SLMessage.formatMessageWithError("Set your API key first"));
+            playerRef.sendMessage(SLMessage.formatMessageWithLink("Get API key at: ", "https://console.cloud.google.com/apis/credentials"));
+            return;
+        }
+
+        if (StreamThread.isUserHasYouTubeThread(username)) {
+            playerRef.sendMessage(SLMessage.formatMessageWithError("Already connected!"));
+            return;
+        }
+
+        setYouTubeConnectingState();
+        playerRef.sendMessage(SLMessage.formatMessage("Validating credentials..."));
+
+        new Thread(() -> {
+            try {
+                if (!YouTubeAuth.validateApiKey(streamData.getYouTubeApiKey())) {
+                    playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired API key!"));
+                    playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new API key at ", "https://console.cloud.google.com/apis/credentials"));
+                    setYouTubeDisconnectedState();
+                    return;
+                }
+
+                playerRef.sendMessage(SLMessage.formatMessage("API Key validated!"));
+                playerRef.sendMessage(SLMessage.formatMessage("Connecting to YouTube live chat..."));
+
+                YouTube youtube = new YouTube(streamData, playerRef);
+                StreamThread.putToYouTube(username, youtube);
+                youtube.connect();
+                Thread.sleep(100);
+                if (youtube.status == Status.CONNECTED)
+                    setYouTubeConnectedState();
+                else
+                    setYouTubeDisconnectedState();
+            } catch (Exception e) {
+                setYouTubeDisconnectedState();
+                playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void handleYouTubeDisconnectButton() {
+        String username = playerRef.getUsername();
+
+        if (!StreamThread.isUserHasYouTubeThread(username)) {
+            playerRef.sendMessage(SLMessage.formatMessageWithError("Not connected! Connect first: /streamlink youtube connect"));
+            return;
+        }
+
+        StreamThread.disconnectYouTube(username);
+        setYouTubeDisconnectedState();
+    }
+
+    private void handleYouTubeHelpLinkClick() {
+        playerRef.sendMessage(SLMessage.formatMessageWithLink("Get your API key here: ", "https://console.cloud.google.com/apis/credentials"));
+    }
+
+    // ========== TWITCH UI UPDATES ==========
+    private void setTwitchConnectingState() {
         UICommandBuilder builder = new UICommandBuilder();
-        updateStatusIndicator(builder, false, CONNECTING_COLOR, "Connecting...");
-        updateButtonStates(builder, false);
+        updateStatusIndicator(builder, CONNECTING_COLOR, "Connecting...");
+        updateTwitchButtonStates(builder, false);
         this.sendUpdate(builder, null, false);
     }
 
-    private void setConnectedState() {
+    private void setTwitchConnectedState() {
         UICommandBuilder builder = new UICommandBuilder();
         this.streamData.setIsTwitchRunning(true);
         updateStatusIndicator(builder, true);
-        updateButtonStates(builder, true);
+        updateTwitchButtonStates(builder, true);
         this.sendUpdate(builder, null, false);
     }
 
-    private void setDisconnectedState() {
+    private void setTwitchDisconnectedState() {
         UICommandBuilder builder = new UICommandBuilder();
         this.streamData.setIsTwitchRunning(false);
         updateStatusIndicator(builder, false);
-        updateButtonStates(builder, false);
+        updateTwitchButtonStates(builder, false);
         this.sendUpdate(builder, null, false);
     }
 
     private void updateStatusIndicator(UICommandBuilder builder, boolean isConnected) {
         String color = isConnected ? CONNECTED_COLOR : DISCONNECTED_COLOR;
         String status = isConnected ? "Connected" : "Disconnected";
-        updateStatusIndicator(builder, isConnected, color, status);
+        updateStatusIndicator(builder, color, status);
     }
 
-    private void updateStatusIndicator(UICommandBuilder builder, boolean isConnected, String color, String status) {
+    private void updateStatusIndicator(UICommandBuilder builder, String color, String status) {
         builder.set("#StatusDot.Background", color);
         builder.set("#StatusLabel.Text", status);
     }
 
-    private void updateButtonStates(UICommandBuilder builder, boolean isConnected) {
+    private void updateTwitchButtonStates(UICommandBuilder builder, boolean isConnected) {
         builder.set("#TwitchConnectButton.Visible", !isConnected);
         builder.set("#TwitchDisconnectButton.Visible", isConnected);
     }
 
-    private void updateAccessTokenDisplay(boolean masked) {
+    private void updateTwitchAccessTokenDisplay(boolean masked) {
         UICommandBuilder builder = new UICommandBuilder();
         String displayValue = masked
                 ? safeValue(this.streamData.getTwitchAccessToken())
@@ -368,7 +568,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
         this.sendUpdate(builder, null, false);
     }
 
-    private void updateClientIdDisplay(boolean masked) {
+    private void updateTwitchClientIdDisplay(boolean masked) {
         UICommandBuilder builder = new UICommandBuilder();
         String displayValue = masked
                 ? safeValue(this.streamData.getTwitchClientId())
@@ -378,6 +578,56 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
         this.sendUpdate(builder, null, false);
     }
 
+    // ========== YOUTUBE UI UPDATES ==========
+    private void setYouTubeConnectingState() {
+        UICommandBuilder builder = new UICommandBuilder();
+        this.updateStatusIndicator(builder, CONNECTING_COLOR, "Connecting...");
+        this.updateYoutubeButtonStates(builder, false);
+        this.sendUpdate(builder, null, false);
+    }
+
+    private void setYouTubeConnectedState() {
+        UICommandBuilder builder = new UICommandBuilder();
+        this.streamData.setIsYouTubeRunning(true);
+        this.updateStatusIndicator(builder, true);
+        this.updateYoutubeButtonStates(builder, true);
+        this.sendUpdate(builder, null, false);
+    }
+
+    private void setYouTubeDisconnectedState() {
+        UICommandBuilder builder = new UICommandBuilder();
+        this.streamData.setIsYouTubeRunning(false);
+        this.updateStatusIndicator(builder, false);
+        this.updateYoutubeButtonStates(builder, false);
+        this.sendUpdate(builder, null, false);
+    }
+
+    private void updateYoutubeButtonStates(UICommandBuilder builder, boolean isConnected) {
+        builder.set("#YouTubeConnectButton.Visible", !isConnected);
+        builder.set("#YouTubeDisconnectButton.Visible", isConnected);
+    }
+
+    private void updateYouTubeChannelIdDisplay(boolean masked) {
+        UICommandBuilder builder = new UICommandBuilder();
+        String displayValue = masked
+                ? safeValue(this.streamData.getYouTubeChannelId())
+                : this.streamData.getYouTubeChannelId();
+
+        builder.set("#YouTubeChannelIdInput.Value", displayValue);
+        this.sendUpdate(builder, null, false);
+    }
+
+    private void updateYouTubeApiKeyDisplay(boolean masked) {
+        UICommandBuilder builder = new UICommandBuilder();
+        String displayValue = masked
+                ? safeValue(this.streamData.getYouTubeApiKey())
+                : this.streamData.getYouTubeApiKey();
+
+        builder.set("#YouTubeApiKeyInput.Value", displayValue);
+        this.sendUpdate(builder, null, false);
+    }
+
+    // ========== TAB SWITCHING ==========
     private void switchToTab(String platform) {
         UICommandBuilder builder = new UICommandBuilder();
 
@@ -407,6 +657,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
         this.sendUpdate(builder, null, false);
     }
 
+    // ========== UTILITIES ==========
     private String safeValue(String value) {
         if (value == null || value.isEmpty()) {
             return "";

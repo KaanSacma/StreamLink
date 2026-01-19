@@ -1,4 +1,4 @@
-package com.kenta.services;
+package com.kenta.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

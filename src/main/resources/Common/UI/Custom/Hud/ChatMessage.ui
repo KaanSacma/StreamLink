@@ -1,0 +1,32 @@
+// Single message container
+Group #MessageContainer {
+    Anchor: (Height: 32);
+    LayoutMode: Left;
+    Padding: (Horizontal: 10);
+
+    Group { Anchor: (Width: 4); }
+
+    // Username
+    Label #Username {
+        Text: "";
+        Style: (
+            FontSize: 12,
+            TextColor: #ffffff,
+            RenderBold: true,
+            VerticalAlignment: Center
+        );
+    }
+
+    Group { Anchor: (Width: 6); }
+
+    // Message text (simple version - no emotes yet)
+    Label #Message {
+        Text: "";
+        Style: (
+            FontSize: 12,
+            TextColor: #c9d1d9,
+            VerticalAlignment: Center,
+            Wrap: true
+        );
+    }
+}

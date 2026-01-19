@@ -11,6 +11,14 @@ ui.dashboard.twitch.accessToken.placeholder = Enter your access token
 ui.dashboard.twitch.clientID.label = Client ID
 ui.dashboard.twitch.clientID.placeholder = Enter your client ID
 
+ui.dashboard.youtube.label = YouTube
+ui.dashboard.youtube.title = YouTube Integration
+ui.dashboard.youtube.channelId.label = Channel ID
+ui.dashboard.youtube.channelId.placeholder = Enter your channel ID
+
+ui.dashboard.youtube.apiKey.label = API Key
+ui.dashboard.youtube.apiKey.placeholder = Enter your YouTube API Key
+
 ui.dashboard.credentials.title = Authentication Credentials
 ui.dashboard.credentials.help = Need credentials?
 ui.dashboard.credentials.link = Get them here

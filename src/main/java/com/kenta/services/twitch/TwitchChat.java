@@ -1,7 +1,7 @@
 package com.kenta.services.twitch;
 
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.kenta.services.twitch.data.ChatMessage;
+import com.kenta.services.twitch.data.TwitchChatMessage;
 import com.kenta.services.twitch.data.EmotePosition;
 
 import java.io.*;
@@ -16,9 +16,8 @@ public class TwitchChat {
     public Player player;
     private boolean connected = false;
 
-    public void connectAnonymous(String channel, Player player) throws IOException {
+    public void connectAnonymous(String channel) throws IOException {
         this.channel = channel.toLowerCase();
-        this.player = player;
 
         System.out.println("[Twitch] Connecting anonymously to #" + channel);
 
@@ -45,7 +44,7 @@ public class TwitchChat {
         System.out.println("[Twitch] Connected to #" + channel);
     }
 
-    public ChatMessage readMessage() throws IOException {
+    public TwitchChatMessage readMessage() throws IOException {
         if (!connected) return null;
 
         String line = reader.readLine();
@@ -67,7 +66,7 @@ public class TwitchChat {
         return null;
     }
 
-    private ChatMessage parseChatMessage(String line) {
+    private TwitchChatMessage parseChatMessage(String line) {
         try {
             String color = "#FFFFFF";
             String cleanLine = line;
@@ -98,7 +97,7 @@ public class TwitchChat {
             // Replace emotes in message
             String displayMessage = replaceEmotesInMessage(message, emoteReplacements);
 
-            return new ChatMessage(username, displayMessage, color, badges);
+            return new TwitchChatMessage(username, displayMessage, color, badges);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

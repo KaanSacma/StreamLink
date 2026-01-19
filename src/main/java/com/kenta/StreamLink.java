@@ -11,7 +11,7 @@ import com.kenta.commands.StreamCommands;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
 import com.kenta.services.StreamThread;
-import com.kenta.services.UpdateChecker;
+import com.kenta.utils.UpdateChecker;
 
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
@@ -23,7 +23,7 @@ import java.util.logging.Level;
 public class StreamLink extends JavaPlugin {
 
     private static StreamLink instance;
-    private static final String CURRENT_VERSION = "1.1.1";
+    private static final String CURRENT_VERSION = "1.2.0";
     private static UpdateChecker.VersionInfo currentVersionInfo;
 
     public static ComponentType<EntityStore, StreamData> streamDataComponentType;
@@ -76,7 +76,7 @@ public class StreamLink extends JavaPlugin {
 
     private void broadcastUpdateNotification(Player player) {
         boolean isOP = player.hasPermission("OP");
-        if (!isOP && !currentVersionInfo.updateAvailable) return;
+        if (!isOP || !currentVersionInfo.updateAvailable) return;
 
         try {
             Thread.sleep(3000);
@@ -97,7 +97,7 @@ public class StreamLink extends JavaPlugin {
     @Override
     protected void shutdown() {
         getLogger().at(Level.INFO).log("StreamLink shutting down!");
-        StreamThread.disconnectAllTwitch();
+        StreamThread.disconnectAll();
     }
 
     private void registerEvents() {
@@ -111,6 +111,9 @@ public class StreamLink extends JavaPlugin {
         if (StreamThread.isUserHasTwitchThread(username)) {
             StreamThread.disconnectTwitch(username);
         }
+        if (StreamThread.isUserHasYouTubeThread(username)) {
+            StreamThread.disconnectYouTube(username);
+        }
     }
 
     private void onPlayerReadyEvent(PlayerReadyEvent event) {
@@ -118,7 +121,10 @@ public class StreamLink extends JavaPlugin {
         entityStore.ensureComponent(event.getPlayerRef(), streamDataComponentType);
         StreamData streamData = entityStore.getComponent(event.getPlayerRef(), streamDataComponentType);
         assert streamData != null;
+
         streamData.setIsTwitchRunning(false);
+        streamData.setIsYouTubeRunning(false);
+
         broadcastUpdateNotification(event.getPlayer());
     }
 }

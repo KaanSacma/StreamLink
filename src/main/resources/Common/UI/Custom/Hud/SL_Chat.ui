@@ -1,0 +1,70 @@
+$C = "../Common.ui";
+
+Group #ChatHUD {
+    Anchor: (Width: 380, Height: 550, Right: 16, Bottom: 120);
+    LayoutMode: Top;
+
+    // Header
+    Group #ChatHeader {
+        Anchor: (Height: 36);
+        Background: #18222d(0.7);
+        LayoutMode: Left;
+        Padding: (Horizontal: 12, Vertical: 6);
+
+        Group #PlatformIcon {
+            Anchor: (Width: 20, Height: 20);
+            Background: #9146FF;
+        }
+
+        Group { Anchor: (Width: 8); }
+
+        Label #ChatTitle {
+            Text: "LIVE CHAT";
+            Style: (
+                FontSize: 11,
+                TextColor: #96a9be,
+                RenderBold: true,
+                RenderUppercase: true,
+                LetterSpacing: 1,
+                VerticalAlignment: Center
+            );
+        }
+
+        Group { FlexWeight: 1; }
+
+        Group #StatusDot {
+            Anchor: (Width: 6, Height: 6);
+            Background: #00D166;
+        }
+    }
+
+    // Messages Wrapper
+    Group #ChatMessagesWrapper {
+        FlexWeight: 1;
+        Background: #0d1117(0.5);
+        Padding: (Full: 12);
+        LayoutMode: Top;
+
+        // Dynamic messages container
+        Group #ChatMessages {
+            LayoutMode: Top;
+        }
+    }
+
+    // Footer
+    Group #ChatFooter {
+        Anchor: (Height: 20);
+        Background: #18222d(0.6);
+        LayoutMode: Left;
+        Padding: (Horizontal: 10, Vertical: 3);
+
+        Label #ViewerCount {
+            Text: "0 watching";
+            Style: (
+                FontSize: 9,
+                TextColor: #6e7681,
+                VerticalAlignment: Center
+            );
+        }
+    }
+}

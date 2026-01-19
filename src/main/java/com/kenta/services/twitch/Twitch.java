@@ -1,27 +1,22 @@
 package com.kenta.services.twitch;
 
-import com.hypixel.hytale.protocol.ItemWithAllMetadata;
-import com.hypixel.hytale.server.core.inventory.ItemStack;
-import com.hypixel.hytale.server.core.universe.Universe;
-import com.hypixel.hytale.server.core.util.NotificationUtil;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.kenta.data.StreamData;
 import com.kenta.libs.ColorHelper;
 import com.kenta.libs.SLMessage;
-import com.kenta.services.twitch.data.ChatMessage;
-
-import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.Message;
+import com.kenta.services.AbstractService;
+import com.kenta.services.Status;
+import com.kenta.services.StreamThread;
+import com.kenta.services.twitch.data.TwitchChatMessage;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.SocketException;
 import java.util.List;
 
-public class Twitch {
-    private TwitchChat chatClient;
+public class Twitch extends AbstractService {
+    private TwitchChat chat;
     private TwitchEventSub eventSub;
-    private Thread chatThread;
-    private boolean running = false;
 
     private final String FOLLOW_ITEM = "Deco_Starfish";
     private final String SUBSCRIBE_ITEM = "Deco_Treasure";
@@ -39,108 +34,73 @@ public class Twitch {
     private final Color CHEER_COLOR = ColorHelper.parseHexColor("#9C27B0");
     private final Color POINT_COLOR = ColorHelper.parseHexColor("#00D9CC");
 
-    @Deprecated
-    public void connectToChannel(StreamData streamData, Player player) {
-        if (running) {
-            sendMessageToPlayer(player, SLMessage.formatMessageWithError("Already connected!"));
-            return;
-        }
+    private final Color BROADCASTER_COLOR = ColorHelper.parseHexColor("#ffd700");
+    private final Color MODERATOR_COLOR = ColorHelper.parseHexColor("#00ff00");
+    private final Color VIP_COLOR = ColorHelper.parseHexColor("#ff00ff");
+    private final Color FOUNDER_COLOR = ColorHelper.parseHexColor("#8a2be2");
+    private final Color PREMIUM_COLOR = ColorHelper.parseHexColor("#87cefa");
 
-        chatClient = new TwitchChat();
-        running = true;
-
-        chatThread = new Thread(() -> {
-            try {
-                chatClient.connectAnonymous(streamData.getTwitchChannel(), player);
-                sendMessageToPlayer(player, SLMessage.formatMessage("Connected to #" + streamData.getTwitchChannel()));
-                streamData.setIsTwitchRunning(true);
-
-                while (running && chatClient.isConnected()) {
-                    ChatMessage chat = chatClient.readMessage();
-                    if (chat != null) {
-                        broadcastToServer(player, chat);
-                    }
-                    Thread.sleep(10);
-                }
-            } catch (SocketException e) {
-                if (running) {
-                    sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection lost."));
-                }
-                streamData.setIsTwitchRunning(false);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection interrupted."));
-                streamData.setIsTwitchRunning(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-                sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection failed!"));
-                streamData.setIsTwitchRunning(false);
-            }
-        });
-
-        chatThread.setDaemon(true);
-        chatThread.start();
+    public Twitch(StreamData streamData, PlayerRef playerRef) {
+        super(streamData, playerRef, "[TWITCH] ", ColorHelper.parseHexColor("#6441a5"));
     }
 
-    public void connectWithEvents(StreamData streamData, Player player) {
-        if (running) {
-            sendMessageToPlayer(player, SLMessage.formatMessageWithError("Already connected!"));
+    @Override
+    public void connect() {
+        if (status == Status.CONNECTED) {
+            sendMessage(SLMessage.formatMessageWithError("Already connected!"));
             return;
         }
 
-        running = true;
+        this.status = Status.CONNECTING;
+        this.chat = new TwitchChat();
 
-        chatClient = new TwitchChat();
-        chatThread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             try {
-                chatClient.connectAnonymous(streamData.getTwitchChannel(), player);
-                sendMessageToPlayer(player, SLMessage.formatMessage("Connected to #" + streamData.getTwitchChannel()));
-                streamData.setIsTwitchRunning(true);
+                this.chat.connectAnonymous(this.streamData.getTwitchChannel());
+                sendMessage(SLMessage.formatMessage("Connected to #" + this.streamData.getTwitchChannel()));
+                this.status = Status.CONNECTED;
+                this.streamData.setIsTwitchRunning(true);
 
-                while (running && chatClient.isConnected()) {
-                    ChatMessage chat = chatClient.readMessage();
-                    if (chat != null) {
-                        broadcastToServer(player, chat);
-                    }
+                while (this.status == Status.CONNECTED && this.chat.isConnected()) {
+                    TwitchChatMessage chatMessage = this.chat.readMessage();
+                    if (chatMessage != null) { sendChatMessage(chatMessage); }
                     Thread.sleep(10);
                 }
             } catch (SocketException e) {
-                if (running) {
-                    sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection lost."));
-                }
-                streamData.setIsTwitchRunning(false);
+                if (this.status == Status.CONNECTED) { sendMessage(SLMessage.formatMessageWithError("Twitch: Connection lost.")); }
+                StreamThread.disconnectTwitch(this.username);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection interrupted."));
-                streamData.setIsTwitchRunning(false);
+                sendMessage(SLMessage.formatMessageWithError("Connection interrupted."));
+                StreamThread.disconnectTwitch(this.username);
             } catch (Exception e) {
                 e.printStackTrace();
-                sendMessageToPlayer(player, SLMessage.formatMessageWithError("Connection failed!"));
-                streamData.setIsTwitchRunning(false);
+                sendMessage(SLMessage.formatMessageWithError("Connection failed!"));
+                StreamThread.disconnectTwitch(this.username);
             }
         });
-        chatThread.setDaemon(true);
-        chatThread.start();
 
-        if (streamData.getTwitchAccessToken() != null && !streamData.getTwitchAccessToken().isEmpty()) {
+        thread.setDaemon(true);
+        thread.start();
+
+        if (this.streamData.getTwitchAccessToken() != null && !this.streamData.getTwitchAccessToken().isEmpty()) {
             eventSub = new TwitchEventSub();
             eventSub.connect(
-                    streamData.getTwitchAccessToken(),
-                    streamData.getTwitchClientId(),
-                    streamData.getBroadcasterId()
+                    this.streamData.getTwitchAccessToken(),
+                    this.streamData.getTwitchClientId(),
+                    this.streamData.getBroadcasterId()
             );
-
-            setupEventHandlers(player);
-            sendMessageToPlayer(player, SLMessage.formatMessage("Events connected! You'll see follows, subs, raids, etc."));
+            setupEventHandlers();
+            sendMessage(SLMessage.formatMessage("Events connected! You'll see follows, subs, raids, etc."));
         }
     }
 
-    private void setupEventHandlers(Player player) {
+    private void setupEventHandlers() {
         eventSub.onFollow(event -> {
             String followerName = event.get("user_name").getAsString();
             String message = followerName + " just followed!";
 
-            sendNotification(player, FOLLOW_ITEM, "Follower", message, FOLLOW_COLOR);
+            sendNotification(FOLLOW_ITEM, "Follower", message, FOLLOW_COLOR);
         });
 
         eventSub.onSubscribe(event -> {
@@ -149,7 +109,7 @@ public class Twitch {
             String tierDisplay = tier.equals("1000") ? "1" : tier.equals("2000") ? "2" : "3";
             String message = subName + " just subscribed! (Tier " + tierDisplay + ")";
 
-            sendNotification(player, SUBSCRIBE_ITEM, "Subscriber", message, SUBSCRIBE_COLOR);
+            sendNotification(SUBSCRIBE_ITEM, "Subscriber", message, SUBSCRIBE_COLOR);
         });
 
         eventSub.onGiftSub(event -> {
@@ -161,7 +121,7 @@ public class Twitch {
             String tierDisplay = tier.equals("1000") ? "1" : tier.equals("2000") ? "2" : "3";
             String message = gifterName + " gifted " + total + " Tier " + tierDisplay + " subs!";
 
-            sendNotification(player, GIFTSUB_ITEM, "Gift Sub", message, GIFTSUB_COLOR);
+            sendNotification(GIFTSUB_ITEM, "Gift Sub", message, GIFTSUB_COLOR);
         });
 
         eventSub.onResub(event -> {
@@ -174,7 +134,7 @@ public class Twitch {
                     : "";
             String message = subName + " resubscribed for " + months + " months! (Tier " + tierDisplay + ")" + (eventMsg.isEmpty() ? "" : " - " + eventMsg);
 
-            sendNotification(player, RESUB_ITEM, "Resubscribe", message, RESUB_COLOR);
+            sendNotification(RESUB_ITEM, "Resubscribe", message, RESUB_COLOR);
         });
 
         eventSub.onRaid(event -> {
@@ -182,7 +142,7 @@ public class Twitch {
             int viewers = event.get("viewers").getAsInt();
             String message = raiderName + " is raiding with " + viewers + " viewers!";
 
-            sendNotification(player, RAID_ITEM, "Raid", message, RAID_COLOR);
+            sendNotification(RAID_ITEM, "Raid", message, RAID_COLOR);
         });
 
         eventSub.onCheer(event -> {
@@ -193,7 +153,7 @@ public class Twitch {
             String eventMsg = event.has("message") ? event.get("message").getAsString() : "";
             String message = cheerName + " cheered " + bits + " bits!" + (eventMsg.isEmpty() ? "" : " - " + eventMsg);
 
-            sendNotification(player, CHEER_ITEM, "Cheer", message, CHEER_COLOR);
+            sendNotification(CHEER_ITEM, "Cheer", message, CHEER_COLOR);
         });
 
         eventSub.onChannelPointRedemption(event -> {
@@ -202,50 +162,36 @@ public class Twitch {
             String userInput = event.has("user_input") ? event.get("user_input").getAsString() : "";
             String message = userName + " redeemed: " + rewardTitle + (userInput.isEmpty() ? "" : " - " + userInput);
 
-            sendNotification(player, POINT_ITEM, "Redeem", message, POINT_COLOR);
+            sendNotification(POINT_ITEM, "Redeem", message, POINT_COLOR);
         });
     }
 
+    @Override
     public void disconnect() {
-        running = false;
+        this.streamData.setIsYouTubeRunning(false);
 
-        if (chatClient != null) {
+        if (this.chat != null) {
             try {
-                chatClient.disconnect();
-                sendMessageToPlayer(chatClient.player, SLMessage.formatMessage("Disconnected from #" + chatClient.channel));
+                this.chat.disconnect();
+                if (this.status == Status.CONNECTED)
+                    sendMessage(SLMessage.formatMessage("Disconnected from #" + this.chat.channel));
             } catch (IOException e) {
                 e.printStackTrace();
-                sendMessageToPlayer(chatClient.player, SLMessage.formatMessageWithError("Error while disconnecting"));
+                if (this.status == Status.CONNECTED)
+                    sendMessage(SLMessage.formatMessageWithError("Error while disconnecting"));
             }
         }
 
         if (eventSub != null) {
             eventSub.disconnect();
         }
+
+        this.status = Status.DISCONNECTED;
     }
 
-    private void sendMessageToPlayer(Player player, Message message) {
-        player.sendMessage(message);
-    }
-
-    private void broadcastToServer(Player player, ChatMessage chat) {
-        Color userColor = ColorHelper.parseHexColor(chat.color());
-        Color twitchColor = ColorHelper.parseHexColor("#6441a5");
-        String badgePrefix = getBadgePrefix(chat.badges());
-
-        player.sendMessage(
-                Message.join(
-                        Message.translation("[Twitch] ").color(twitchColor),
-                        Message.translation(badgePrefix).color(getBadgeColor(chat.badges())),
-                        Message.translation(chat.username()).color(userColor),
-                        Message.translation(" : ").color(Color.LIGHT_GRAY),
-                        Message.translation(chat.message())
-                )
-        );
-    }
-
-    private String getBadgePrefix(List<String> badges) {
-        if (badges.isEmpty()) {return "";}
+    @Override
+    public String getBadgePrefix(List<String> badges) {
+        if (badges.isEmpty()) { return ""; }
 
         if (badges.contains("broadcaster")) {
             return "[BROADCASTER] ";
@@ -261,39 +207,22 @@ public class Twitch {
         return "";
     }
 
-    private Color getBadgeColor(List<String> badges) {
-        if (badges.isEmpty()) {
-            return Color.WHITE;
-        }
+    @Override
+    public Color getBadgeColor(List<String> badges) {
+        if (badges.isEmpty()) { return Color.WHITE; }
 
         if (badges.contains("broadcaster")) {
-            return new Color(255, 215, 0);
+            return BROADCASTER_COLOR;
         } else if (badges.contains("moderator")) {
-            return new Color(0, 255, 0);
+            return MODERATOR_COLOR;
         } else if (badges.contains("vip")) {
-            return new Color(255, 0, 255);
+            return VIP_COLOR;
         } else if (badges.contains("subscriber") || badges.contains("founder")) {
-            return new Color(138, 43, 226);
+            return FOUNDER_COLOR;
         } else if (badges.contains("premium")) {
-            return new Color(135, 206, 250);
+            return PREMIUM_COLOR;
         }
 
         return Color.WHITE;
-    }
-
-    private void sendNotification(Player player, String item, String title, String message, Color color) {
-        var playerRef = Universe.get().getPlayer(player.getUuid());
-        assert playerRef != null;
-        var packetHandler = playerRef.getPacketHandler();
-        var primaryMessage = Message.raw(title).bold(true).color(color);
-        var secondaryMessage = Message.raw(message).color(color);
-        var icon = new ItemStack(item, 1).toPacket();
-
-        NotificationUtil.sendNotification(
-                packetHandler,
-                primaryMessage,
-                secondaryMessage,
-                (ItemWithAllMetadata) icon
-        );
     }
 }
