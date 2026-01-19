@@ -116,12 +116,13 @@ public class YouTubeCommands {
 
             if (streamData.getYouTubeChannelId().isEmpty()) {
                 context.sendMessage(SLMessage.formatMessageWithError("Set your channel ID first: /streamlink youtube set <channel_id>"));
+                context.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide"));
                 return;
             }
 
             if (streamData.getYouTubeApiKey().isEmpty()) {
                 context.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink youtube setup <api_key>"));
-                context.sendMessage(SLMessage.formatMessageWithLink("Get API key at: ", "https://console.cloud.google.com/apis/credentials"));
+                context.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide"));
                 return;
             }
 
@@ -137,7 +138,7 @@ public class YouTubeCommands {
                 try {
                     if (!YouTubeAuth.validateApiKey(streamData.getYouTubeApiKey())) {
                         context.sendMessage(SLMessage.formatMessage("Invalid or expired API key!"));
-                        context.sendMessage(SLMessage.formatMessageWithLink("Please generate a new API key at ", "https://console.cloud.google.com/apis/credentials"));
+                        context.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide/troubleshooting"));
                         return;
                     }
 

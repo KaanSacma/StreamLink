@@ -67,15 +67,20 @@ public class Twitch extends AbstractService {
                     Thread.sleep(10);
                 }
             } catch (SocketException e) {
-                if (this.status == Status.CONNECTED) { sendMessage(SLMessage.formatMessageWithError("Twitch: Connection lost.")); }
+                if (this.status == Status.CONNECTED) {
+                    sendMessage(SLMessage.formatMessageWithError("Connection lost."));
+                    sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
+                }
                 StreamThread.disconnectTwitch(this.username);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 sendMessage(SLMessage.formatMessageWithError("Connection interrupted."));
+                sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
                 StreamThread.disconnectTwitch(this.username);
             } catch (Exception e) {
                 e.printStackTrace();
                 sendMessage(SLMessage.formatMessageWithError("Connection failed!"));
+                sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
                 StreamThread.disconnectTwitch(this.username);
             }
         });
@@ -162,7 +167,7 @@ public class Twitch extends AbstractService {
             String userInput = event.has("user_input") ? event.get("user_input").getAsString() : "";
             String message = userName + " redeemed: " + rewardTitle + (userInput.isEmpty() ? "" : " - " + userInput);
 
-            sendNotification(POINT_ITEM, "Redeem", message, POINT_COLOR);
+            sendNotification(POINT_ITEM, "Channel Point Redeem", message, POINT_COLOR);
         });
     }
 
@@ -172,21 +177,21 @@ public class Twitch extends AbstractService {
 
         if (this.chat != null) {
             try {
-                this.chat.disconnect();
                 if (this.status == Status.CONNECTED)
                     sendMessage(SLMessage.formatMessage("Disconnected from #" + this.chat.channel));
+                this.status = Status.DISCONNECTED;
+                this.chat.disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
                 if (this.status == Status.CONNECTED)
                     sendMessage(SLMessage.formatMessageWithError("Error while disconnecting"));
+                this.status = Status.DISCONNECTED;
             }
         }
 
         if (eventSub != null) {
             eventSub.disconnect();
         }
-
-        this.status = Status.DISCONNECTED;
     }
 
     @Override

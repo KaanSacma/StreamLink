@@ -371,12 +371,13 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
 
         if (streamData.getTwitchChannel().isEmpty()) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Set your channel first: /streamlink twitch channel <name>"));
+            playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
             return;
         }
 
         if (streamData.getTwitchClientId().isEmpty() || streamData.getTwitchAccessToken().isEmpty()) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink twitch setup <client_id> <access_token>"));
-            playerRef.sendMessage(SLMessage.formatMessageWithLink("Please check this link: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+            playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
             return;
         }
 
@@ -392,7 +393,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             try {
                 if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
                     playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
-                    playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new access token with ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                    playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
                     setTwitchDisconnectedState();
                     return;
                 }
@@ -418,6 +419,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             } catch (Exception e) {
                 setTwitchDisconnectedState();
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
                 e.printStackTrace();
             }
         }).start();
@@ -436,7 +438,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     }
 
     private void handleTwitchHelpLinkClick() {
-        playerRef.sendMessage(SLMessage.formatMessageWithLink("Get your credentials here: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+        playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
     }
 
     // ========== YOUTUBE HANDLERS ==========
@@ -457,12 +459,13 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
 
         if (streamData.getYouTubeChannelId().isEmpty()) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Set your channel ID first"));
+            playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
             return;
         }
 
         if (streamData.getYouTubeApiKey().isEmpty()) {
             playerRef.sendMessage(SLMessage.formatMessageWithError("Set your API key first"));
-            playerRef.sendMessage(SLMessage.formatMessageWithLink("Get API key at: ", "https://console.cloud.google.com/apis/credentials"));
+            playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
             return;
         }
 
@@ -478,7 +481,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             try {
                 if (!YouTubeAuth.validateApiKey(streamData.getYouTubeApiKey())) {
                     playerRef.sendMessage(SLMessage.formatMessage("Invalid or expired API key!"));
-                    playerRef.sendMessage(SLMessage.formatMessageWithLink("Please generate a new API key at ", "https://console.cloud.google.com/apis/credentials"));
+                    playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide/troubleshooting"));
                     setYouTubeDisconnectedState();
                     return;
                 }
@@ -497,6 +500,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
             } catch (Exception e) {
                 setYouTubeDisconnectedState();
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide/troubleshooting"));
                 e.printStackTrace();
             }
         }).start();
@@ -515,7 +519,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     }
 
     private void handleYouTubeHelpLinkClick() {
-        playerRef.sendMessage(SLMessage.formatMessageWithLink("Get your API key here: ", "https://console.cloud.google.com/apis/credentials"));
+        playerRef.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide"));
     }
 
     // ========== TWITCH UI UPDATES ==========
@@ -630,6 +634,7 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
     // ========== TAB SWITCHING ==========
     private void switchToTab(String platform) {
         UICommandBuilder builder = new UICommandBuilder();
+        String username = playerRef.getUsername();
 
         builder.set("#TwitchContent.Visible", false);
         builder.set("#YouTubeContent.Visible", false);
@@ -641,16 +646,23 @@ public class DashboardPage extends InteractiveCustomUIPage<DashboardData> {
 
         switch (platform) {
             case "twitch":
+                Twitch twitch = StreamThread.getTwitch().get(username);
+
                 builder.set("#TwitchContent.Visible", true);
                 builder.set("#TabTwitchActive.Visible", true);
+                this.updateStatusIndicator(builder, StreamThread.isUserHasTwitchThread(username) && twitch.status == Status.CONNECTED);
                 break;
             case "youtube":
+                YouTube youtube = StreamThread.getYouTube().get(username);
+
                 builder.set("#YouTubeContent.Visible", true);
                 builder.set("#TabYouTubeActive.Visible", true);
+                this.updateStatusIndicator(builder, StreamThread.isUserHasYouTubeThread(username) && youtube.status == Status.CONNECTED);
                 break;
             case "kick":
                 builder.set("#KickContent.Visible", true);
                 builder.set("#TabKickActive.Visible", true);
+                this.updateStatusIndicator(builder, false);
                 break;
         }
 

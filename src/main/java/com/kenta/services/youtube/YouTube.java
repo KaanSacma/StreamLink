@@ -68,10 +68,12 @@ public class YouTube extends AbstractService {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 sendMessage(SLMessage.formatMessageWithError("Connection interrupted."));
+                sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide/troubleshooting"));
                 StreamThread.disconnectYouTube(username);
             } catch (Exception e) {
                 e.printStackTrace();
                 sendMessage(SLMessage.formatMessageWithError("Connection failed: " + e.getMessage()));
+                sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/youtube-setup-guide/troubleshooting"));
                 StreamThread.disconnectYouTube(username);
             }
         });
@@ -86,9 +88,8 @@ public class YouTube extends AbstractService {
             this.chat.disconnect();
             if (this.status == Status.CONNECTED)
                 sendMessage(SLMessage.formatMessage("Disconnected from YouTube live chat"));
+            this.status = Status.DISCONNECTED;
         }
-
-        this.status = Status.DISCONNECTED;
     }
 
     @Override

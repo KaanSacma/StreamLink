@@ -6,7 +6,7 @@
 
 **Integrate streaming platform chats directly into the game with real-time message synchronization.**
 
-[![Version](https://img.shields.io/badge/version-1.1.1-9146FF)](https://github.com/KaanSacma/StreamLink)
+[![Version](https://img.shields.io/badge/version-1.2.0-9146FF)](https://github.com/KaanSacma/StreamLink)
 [![Hytale](https://img.shields.io/badge/hytale-0.0.1+-00D166)](https://hytale.com)
 [![Java](https://img.shields.io/badge/java-25-orange)](https://www.oracle.com/java/)
 [![CurseForge](https://img.shields.io/badge/curseforge-download-F16436)](https://www.curseforge.com/hytale/mods/streamlink)
@@ -61,13 +61,14 @@ StreamLink is a powerful server-side mod for Hytale that seamlessly integrates s
 ### Setup Methods
 
 #### Method 1: Dashboard UI (Recommended)
-```
+```bash
 /streamlink ui
 ```
 Open the modern dashboard interface to configure all settings with visual feedback.
 
 #### Method 2: Commands
 ```bash
+# Twitch
 # Set your credentials
 /streamlink twitch setup <client_id> <access_token>
 
@@ -79,6 +80,19 @@ Open the modern dashboard interface to configure all settings with visual feedba
 
 # Disconnect
 /streamlink twitch disconnect
+
+# YouTube
+# Set your credentials
+/streamlink youtube setup <api_key>
+
+# Set your channel ID
+/streamlink youtube set <channel_id>
+
+# Connect to YouTube
+/streamlink youtube connect
+
+# Disconnect
+/streamlink youtube disconnect
 ```
 
 ---
@@ -87,13 +101,18 @@ Open the modern dashboard interface to configure all settings with visual feedba
 
 ### Commands
 
-| Command | Description | Permission   |
-|---------|-------------|--------------|
-| `/streamlink ui` | Open the dashboard UI | Not Required |
-| `/streamlink twitch setup <client_id> <token>` | Configure Twitch credentials | Not Required        |
-| `/streamlink twitch set <channel>` | Set your Twitch channel | Not Required        |
-| `/streamlink twitch connect` | Connect to Twitch chat and events | Not Required        |
-| `/streamlink twitch disconnect` | Disconnect from Twitch | Not Required        |
+| Command                                        | Description                       | Permission   |
+|------------------------------------------------|-----------------------------------|--------------|
+| `/streamlink ui`                               | Open the dashboard UI             | Not Required |
+| `/streamlink twitch setup <client_id> <token>` | Configure Twitch credentials      | Not Required |
+| `/streamlink twitch set <channel>`             | Set your Twitch channel           | Not Required |
+| `/streamlink twitch connect`                   | Connect to Twitch chat and events | Not Required |
+| `/streamlink twitch disconnect`                | Disconnect from Twitch            | Not Required |
+| `/streamlink youtube setup <api_key>`          | Configure YouTube credentials     | Not Required |
+| `/streamlink youtube set <channel_id>`         | Set your YouTube channel ID       | Not Required |
+| `/streamlink youtube connect`                  | Connect to YouTube chat           | Not Required |
+| `/streamlink youtube disconnect`               | Disconnect from YouTube           | Not Required |
+
 
 **Aliases:** `/sl` can be used instead of `/streamlink`
 
@@ -160,14 +179,12 @@ cd StreamLink
 ## Roadmap
 
 ### Planned Features
-- [ ] YouTube Live integration
 - [ ] Kick.com integration
-- [ ] Custom emote image rendering
+- [ ] Stream overlay integration
 - [ ] Automated in-game actions based on events
 - [ ] Keyword-triggered chat commands
 - [ ] Multi-streamer support
 - [ ] Configurable event cooldowns
-- [ ] Stream overlay integration
 
 ---
 

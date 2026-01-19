@@ -1,5 +1,5 @@
 {
-  "latest_version": "1.1.1",
-  "download_url": "https://www.curseforge.com/hytale/mods/streamlink/download/7476354",
-  "changelog": "OP permission no longer required for commands. Added YouTube and Kick platform tabs (coming soon). Update notifications now sent to OP players on login."
+  "latest_version": "1.2.0",
+  "download_url": "https://www.curseforge.com/hytale/mods/streamlink/download/7485933",
+  "changelog": "YouTube Live chat integration and Multi-Platform Support ( connect toTwitch and YouTube simultaneously)"
 }

@@ -115,12 +115,13 @@ public class TwitchCommands {
 
             if (streamData.getTwitchChannel().isEmpty()) {
                 context.sendMessage(SLMessage.formatMessageWithError("Set your channel first: /streamlink twitch channel <name>"));
+                context.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
                 return;
             }
 
             if (streamData.getTwitchClientId().isEmpty() || streamData.getTwitchAccessToken().isEmpty()) {
                 context.sendMessage(SLMessage.formatMessageWithError("Run setup first: /streamlink twitch setup <client_id> <access_token>"));
-                context.sendMessage(SLMessage.formatMessageWithLink("Please check this link: ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                context.sendMessage(SLMessage.formatMessageWithLink("Check this setup guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide"));
                 return;
             }
 
@@ -135,7 +136,7 @@ public class TwitchCommands {
                 try {
                     if (!TwitchAuth.validateToken(streamData.getTwitchAccessToken())) {
                         context.sendMessage(SLMessage.formatMessage("Invalid or expired access token!"));
-                        context.sendMessage(SLMessage.formatMessageWithLink("Please generate a new token at ", "https://twitchtokengenerator.com/quick/HvO1CktuVV"));
+                        context.sendMessage(SLMessage.formatMessageWithLink("Check this troubleshooting guide: ", "https://kentatetsu.gitbook.io/streamlink/guides/twitch-setup-guide/troubleshooting"));
                         return;
                     }
 

@@ -20,8 +20,8 @@ ui.dashboard.youtube.apiKey.label = API Key
 ui.dashboard.youtube.apiKey.placeholder = Enter your YouTube API Key
 
 ui.dashboard.credentials.title = Authentication Credentials
-ui.dashboard.credentials.help = Need credentials?
-ui.dashboard.credentials.link = Get them here
+ui.dashboard.credentials.help = Need help?
+ui.dashboard.credentials.link = Check this guide
 
 ui.dashboard.channel.title = Channel Settings
 
