@@ -33,10 +33,10 @@ public class ActionCommands extends AbstractCommandCollection {
 
         this.addSubCommand(new ActionsUICommand());
         this.addSubCommand(new ListActionsCommand());
-        this.addSubCommand(new RemoveActionCommand());
-        this.addSubCommand(new ClearActionsCommand());
+        //this.addSubCommand(new RemoveActionCommand());
+        //this.addSubCommand(new ClearActionsCommand());
         this.addSubCommand(new StatsCommand());
-        this.addSubCommand(new TestActionCommand());
+        //this.addSubCommand(new TestActionCommand());
     }
 
     static class ActionsUICommand extends AbstractPlayerCommand {
@@ -94,7 +94,7 @@ public class ActionCommands extends AbstractCommandCollection {
 
             for (int i = 0; i < rules.size(); i++) {
                 ActionRule rule = rules.get(i);
-                String status = rule.isEnabled() ? "✓" : "✗";
+                String status = rule.isEnabled() ? "X" : " ";
                 String platform = rule.getEnabledPlatform();
 
                 context.sendMessage(SLMessage.formatMessage(

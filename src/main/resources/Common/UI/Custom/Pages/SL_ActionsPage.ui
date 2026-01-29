@@ -322,16 +322,15 @@ Group #ActionsPage {
                         Group { Anchor: (Height: 8); }
 
                         Group {
+                            Anchor: (Top: 0);
                             FlexWeight: 1;
-                            Background: #0f1621(0.4);
-                            LayoutMode: Center;
-                            Padding: (Full: 12);
+                            LayoutMode: Top;
 
                             $Condition.@ConditionGroup { }
                         }
                     }
 
-                    Group { Anchor: (Height: 16); }
+                    Group { Anchor: (Height: 8); }
 
                     // Actions Section
                     Group #ActionsSection {
@@ -395,7 +394,7 @@ Group #ActionsPage {
                         Group { Anchor: (Height: 8); }
 
                         Group #CooldownInput {
-                            Anchor: (Height: 44);
+                            Anchor: (Height: 44, Left: 0);
                             LayoutMode: Left;
 
                             $C.@NumberField #CooldownValue {

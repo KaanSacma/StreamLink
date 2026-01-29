@@ -114,6 +114,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ui.group("#YoutubeToggleActive").visible(false).update();
 
         ui.dropdown("#ConditionTypeDropdown").value(conditionFormData.get().type).update();
+        ui.dropdown("#TwitchEventDropdown").value(((FormData.TwitchConditionEventData) conditionFormData.get().data).event).update();
         ui.group("#ConditionEventParams").visible(true).update();
         ui.group("#ConditionMessageParams").visible(false).update();
         //ui.group("#ConditionUserParams").visible(false).update();
@@ -145,7 +146,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 ui.dropdown("#TwitchEventDropdown")
                         .value(((FormData.TwitchConditionEventData) conditionFormData.get().data).event)
                         .onChange(this::updateConditionTwitchEventParam)
-                .build();
+                .update();
                 ui.group("#ConditionEventParams").visible(true).update();
                 break;
             }
@@ -154,11 +155,11 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 ui.dropdown("#ConditionMessageTypeDropdown")
                         .value(((FormData.MessageConditionData) conditionFormData.get().data).method)
                         .onChange(this::updateConditionMessageMethodParam)
-                .build();
+                .update();
                 ui.textInput("#ConditionMessagePattern")
                         .value(((FormData.MessageConditionData) conditionFormData.get().data).value)
                         .onChange(this::updateConditionMessageValueParam)
-                .build();
+                .update();
                 ui.group("#ConditionMessageParams").visible(true).update();
                 break;
             }

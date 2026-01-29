@@ -35,7 +35,7 @@ ui.dashboard.button.disconnect = Disconnect
 ui.dashboard.comingsoon.message = Coming Soon...
 ui.dashboard.comingsoon.description = This platform integration is currently in development. Stay tuned for updates!
 
-ui.actions.title = Stream Actions
+ui.actions.title = StreamLink Actions
 ui.actions.button.addRule = + New Rule
 ui.actions.button.onAll = Turn On
 ui.actions.button.offAll = Turn Off

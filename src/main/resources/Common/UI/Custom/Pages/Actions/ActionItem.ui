@@ -2,7 +2,7 @@ $C = "../../Common.ui";
 
 // Action Item Template
 Group #ActionItem {
-    Anchor: (Height: 140);
+    FlexWeight: 1;
     Background: #1a2332;
     LayoutMode: Top;
     Padding: (Horizontal: 12, Vertical: 8);
@@ -51,131 +51,254 @@ Group #ActionItem {
 
     Group { Anchor: (Height: 8); }
 
-    // Action Parameters Label
-    Group #ParamLabelRow {
-        Anchor: (Height: 16);
-        LayoutMode: Left;
-
-        Label {
-            Text: "Parameters:";
-            Anchor: (Height: 16);
-            Style: (FontSize: 10, TextColor: #96a9be);
-        }
-    }
-
-    Group { Anchor: (Height: 4); }
-
-    // Action Parameters
+    // Action Parameters Container
     Group #ActionParameters {
-        Anchor: (Height: 44);
+        FlexWeight: 1;
         LayoutMode: Left;
 
         // For Teleport
         Group #TeleportParams {
+            Anchor: (Top: 0, Height: 60);
             FlexWeight: 1;
-            LayoutMode: Left;
+            LayoutMode: Top;
             Visible: true;
 
-            $C.@NumberField #TeleportX {
-                @Anchor = (Width: 80, Height: 40);
-                Value: 0;
+            // Coordinate Labels Row
+            Group #CoordinateLabels {
+                Anchor: (Height: 16);
+                LayoutMode: Left;
 
-                Format: (MaxDecimalPlaces:0, Step:1);
+                Label {
+                    Text: "X:";
+                    Anchor: (Width: 80, Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label {
+                    Text: "Y:";
+                    Anchor: (Width: 80, Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                Label {
+                    Text: "Z:";
+                    Anchor: (Width: 80, Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
             }
 
-            Group { Anchor: (Width: 8); }
+            Group { Anchor: (Height: 4); }
 
-            $C.@NumberField #TeleportY {
-                @Anchor = (Width: 80, Height: 40);
-                Value: 0;
-
-                Format: (MaxDecimalPlaces:0, Step:1);
-            }
-
-            Group { Anchor: (Width: 8); }
-
-            $C.@NumberField #TeleportZ {
-                @Anchor = (Width: 80, Height: 40);
-                Value: 0;
-
-                Format: (MaxDecimalPlaces:0, Step:1);
-            }
-
-            Group { Anchor: (Width: 16); }
-
-            $C.@CheckBox #TeleportRelative {
-                Value: true;
-            }
-
-            Group { Anchor: (Width: 4); }
-
-            Label {
-                Text: "Relative";
+            // Coordinate Inputs Row
+            Group #CoordinateInputs {
                 Anchor: (Height: 40);
-                Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
+                LayoutMode: Left;
+
+                $C.@NumberField #TeleportX {
+                    @Anchor = (Width: 80, Height: 40);
+                    Value: 0;
+                    Format: (MaxDecimalPlaces:0, Step:1);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                $C.@NumberField #TeleportY {
+                    @Anchor = (Width: 80, Height: 40);
+                    Value: 0;
+                    Format: (MaxDecimalPlaces:0, Step:1);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                $C.@NumberField #TeleportZ {
+                    @Anchor = (Width: 80, Height: 40);
+                    Value: 0;
+                    Format: (MaxDecimalPlaces:0, Step:1);
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                $C.@CheckBox #TeleportRelative {
+                    Value: true;
+                }
+
+                Group { Anchor: (Width: 4); }
+
+                Label {
+                    Text: "Relative";
+                    Anchor: (Height: 20);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
             }
         }
 
         // For Spawn Mob
         Group #SpawnMobParams {
+            Anchor: (Top: 0, Height: 60);
             FlexWeight: 1;
             LayoutMode: Left;
             Visible: false;
 
-            $C.@TextField #MobType {
-                Anchor: (Width: 150, Height: 40);
-                PlaceholderText: "Zombie";
+            // Mob Type Input
+            Group #MobTypeInput {
+                Anchor: (Height: 60);
+                LayoutMode: Top;
+
+                Label {
+                    Text: "Mob Type:";
+                    Anchor: (Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Height: 4); }
+
+                $C.@TextField #MobType {
+                    Anchor: (Width: 180, Height: 40);
+                    PlaceholderText: "e.g., Zombie";
+                }
             }
 
             Group { Anchor: (Width: 8); }
 
-            $C.@NumberField #MobCount {
-                @Anchor = (Width: 80, Height: 40);
-                Value: 0;
+            Group #MobCountGroup {
+                Anchor: (Height: 60);
+                LayoutMode: Top;
 
-                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+                Label {
+                    Text: "Count:";
+                    Anchor: (Width: 80, Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Height: 4); }
+
+                $C.@NumberField #MobCount {
+                    @Anchor = (Width: 80, Height: 40);
+                    Value: 1;
+                    Format: (MaxDecimalPlaces:0, Step:1, MinValue:1);
+                }
             }
 
             Group { Anchor: (Width: 8); }
 
-            $C.@NumberField #MobRadius {
-                @Anchor = (Width: 80, Height: 40);
-                Value: 0;
+            Group #MobRadiusGroup {
+                Anchor: (Height: 60);
+                LayoutMode: Top;
 
-                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+                Label {
+                    Text: "Spawn Radius:";
+                    Anchor: (Width: 80, Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Height: 4); }
+
+                $C.@NumberField #MobRadius {
+                    @Anchor = (Width: 80, Height: 40);
+                    Value: 5;
+                    Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+                }
             }
         }
 
         // For Give Effect
         Group #EffectParams {
+            Anchor: (Top: 0, Height: 60);
             FlexWeight: 1;
             LayoutMode: Left;
             Visible: false;
 
-            $C.@TextField #EffectType {
-                Anchor: (Width: 120, Height: 40);
-                PlaceholderText: "speed";
+            // Effect Type Input
+            Group #EffectTypeInput {
+                Anchor: (Height: 60);
+                LayoutMode: Top;
+
+                Label {
+                    Text: "Effect Type:";
+                    Anchor: (Height: 16, Left: 0);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Height: 4); }
+
+                $C.@TextField #EffectType {
+                    Anchor: (Width: 150, Height: 40, Left: 0);
+                    PlaceholderText: "e.g., Potion_Health";
+                }
             }
 
             Group { Anchor: (Width: 8); }
 
-            $C.@NumberField #EffectDuration {
-                @Anchor = (Width: 100, Height: 40);
-                Value: 0;
+            // Duration Input
+            Group #DurationInput {
+                Anchor: (Height: 60);
+                LayoutMode: Top;
 
-                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+                Label {
+                    Text: "Duration (seconds):";
+                    Anchor: (Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+
+                Group { Anchor: (Height: 4); }
+
+                $C.@NumberField #EffectDuration {
+                    @Anchor = (Width: 100, Height: 40);
+                    Value: 10;
+                    Format: (MaxDecimalPlaces:0, Step:1, MinValue:1);
+                }
             }
         }
 
-        // For Give Effect
+        // For Run Command
         Group #CommandParams {
+            Anchor: (Top: 0, Height: 84);
             FlexWeight: 1;
-            LayoutMode: Left;
+            LayoutMode: Top;
             Visible: false;
 
-            $C.@TextField #CommandBuffer {
-                Anchor: (Width: 220, Height: 40);
-                PlaceholderText: "Command Buffer";
+            // Command Label
+            Group #CommandLabel {
+                Anchor: (Height: 16);
+                LayoutMode: Left;
+
+                Label {
+                    Text: "Command to execute:";
+                    Anchor: (Height: 16);
+                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+            }
+
+            Group { Anchor: (Height: 4); }
+
+            // Command Input
+            Group #CommandInput {
+                Anchor: (Height: 40);
+                LayoutMode: Left;
+
+                $C.@TextField #CommandBuffer {
+                    FlexWeight: 1;
+                    Anchor: (Height: 40);
+                    PlaceholderText: "e.g., teleport home";
+                }
+            }
+
+            Group { Anchor: (Height: 8); }
+
+            // Command Help Text
+            Group #CommandHelp {
+                Anchor: (Height: 16);
+                LayoutMode: Left;
+
+                Label {
+                    Text: "Do not include the leading '/' character";
+                    Anchor: (Height: 16);
+                    Style: (FontSize: 9, TextColor: #5a6a85, VerticalAlignment: Center);
+                }
             }
         }
     }
