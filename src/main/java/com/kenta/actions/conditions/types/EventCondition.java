@@ -25,6 +25,14 @@ public class EventCondition implements Condition {
         return true;
     }
 
+    public String getEventType() {
+        return eventType;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
     @Override
     public String getType() {
         return "event";

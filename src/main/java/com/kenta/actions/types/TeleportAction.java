@@ -54,6 +54,22 @@ public class TeleportAction implements Action {
         });
     }
 
+    public int getRadiusX() {
+        return radiusX;
+    }
+
+    public int getRadiusY() {
+        return radiusY;
+    }
+
+    public int getRadiusZ() {
+        return radiusZ;
+    }
+
+    public boolean getRelative() {
+        return relative;
+    }
+
     @Override
     public String getType() {
         return "teleport";

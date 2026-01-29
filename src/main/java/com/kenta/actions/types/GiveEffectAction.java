@@ -35,6 +35,14 @@ public class GiveEffectAction implements Action {
         ));
     }
 
+    public String getEffectType() {
+        return effectType;
+    }
+
+    public int getDurationSeconds() {
+        return durationSeconds;
+    }
+
     @Override
     public String getType() {
         return "give_effect";

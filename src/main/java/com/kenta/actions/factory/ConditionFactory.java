@@ -52,6 +52,16 @@ public class ConditionFactory {
         ConditionData config = new ConditionData();
         config.type = condition.getType();
 
+        if (condition instanceof EventCondition eventCondition) {
+            config.eventType = eventCondition.getEventType();
+            config.platform = eventCondition.getPlatform();
+
+        } else if (condition instanceof ChatMessageCondition chatCondition) {
+            config.chatPattern = chatCondition.getPattern();
+            config.matchType = chatCondition.getMatchType().name();
+            config.caseSensitive = chatCondition.getCaseSensitive();
+        }
+
         return config;
     }
 }

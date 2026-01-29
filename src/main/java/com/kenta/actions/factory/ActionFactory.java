@@ -45,6 +45,25 @@ public class ActionFactory {
         ActionConfigData config = new ActionConfigData();
         config.type = action.getType();
 
+        if (action instanceof TeleportAction teleport) {
+            config.radiusX = teleport.getRadiusX();
+            config.radiusY = teleport.getRadiusY();
+            config.radiusZ = teleport.getRadiusZ();
+            config.relative = teleport.getRelative();
+
+        } else if (action instanceof SpawnMobAction spawnMob) {
+            config.mobType = spawnMob.getMobType();
+            config.count = spawnMob.getCount();
+            config.radius = spawnMob.getRadius();
+
+        } else if (action instanceof GiveEffectAction giveEffect) {
+            config.effectType = giveEffect.getEffectType();
+            config.durationSeconds = giveEffect.getDurationSeconds();
+
+        } else if (action instanceof RunCommandAction runCommand) {
+            config.buffer = runCommand.getBuffer();
+        }
+
         return config;
     }
 }

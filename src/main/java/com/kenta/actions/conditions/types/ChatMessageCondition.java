@@ -46,6 +46,18 @@ public class ChatMessageCondition implements Condition {
         };
     }
 
+    public String getPattern() {
+        return pattern;
+    }
+
+    public MatchType getMatchType() {
+        return matchType;
+    }
+
+    public boolean getCaseSensitive() {
+        return caseSensitive;
+    }
+
     @Override
     public String getType() {
         return "chat_message";

@@ -22,6 +22,10 @@ public class RunCommandAction implements Action {
         CommandManager.get().handleCommand(playerRef, buffer);
     }
 
+    public String getBuffer() {
+        return buffer;
+    }
+
     @Override
     public String getType() {
         return "run_command";
@@ -30,5 +34,5 @@ public class RunCommandAction implements Action {
     @Override
     public String getDescription() {
         return String.format("Run command: %s", buffer);
-}
+    }
 }

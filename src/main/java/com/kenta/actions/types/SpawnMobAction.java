@@ -86,6 +86,18 @@ public class SpawnMobAction implements Action {
         });
     }
 
+    public String getMobType() {
+        return mobType;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getRadius() {
+        return radius;
+    }
+
     @Override
     public String getType() {
         return "spawn_mob";
