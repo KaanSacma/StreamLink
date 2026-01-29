@@ -91,8 +91,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ui.textButton("#CancelButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#CloseEditorButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#SaveRuleButton").onClick(this::handleSaveRule).build();
-        ui.textButton("#OnRulesButton").onClick(() -> { playerRef.sendMessage(SLMessage.formatMessageWithDebug("On All button coming soon!")); }).build();
-        ui.textButton("#OffRulesButton").onClick(() -> { playerRef.sendMessage(SLMessage.formatMessageWithDebug("Off All button coming soon!")); }).build();
+        ui.textButton("#OnRulesButton").onClick(() -> { this.toggleAllRuleHandler(true); }).build();
+        ui.textButton("#OffRulesButton").onClick(() -> { this.toggleAllRuleHandler(false); }).build();
         ui.textButton("#ClearRulesButton").onClick(this::removeAllRuleHandler).build();
     }
 
@@ -514,6 +514,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         String username = playerRef.getUsername();
         List<ActionRule> rules = ActionManager.getInstance().getRules(username);
 
+        ui.group("#EmptyState").visible(rules.isEmpty()).update();
         ui.label("#RuleCount").text(rules.size() + " rules").update();
         ui.clear("#RulesList");
 
@@ -538,10 +539,14 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             String toggleText = rule.isEnabled() ? "ON" : "OFF";
             String toggleColor = rule.isEnabled() ? "#00D166" : "#E74C3C";
             ui.textButton(selector + "#EnableToggle").onClick(() -> {
-                playerRef.sendMessage(SLMessage.formatMessageWithDebug("Toggle button coming soon!"));
+                boolean success = ActionManager.getInstance().toggleRuleEnabled(username, rule.getId());
+                if (!success) return;
+                RuleBuilder.saveRulesForPlayer(username, actionData);
+                initializeRulesList();
             }).text(toggleText).defaultBackground(toggleColor).update();
             ui.textButton(selector + "#DeleteButton").onClick(() -> {
-                ActionManager.getInstance().removeRule(username, rule.getId());
+                boolean success = ActionManager.getInstance().removeRule(username, rule.getId());
+                if (!success) return;
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
             }).update();
@@ -559,6 +564,16 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         if (ActionManager.getInstance().getRules(username).isEmpty()) return;
 
         ActionManager.getInstance().clearRules(username);
+        RuleBuilder.saveRulesForPlayer(username, actionData);
+        initializeRulesList();
+    }
+
+    private void toggleAllRuleHandler(boolean enabled) {
+        String username = playerRef.getUsername();
+
+        if (ActionManager.getInstance().getRules(username).isEmpty()) return;
+
+        ActionManager.getInstance().toggleAllRule(username, enabled);
         RuleBuilder.saveRulesForPlayer(username, actionData);
         initializeRulesList();
     }

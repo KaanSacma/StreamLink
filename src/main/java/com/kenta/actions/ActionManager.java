@@ -54,6 +54,49 @@ public class ActionManager {
         System.out.println("[ActionManager] Cleared all rules for player: " + username);
     }
 
+    public boolean toggleRuleEnabled(String username, String ruleId) {
+        List<ActionRule> rules = playerRules.get(username);
+        if (rules == null) return false;
+
+        for (int i = 0; i < rules.size(); i++) {
+            ActionRule rule = rules.get(i);
+            if (rule.getId().equals(ruleId)) {
+                ActionRule updatedRule = ActionRule.builder()
+                        .id(rule.getId())
+                        .name(rule.getName())
+                        .enabled(!rule.isEnabled())
+                        .condition(rule.getCondition())
+                        .actions(rule.getActions())
+                        .platform(rule.getEnabledPlatform())
+                        .cooldown(rule.getCooldownSeconds())
+                        .build();
+
+                rules.set(i, updatedRule);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean toggleAllRule(String username, boolean enabled) {
+        List<ActionRule> rules = playerRules.get(username);
+        if (rules == null) return false;
+        for (int i = 0; i < rules.size(); i++) {
+            ActionRule rule = rules.get(i);
+            ActionRule updatedRule = ActionRule.builder()
+                    .id(rule.getId())
+                    .name(rule.getName())
+                    .enabled(enabled)
+                    .condition(rule.getCondition())
+                    .actions(rule.getActions())
+                    .platform(rule.getEnabledPlatform())
+                    .cooldown(rule.getCooldownSeconds())
+                    .build();
+            rules.set(i, updatedRule);
+        }
+        return true;
+    }
+
     public void processEvent(ActionContext context, Ref<EntityStore> ref, Store<EntityStore> store) {
         String username = context.getPlayerRef().getUsername();
         List<ActionRule> rules = playerRules.get(username);
