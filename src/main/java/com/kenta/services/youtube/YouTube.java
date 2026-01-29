@@ -1,11 +1,14 @@
 package com.kenta.services.youtube;
 
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.data.StreamData;
 import com.kenta.libs.ColorHelper;
 import com.kenta.libs.SLMessage;
 import com.kenta.services.AbstractService;
-import com.kenta.services.Status;
+import com.kenta.enums.Status;
 import com.kenta.services.StreamThread;
 import com.kenta.services.youtube.data.YouTubeChatMessage;
 
@@ -24,8 +27,13 @@ public class YouTube extends AbstractService {
     private final Color MEMBER_COLOR = ColorHelper.parseHexColor("#0096FF");
     private final Color SUPERCHAT_COLOR = ColorHelper.parseHexColor("#FFD700");
 
-    public YouTube(StreamData streamData, PlayerRef playerRef) {
-        super(streamData, playerRef, "[YOUTUBE] ", ColorHelper.parseHexColor("#FF0000"));
+    public YouTube(
+            StreamData streamData,
+            PlayerRef playerRef,
+            Ref<EntityStore> entityRef,
+            Store<EntityStore> entityStore
+    ) {
+        super(streamData, entityRef, entityStore, playerRef, "[YOUTUBE] ", ColorHelper.parseHexColor("#FF0000"));
     }
 
     @Override
@@ -56,6 +64,7 @@ public class YouTube extends AbstractService {
 
                         for (YouTubeChatMessage msg : messages) {
                             sendChatMessage(msg);
+                            triggerChatAction(msg);
                         }
 
                         Thread.sleep(this.chat.getPollingIntervalMillis());
@@ -120,4 +129,7 @@ public class YouTube extends AbstractService {
 
         return Color.WHITE;
     }
+
+    @Override
+    protected String getPlatformName() { return "youtube"; }
 }

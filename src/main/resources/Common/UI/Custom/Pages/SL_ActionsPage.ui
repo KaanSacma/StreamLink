@@ -1,0 +1,445 @@
+$C = "../Common.ui";
+$DS = "../SL_DashboardStyle.ui";
+$Condition = "Actions/ConditionItem.ui";
+
+Group #ActionsPage {
+    Anchor: (Width: 900, Height: 750);
+    LayoutMode: Top;
+
+    // Header Section
+    Group #TopBar {
+        Anchor: (Height: 60);
+        Background: #0a1119(0.95);
+        LayoutMode: Left;
+        Padding: (Horizontal: 24, Vertical: 16);
+
+        // Title
+        Group #BrandSection {
+            LayoutMode: Left;
+            Anchor: (Width: 300);
+
+            Label {
+                Text: %streamlink.ui.actions.title;
+                Anchor: (Height: 30);
+                Style: (FontSize: 20, TextColor: #ffffff, RenderBold: true, LetterSpacing: 1);
+            }
+        }
+
+        Group { FlexWeight: 1; }
+
+        // Add New Rule Button
+        TextButton #AddRuleButton {
+            Text: %streamlink.ui.actions.button.addRule;
+            Anchor: (Height: 40, Width: 150);
+            Style: $DS.@ConnectButtonStyle;
+        }
+    }
+
+    // Main Content Area
+    Group #Content {
+        FlexWeight: 1;
+        Background: #141c26(0.98);
+        LayoutMode: Left;
+        Padding: (Full: 24);
+
+        // Left Panel
+        Group #RulesListPanel {
+            Anchor: (Width: 340);
+            LayoutMode: Top;
+
+            // Panel Header
+            Group #RulesHeader {
+                Anchor: (Height: 50);
+                Background: #1a2332(0.6);
+                Padding: (Horizontal: 16, Vertical: 12);
+                LayoutMode: Left;
+
+                Label {
+                    Text: %streamlink.ui.actions.rules.title;
+                    Anchor: (Height: 30);
+                    Style: (FontSize: 16, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+                }
+
+                Group { FlexWeight: 1; }
+
+                Label #RuleCount {
+                    Text: "0 rules";
+                    Anchor: (Height: 30);
+                    Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
+                }
+            }
+
+            Group { Anchor: (Height: 8); }
+
+            // Rules List Container (Scrollable)
+            Group #RulesListContainer {
+                FlexWeight: 1;
+                Background: #0f1621(0.4);
+                LayoutMode: Top;
+                Padding: (Full: 8);
+
+                // Dynamic rules will be appended here
+                Group #RulesList {
+                    LayoutMode: TopScrolling;
+                    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+                }
+            }
+
+            Group { Anchor: (Height: 16); }
+
+            // Quick Actions
+            Group #QuickActions {
+                Anchor: (Height: 50);
+                LayoutMode: Left;
+
+                TextButton #OnRulesButton {
+                    FlexWeight: 1;
+                    Text: %streamlink.ui.actions.button.onAll;
+                    Style: $DS.@SecondaryButtonStyle;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                TextButton #OffRulesButton {
+                    FlexWeight: 1;
+                    Text: %streamlink.ui.actions.button.offAll;
+                    Style: $DS.@SecondaryButtonStyle;
+                }
+
+                Group { Anchor: (Width: 8); }
+
+                TextButton #ClearRulesButton {
+                    FlexWeight: 1;
+                    Text: %streamlink.ui.actions.button.clear;
+                    Style: $DS.@DisconnectButtonStyle;
+                }
+            }
+        }
+
+        Group { Anchor: (Width: 24); }
+
+        // Right Panel
+        Group #EditorPanel {
+            FlexWeight: 1;
+            LayoutMode: Top;
+
+            // Empty State (shown when no rule selected)
+            Group #EmptyState {
+                FlexWeight: 1;
+                LayoutMode: Top;
+                Visible: true;
+
+                Group { FlexWeight: 1; }
+
+                Group #EmptyContent {
+                    Anchor: (Height: 200);
+                    LayoutMode: Top;
+
+                    Label {
+                        Text: %streamlink.ui.actions.empty.title;
+                        Anchor: (Height: 40);
+                        Style: (FontSize: 24, TextColor: #5a6a85, HorizontalAlignment: Center, VerticalAlignment: Center);
+                    }
+
+                    Group { Anchor: (Height: 16); }
+
+                    Label {
+                        Text: %streamlink.ui.actions.empty.description;
+                        Anchor: (Height: 60);
+                        Style: (FontSize: 14, TextColor: #5a6a85, HorizontalAlignment: Center, VerticalAlignment: Center, Wrap: true);
+                        Padding: (Horizontal: 60);
+                    }
+                }
+
+                Group { FlexWeight: 1; }
+            }
+
+            // Rule Editor
+            Group #RuleEditor {
+                FlexWeight: 1;
+                LayoutMode: Top;
+                Visible: false;
+
+                // Editor Header
+                Group #EditorHeader {
+                    Anchor: (Height: 60);
+                    Background: #1a2332(0.6);
+                    Padding: (Horizontal: 20, Vertical: 12);
+                    LayoutMode: Left;
+
+                    Label #EditorTitle {
+                        Text: %streamlink.ui.actions.editor.newRule;
+                        Anchor: (Height: 36);
+                        Style: (FontSize: 18, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center);
+                    }
+
+                    Group { FlexWeight: 1; }
+
+                    TextButton #CloseEditorButton {
+                        Text: "×";
+                        Anchor: (Height: 36, Width: 36);
+                        Style: TextButtonStyle(
+                            Default: (
+                                Background: #00000000,
+                                LabelStyle: (FontSize: 24, TextColor: #96a9be, HorizontalAlignment: Center, VerticalAlignment: Center)
+                            ),
+                            Hovered: (
+                                Background: #2b3542,
+                                LabelStyle: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+                            )
+                        );
+                    }
+                }
+
+                Group { Anchor: (Height: 16); }
+
+                // Editor Form (Scrollable)
+                Group #EditorFormContainer {
+                    FlexWeight: 1;
+                    LayoutMode: TopScrolling;
+                    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+                    Padding: (Horizontal: 30);
+
+                    // Rule Name
+                    Group #RuleNameSection {
+                        Anchor: (Height: 80);
+                        LayoutMode: Top;
+
+                        Label {
+                            Text: %streamlink.ui.actions.editor.ruleName;
+                            Anchor: (Height: 24);
+                            Style: (FontSize: 14, TextColor: #96a9be, RenderBold: true);
+                        }
+
+                        Group { Anchor: (Height: 8); }
+
+                        $C.@TextField #RuleNameInput {
+                            Anchor: (Height: 44);
+                            PlaceholderText: %streamlink.ui.actions.editor.ruleName.placeholder;
+                        }
+                    }
+
+                    Group { Anchor: (Height: 16); }
+
+                    // Platform Selection
+                    Group #PlatformSection {
+                        Anchor: (Height: 100);
+                        LayoutMode: Top;
+
+                        Label {
+                            Text: %streamlink.ui.actions.editor.platforms;
+                            Anchor: (Height: 24);
+                            Style: (FontSize: 14, TextColor: #96a9be, RenderBold: true);
+                        }
+
+                        Group { Anchor: (Height: 8); }
+
+                        Group #PlatformToggles {
+                            Anchor: (Height: 44);
+                            LayoutMode: Left;
+
+                            // Twitch Toggle
+                            Group #TwitchToggle {
+                                Anchor: (Width: 120, Height: 44);
+                                Background: #0f1621;
+                                LayoutMode: Top;
+
+                                TextButton #TwitchToggleButton {
+                                    Anchor: (Height: 44);
+                                    Text: "Twitch";
+                                    Style: $DS.@TabButtonStyle;
+                                }
+
+                                Group #TwitchToggleActive {
+                                    Anchor: (Height: 3, Bottom: 0);
+                                    Background: #9146FF;
+                                    Visible: false;
+                                }
+                            }
+
+                            Group { Anchor: (Width: 8); }
+
+                            // YouTube Toggle
+                            Group #YoutubeToggle {
+                                Anchor: (Width: 120, Height: 44);
+                                Background: #0f1621;
+                                LayoutMode: Top;
+
+                                TextButton #YoutubeToggleButton {
+                                    Anchor: (Height: 44);
+                                    Text: "YouTube";
+                                    Style: $DS.@TabButtonStyle;
+                                }
+
+                                Group #YoutubeToggleActive {
+                                    Anchor: (Height: 3, Bottom: 0);
+                                    Background: #FF0000;
+                                    Visible: false;
+                                }
+                            }
+
+                            // Group { Anchor: (Width: 8); }
+
+                            // Kick Toggle
+                            // Group #KickToggle {
+                            //     Anchor: (Width: 120, Height: 44);
+                            //     Background: #0f1621;
+                            //     LayoutMode: Top;
+
+                            //     TextButton #KickToggleButton {
+                            //         Anchor: (Height: 44);
+                            //         Text: "Kick";
+                            //         Style: $DS.@TabButtonStyle;
+                            //     }
+
+                            //     Group #KickToggleActive {
+                            //         Anchor: (Height: 3, Bottom: 0);
+                            //         Background: #53FC18;
+                            //         Visible: false;
+                            //     }
+                            // }
+                        }
+                    }
+
+                    Group { Anchor: (Height: 16); }
+
+                    // Conditions Section
+                    Group #ConditionsSection {
+                        Anchor: (Height: 200);
+                        LayoutMode: Top;
+
+                        Group #ConditionsHeader {
+                            Anchor: (Height: 30);
+                            LayoutMode: Left;
+
+                            Label {
+                                Text: %streamlink.ui.actions.editor.condition;
+                                Anchor: (Height: 24);
+                                Style: (FontSize: 14, TextColor: #96a9be, RenderBold: true, VerticalAlignment: Center);
+                            }
+                        }
+
+                        Group { Anchor: (Height: 8); }
+
+                        Group {
+                            FlexWeight: 1;
+                            Background: #0f1621(0.4);
+                            LayoutMode: Center;
+                            Padding: (Full: 12);
+
+                            $Condition.@ConditionGroup { }
+                        }
+                    }
+
+                    Group { Anchor: (Height: 16); }
+
+                    // Actions Section
+                    Group #ActionsSection {
+                        Anchor: (Height: 200);
+                        LayoutMode: Top;
+
+                        Group #ActionsHeader {
+                            Anchor: (Height: 30);
+                            LayoutMode: Left;
+
+                            Label {
+                                Text: %streamlink.ui.actions.editor.actions;
+                                Anchor: (Height: 24);
+                                Style: (FontSize: 14, TextColor: #96a9be, RenderBold: true, VerticalAlignment: Center);
+                            }
+
+                            Group { FlexWeight: 1; }
+
+                            TextButton #AddActionButton {
+                                Text: "Add";
+                                Padding: (Horizontal: 8);
+                                Anchor: (Height: 28);
+                                Style: TextButtonStyle(
+                                    Default: (
+                                        Background: #4a8be5,
+                                        LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+                                    ),
+                                    Hovered: (
+                                        Background: #5a9bf5,
+                                        LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+                                    )
+                                );
+                            }
+                        }
+
+                        Group { Anchor: (Height: 8); }
+
+                        // Actions List (Dynamic)
+                        Group #ActionsList {
+                            FlexWeight: 1;
+                            Background: #0f1621(0.4);
+                            LayoutMode: TopScrolling;
+                            ScrollbarStyle: $C.@DefaultScrollbarStyle;
+                            Padding: (Full: 12);
+                        }
+                    }
+
+                    Group { Anchor: (Height: 16); }
+
+                    // Cooldown Section
+                    Group #CooldownSection {
+                        Anchor: (Height: 80);
+                        LayoutMode: Top;
+
+                        Label {
+                            Text: %streamlink.ui.actions.editor.cooldown;
+                            Anchor: (Height: 24);
+                            Style: (FontSize: 14, TextColor: #96a9be, RenderBold: true);
+                        }
+
+                        Group { Anchor: (Height: 8); }
+
+                        Group #CooldownInput {
+                            Anchor: (Height: 44);
+                            LayoutMode: Left;
+
+                            $C.@NumberField #CooldownValue {
+                                @Anchor = (Width: 100, Height: 44);
+                                Value: 0;
+
+                                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0, MaxValue:60);
+                            }
+
+                            Group { Anchor: (Width: 12); }
+
+                            Label {
+                                Text: "seconds";
+                                Anchor: (Height: 44);
+                                Style: (FontSize: 14, TextColor: #96a9be, VerticalAlignment: Center);
+                            }
+                        }
+                    }
+
+                    Group { Anchor: (Height: 24); }
+
+                    // Save/Cancel Buttons
+                    Group #EditorButtons {
+                        Anchor: (Height: 50);
+                        LayoutMode: Left;
+
+                        TextButton #CancelButton {
+                            FlexWeight: 1;
+                            Text: %streamlink.ui.actions.button.cancel;
+                            Style: $DS.@SecondaryButtonStyle;
+                        }
+
+                        Group { Anchor: (Width: 16); }
+
+                        TextButton #SaveRuleButton {
+                            FlexWeight: 1;
+                            Text: %streamlink.ui.actions.button.save;
+                            Style: $DS.@ConnectButtonStyle;
+                        }
+                    }
+
+                    Group { Anchor: (Height: 24); }
+                }
+            }
+        }
+    }
+}

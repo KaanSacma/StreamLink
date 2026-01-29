@@ -12,7 +12,9 @@
   ],
   "Website": "",
   "ServerVersion": ">=0.0.1",
-  "Dependencies": {},
+  "Dependencies": {
+    "com.kenta:FlowUI": ">=1.0.0"
+  },
   "OptionalDependencies": {},
   "LoadBefore": {},
   "DisabledByDefault": false,

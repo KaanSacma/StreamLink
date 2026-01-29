@@ -1,13 +1,17 @@
 package com.kenta;
 
 import com.hypixel.hytale.component.ComponentType;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.kenta.commands.StreamCommands;
+import com.kenta.actions.factory.RuleBuilder;
+import com.kenta.commands.StreamlinkCommands;
+import com.kenta.data.ActionData;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
 import com.kenta.services.StreamThread;
@@ -17,6 +21,7 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.logging.Level;
 
 @SuppressWarnings({"null", "removal"})
@@ -27,6 +32,7 @@ public class StreamLink extends JavaPlugin {
     private static UpdateChecker.VersionInfo currentVersionInfo;
 
     public static ComponentType<EntityStore, StreamData> streamDataComponentType;
+    public static ComponentType<EntityStore, ActionData> actionDataComponentType;
 
     public StreamLink(@Nonnull JavaPluginInit init) { super(init); }
 
@@ -36,8 +42,9 @@ public class StreamLink extends JavaPlugin {
     protected void setup() {
         instance = this;
         streamDataComponentType = getEntityStoreRegistry().registerComponent(StreamData.class, "StreamData", StreamData.CODEC);
+        actionDataComponentType = getEntityStoreRegistry().registerComponent(ActionData.class, "ActionData", ActionData.CODEC);
 
-        getCommandRegistry().registerCommand(new StreamCommands());
+        getCommandRegistry().registerCommand(new StreamlinkCommands());
         registerEvents();
 
         getLogger().at(Level.INFO).log("StreamLink setup complete!");
@@ -117,14 +124,25 @@ public class StreamLink extends JavaPlugin {
     }
 
     private void onPlayerReadyEvent(PlayerReadyEvent event) {
-        Store<EntityStore> entityStore = event.getPlayerRef().getStore();
-        entityStore.ensureComponent(event.getPlayerRef(), streamDataComponentType);
-        StreamData streamData = entityStore.getComponent(event.getPlayerRef(), streamDataComponentType);
+        Player player = event.getPlayer();
+        Ref<EntityStore> playerRef = event.getPlayerRef();
+        String username = Objects.requireNonNull(playerRef.getStore().getComponent(playerRef, PlayerRef.getComponentType())).getUsername();
+
+        broadcastUpdateNotification(player);
+
+        Store<EntityStore> entityStore = playerRef.getStore();
+        entityStore.ensureComponent(playerRef, streamDataComponentType);
+        entityStore.ensureComponent(playerRef, actionDataComponentType);
+
+        StreamData streamData = entityStore.getComponent(playerRef, streamDataComponentType);
         assert streamData != null;
 
         streamData.setIsTwitchRunning(false);
         streamData.setIsYouTubeRunning(false);
 
-        broadcastUpdateNotification(event.getPlayer());
+        ActionData actionData = entityStore.getComponent(playerRef, actionDataComponentType);
+        assert actionData != null;
+
+        RuleBuilder.loadRulesForPlayer(username, actionData);
     }
 }

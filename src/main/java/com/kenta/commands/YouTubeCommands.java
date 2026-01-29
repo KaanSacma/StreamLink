@@ -145,7 +145,7 @@ public class YouTubeCommands {
                     context.sendMessage(SLMessage.formatMessage("API Key validated!"));
                     context.sendMessage(SLMessage.formatMessage("Connecting to YouTube live chat..."));
 
-                    YouTube youtube = new YouTube(streamData, playerRef);
+                    YouTube youtube = new YouTube(streamData, playerRef, ref, store);
                     StreamThread.putToYouTube(username, youtube);
                     youtube.connect();
 

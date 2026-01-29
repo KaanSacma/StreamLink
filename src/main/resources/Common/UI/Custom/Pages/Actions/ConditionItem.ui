@@ -1,0 +1,119 @@
+$C = "../../Common.ui";
+
+// Condition Item Template
+@ConditionGroup = Group {
+    Anchor: (Width: 420, Height: 140);
+    Background: #1a2332;
+    LayoutMode: Top;
+    Padding: (Horizontal: 12, Vertical: 8);
+
+    Group #ConditionTypeSection {
+        Anchor: (Height: 40);
+        LayoutMode: Left;
+
+        Label {
+            Text: "Type:";
+            Anchor: (Width: 60, Height: 40);
+            Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
+        }
+
+        Group { Anchor: (Width: 8); }
+
+        $C.@DropdownBox #ConditionTypeDropdown {
+            Anchor: (Width: 150, Height: 32);
+            Value: "event";
+            Visible: true;
+
+            DropdownEntry { Text: "Event"; Value: "event"; }
+            DropdownEntry { Text: "Chat Message"; Value: "chat_message"; }
+            // DropdownEntry { Text: "User"; Value: "user"; }
+        }
+    }
+
+    Group { Anchor: (Height: 8); }
+
+    // Condition Parameters Label
+    Group #ParamLabelRow {
+        Anchor: (Height: 16);
+        LayoutMode: Left;
+
+        Label {
+            Text: "Parameters:";
+            Anchor: (Height: 16);
+            Style: (FontSize: 10, TextColor: #96a9be);
+        }
+    }
+
+    Group { Anchor: (Height: 4); }
+
+    Group #ConditionValueSection {
+        Anchor: (Height: 44);
+        LayoutMode: Left;
+
+        Group #ConditionEventParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: true;
+
+            $C.@DropdownBox #TwitchEventDropdown {
+                FlexWeight: 1;
+                Anchor: (Height: 40);
+                Value: "channel.follow";
+                Visible: true;
+
+                DropdownEntry { Text: "Follow"; Value: "channel.follow"; }
+                DropdownEntry { Text: "Subscribe"; Value: "channel.subscribe"; }
+                DropdownEntry { Text: "Gift Sub"; Value: "channel.giftsub"; }
+                DropdownEntry { Text: "Resubscribe"; Value: "channel.resub"; }
+                DropdownEntry { Text: "Raid"; Value: "channel.raid"; }
+                DropdownEntry { Text: "Cheer"; Value: "channel.cheer"; }
+                DropdownEntry { Text: "Channel Points"; Value: "channel.points"; }
+            }
+        }
+
+        Group #ConditionMessageParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: false;
+
+            $C.@DropdownBox #ConditionMessageTypeDropdown {
+                FlexWeight: 1;
+                Anchor: (Height: 40);
+                Value: "equals";
+
+                DropdownEntry { Text: "Equals"; Value: "equals"; }
+                DropdownEntry { Text: "Contains"; Value: "contains"; }
+                DropdownEntry { Text: "Starts With"; Value: "starts_with"; }
+                DropdownEntry { Text: "Ends With"; Value: "ends_with"; }
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@TextField #ConditionMessagePattern {
+                FlexWeight: 1;
+                Anchor: (Height: 40);
+            }
+        }
+
+        Group #ConditionUserParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: false;
+
+            $C.@DropdownBox #TwitchUserTypeDropdown {
+                FlexWeight: 1;
+                Anchor: (Height: 40);
+                Value: "user";
+
+                DropdownEntry { Text: "TEST"; Value: "user"; }
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@TextField #TwitchUserPattern {
+                FlexWeight: 1;
+                Anchor: (Height: 40);
+            }
+        }
+    }
+};

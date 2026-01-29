@@ -1,11 +1,14 @@
 package com.kenta.services.twitch;
 
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.data.StreamData;
 import com.kenta.libs.ColorHelper;
 import com.kenta.libs.SLMessage;
 import com.kenta.services.AbstractService;
-import com.kenta.services.Status;
+import com.kenta.enums.Status;
 import com.kenta.services.StreamThread;
 import com.kenta.services.twitch.data.TwitchChatMessage;
 
@@ -40,8 +43,13 @@ public class Twitch extends AbstractService {
     private final Color FOUNDER_COLOR = ColorHelper.parseHexColor("#8a2be2");
     private final Color PREMIUM_COLOR = ColorHelper.parseHexColor("#87cefa");
 
-    public Twitch(StreamData streamData, PlayerRef playerRef) {
-        super(streamData, playerRef, "[TWITCH] ", ColorHelper.parseHexColor("#6441a5"));
+    public Twitch(
+            StreamData streamData,
+            PlayerRef playerRef,
+            Ref<EntityStore> entityRef,
+            Store<EntityStore> entityStore
+    ) {
+        super(streamData, entityRef, entityStore, playerRef, "[TWITCH] ", ColorHelper.parseHexColor("#6441a5"));
     }
 
     @Override
@@ -63,7 +71,10 @@ public class Twitch extends AbstractService {
 
                 while (this.status == Status.CONNECTED && this.chat.isConnected()) {
                     TwitchChatMessage chatMessage = this.chat.readMessage();
-                    if (chatMessage != null) { sendChatMessage(chatMessage); }
+                    if (chatMessage != null) {
+                        sendChatMessage(chatMessage);
+                        triggerChatAction(chatMessage);
+                    }
                     Thread.sleep(10);
                 }
             } catch (SocketException e) {
@@ -106,6 +117,7 @@ public class Twitch extends AbstractService {
             String message = followerName + " just followed!";
 
             sendNotification(FOLLOW_ITEM, "Follower", message, FOLLOW_COLOR);
+            triggerActionEvent("channel.follow", event);
         });
 
         eventSub.onSubscribe(event -> {
@@ -115,6 +127,7 @@ public class Twitch extends AbstractService {
             String message = subName + " just subscribed! (Tier " + tierDisplay + ")";
 
             sendNotification(SUBSCRIBE_ITEM, "Subscriber", message, SUBSCRIBE_COLOR);
+            triggerActionEvent("channel.subscribe", event);
         });
 
         eventSub.onGiftSub(event -> {
@@ -127,6 +140,7 @@ public class Twitch extends AbstractService {
             String message = gifterName + " gifted " + total + " Tier " + tierDisplay + " subs!";
 
             sendNotification(GIFTSUB_ITEM, "Gift Sub", message, GIFTSUB_COLOR);
+            triggerActionEvent("channel.giftsub", event);
         });
 
         eventSub.onResub(event -> {
@@ -140,6 +154,7 @@ public class Twitch extends AbstractService {
             String message = subName + " resubscribed for " + months + " months! (Tier " + tierDisplay + ")" + (eventMsg.isEmpty() ? "" : " - " + eventMsg);
 
             sendNotification(RESUB_ITEM, "Resubscribe", message, RESUB_COLOR);
+            triggerActionEvent("channel.resub", event);
         });
 
         eventSub.onRaid(event -> {
@@ -148,6 +163,7 @@ public class Twitch extends AbstractService {
             String message = raiderName + " is raiding with " + viewers + " viewers!";
 
             sendNotification(RAID_ITEM, "Raid", message, RAID_COLOR);
+            triggerActionEvent("channel.raid", event);
         });
 
         eventSub.onCheer(event -> {
@@ -159,6 +175,7 @@ public class Twitch extends AbstractService {
             String message = cheerName + " cheered " + bits + " bits!" + (eventMsg.isEmpty() ? "" : " - " + eventMsg);
 
             sendNotification(CHEER_ITEM, "Cheer", message, CHEER_COLOR);
+            triggerActionEvent("channel.cheer", event);
         });
 
         eventSub.onChannelPointRedemption(event -> {
@@ -168,6 +185,7 @@ public class Twitch extends AbstractService {
             String message = userName + " redeemed: " + rewardTitle + (userInput.isEmpty() ? "" : " - " + userInput);
 
             sendNotification(POINT_ITEM, "Channel Point Redeem", message, POINT_COLOR);
+            triggerActionEvent("channel.points", event);
         });
     }
 
@@ -230,4 +248,7 @@ public class Twitch extends AbstractService {
 
         return Color.WHITE;
     }
+
+    @Override
+    protected String getPlatformName() { return "twitch"; }
 }

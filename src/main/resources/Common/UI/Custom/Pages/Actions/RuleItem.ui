@@ -1,0 +1,114 @@
+// Rule Item Template for Actions List
+Group #RuleItem {
+  LayoutMode: Top;
+  Background: #1a2332(0.8);
+  Anchor: (Height: 140, MaxWidth: 320);
+  FlexWeight: 1;
+  Padding: (Horizontal: 16, Vertical: 12);
+
+  Group {
+    LayoutMode: Left;
+    Anchor: (Width: 300);
+    Background: #333333(0);
+
+    Group {
+        LayoutMode: Top;
+        Anchor: (Width: 250);
+
+        Label #RuleName {
+            Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+            Anchor: (Left: 10, Height: 24);
+            Text: "Rule Name";
+        }
+
+        Label #RuleStats {
+            Style: (FontSize: 11, TextColor: #96a9be);
+            Anchor: (Left: 10, Height: 20);
+            Text: "0 action";
+        }
+    }
+
+    Group { Anchor: (Width: 9); }
+
+    TextButton #DeleteButton {
+      Style: (TextButtonStyle(
+            Default: (
+                Background: #E74C3C,
+                LabelStyle: (FontSize: 18, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            ),
+            Hovered: (
+                Background: #EC5B4E,
+                LabelStyle: (FontSize: 18, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            )
+        ));
+      Anchor: (Width: 32, Height: 32, Top: 0);
+      Text: "×";
+    }
+  }
+
+  Group #RuleDetails {
+    LayoutMode: Left;
+    Anchor: (Height: 20);
+
+    Group #PlatformIcons {
+      LayoutMode: Left;
+      Anchor: (Width: 80);
+
+      Group #TwitchIcon {
+        Background: (PatchStyle(TexturePath: "../../Icons/twitch.png"));
+        Anchor: (Width: 16, Height: 16, Left: 0);
+        Visible: false;
+      }
+
+      Group #YouTubeIcon {
+        Background: #FF0000;
+        Anchor: (Width: 16, Height: 16, Left: 0);
+        Visible: false;
+      }
+
+      Group #KickIcon {
+        Background: #53FC18;
+        Anchor: (Width: 16, Height: 16, Left: 0);
+        Visible: false;
+      }
+    }
+  }
+
+  Group { FlexWeight: 1; }
+
+  Group {
+    LayoutMode: Left;
+
+    TextButton #EnableToggle {
+      Style: (TextButtonStyle(
+            Default: (
+                Background: #00D166,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)
+            ),
+            Hovered: (
+                Background: #00E675,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)
+            )
+        ));
+      Anchor: (Width: 70, Height: 32, Bottom: 0);
+      Text: "ON";
+    }
+
+    Group { FlexWeight: 1; }
+
+    TextButton #EditButton {
+      Style: (TextButtonStyle(
+            Default: (
+                Background: #4a8be5,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            ),
+            Hovered: (
+                Background: #5a9bf5,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            )
+        ));
+      Anchor: (Width: 70, Height: 32, Bottom: 0);
+      Text: "Edit";
+    }
+  }
+}

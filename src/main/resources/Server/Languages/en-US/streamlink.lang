@@ -34,3 +34,24 @@ ui.dashboard.button.disconnect = Disconnect
 
 ui.dashboard.comingsoon.message = Coming Soon...
 ui.dashboard.comingsoon.description = This platform integration is currently in development. Stay tuned for updates!
+
+ui.actions.title = Stream Actions
+ui.actions.button.addRule = + New Rule
+ui.actions.button.onAll = Turn On
+ui.actions.button.offAll = Turn Off
+ui.actions.button.clear = Clear All
+ui.actions.button.save = Save Rule
+ui.actions.button.cancel = Cancel
+
+ui.actions.rules.title = Your Rules
+ui.actions.empty.title = No Rules Yet
+ui.actions.empty.description = Create automation rules to trigger in-game actions from stream events. Click "+ New Rule" to get started!
+
+ui.actions.editor.newRule = New Action Rule
+ui.actions.editor.editRule = Edit Action Rule
+ui.actions.editor.ruleName = Rule Name
+ui.actions.editor.ruleName.placeholder = My Awesome Rule
+ui.actions.editor.platforms = Select a Platform
+ui.actions.editor.condition = Trigger Condition
+ui.actions.editor.actions = Actions to Execute
+ui.actions.editor.cooldown = Cooldown (prevents spam)

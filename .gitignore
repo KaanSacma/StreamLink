@@ -18,6 +18,9 @@ Thumbs.db
 # Hytale Server JAR (used as compile-only reference)
 HytaleServer.jar
 
+# Libs
+FlowUI-1.0.0.jar
+
 # Test Server
 test-server/
 test-server

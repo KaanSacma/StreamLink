@@ -1,0 +1,182 @@
+$C = "../../Common.ui";
+
+// Action Item Template
+Group #ActionItem {
+    Anchor: (Height: 140);
+    Background: #1a2332;
+    LayoutMode: Top;
+    Padding: (Horizontal: 12, Vertical: 8);
+
+    // Action Type Selector
+    Group #ActionTypeRow {
+        Anchor: (Height: 40);
+        LayoutMode: Left;
+
+        Label {
+            Text: "Action:";
+            Anchor: (Width: 60, Height: 40);
+            Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
+        }
+
+        Group { Anchor: (Width: 8); }
+
+        $C.@DropdownBox #ActionTypeDropdown {
+            Anchor: (Width: 220, Height: 32);
+            Value: "teleport";
+
+            DropdownEntry { Text: "Teleport"; Value: "teleport"; }
+            DropdownEntry { Text: "Spawn Mob"; Value: "spawn_mob"; }
+            DropdownEntry { Text: "Give Effect"; Value: "give_effect"; }
+            DropdownEntry { Text: "Run Command"; Value: "run_command"; }
+        }
+
+        Group { FlexWeight: 1; }
+
+        // Remove Button
+        TextButton #RemoveAction {
+            Anchor: (Width: 32, Height: 32);
+            Text: "×";
+            Style: TextButtonStyle(
+                Default: (
+                    Background: #E74C3C,
+                    LabelStyle: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+                ),
+                Hovered: (
+                    Background: #EC5B4E,
+                    LabelStyle: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+                )
+            );
+        }
+    }
+
+    Group { Anchor: (Height: 8); }
+
+    // Action Parameters Label
+    Group #ParamLabelRow {
+        Anchor: (Height: 16);
+        LayoutMode: Left;
+
+        Label {
+            Text: "Parameters:";
+            Anchor: (Height: 16);
+            Style: (FontSize: 10, TextColor: #96a9be);
+        }
+    }
+
+    Group { Anchor: (Height: 4); }
+
+    // Action Parameters
+    Group #ActionParameters {
+        Anchor: (Height: 44);
+        LayoutMode: Left;
+
+        // For Teleport
+        Group #TeleportParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: true;
+
+            $C.@NumberField #TeleportX {
+                @Anchor = (Width: 80, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1);
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@NumberField #TeleportY {
+                @Anchor = (Width: 80, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1);
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@NumberField #TeleportZ {
+                @Anchor = (Width: 80, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1);
+            }
+
+            Group { Anchor: (Width: 16); }
+
+            $C.@CheckBox #TeleportRelative {
+                Value: true;
+            }
+
+            Group { Anchor: (Width: 4); }
+
+            Label {
+                Text: "Relative";
+                Anchor: (Height: 40);
+                Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
+            }
+        }
+
+        // For Spawn Mob
+        Group #SpawnMobParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: false;
+
+            $C.@TextField #MobType {
+                Anchor: (Width: 150, Height: 40);
+                PlaceholderText: "Zombie";
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@NumberField #MobCount {
+                @Anchor = (Width: 80, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@NumberField #MobRadius {
+                @Anchor = (Width: 80, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+            }
+        }
+
+        // For Give Effect
+        Group #EffectParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: false;
+
+            $C.@TextField #EffectType {
+                Anchor: (Width: 120, Height: 40);
+                PlaceholderText: "speed";
+            }
+
+            Group { Anchor: (Width: 8); }
+
+            $C.@NumberField #EffectDuration {
+                @Anchor = (Width: 100, Height: 40);
+                Value: 0;
+
+                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+            }
+        }
+
+        // For Give Effect
+        Group #CommandParams {
+            FlexWeight: 1;
+            LayoutMode: Left;
+            Visible: false;
+
+            $C.@TextField #CommandBuffer {
+                Anchor: (Width: 220, Height: 40);
+                PlaceholderText: "Command Buffer";
+            }
+        }
+    }
+}

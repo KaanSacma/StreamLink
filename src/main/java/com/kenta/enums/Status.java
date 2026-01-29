@@ -1,4 +1,4 @@
-package com.kenta.services;
+package com.kenta.enums;
 
 public enum Status {
     DISCONNECTED,

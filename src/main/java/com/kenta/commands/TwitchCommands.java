@@ -154,7 +154,7 @@ public class TwitchCommands {
                     context.sendMessage(SLMessage.formatMessage("Authentication successful!"));
                     context.sendMessage(SLMessage.formatMessage("Connecting to chat and events..."));
 
-                    Twitch twitch = new Twitch(streamData, playerRef);
+                    Twitch twitch = new Twitch(streamData, playerRef, ref, store);
                     StreamThread.putToTwitch(username, twitch);
                     twitch.connect();
 

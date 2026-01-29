@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    // Add Hytale Server as compileOnly dependency (not bundled in final JAR)
+    compileOnly(files("FlowUI-1.0.0.jar"))
     compileOnly(files("HytaleServer.jar"))
 
     implementation("org.java-websocket:Java-WebSocket:1.5.3")

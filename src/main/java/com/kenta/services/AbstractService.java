@@ -1,11 +1,21 @@
 package com.kenta.services;
 
+import com.google.gson.JsonObject;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.ItemWithAllMetadata;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.NotificationUtil;
+import com.kenta.StreamLink;
+import com.kenta.actions.ActionManager;
+import com.kenta.actions.context.ActionContext;
 import com.kenta.data.StreamData;
+import com.kenta.enums.Status;
 import com.kenta.libs.ColorHelper;
 
 import java.awt.*;
@@ -16,12 +26,25 @@ public abstract class AbstractService implements InterfaceService {
     public Status status;
     public String username;
 
+    protected final ActionManager actionManager = ActionManager.getInstance();
+    protected Ref<EntityStore> entityRef;
+    protected Store<EntityStore> entityStore;
+
     private final PlayerRef playerRef;
     private final String servicePrefix;
     private final Color serviceColor;
 
-    protected AbstractService(StreamData streamData, PlayerRef playerRef, String servicePrefix, Color serviceColor) {
+    protected AbstractService(
+            StreamData streamData,
+            Ref<EntityStore> entityRef,
+            Store<EntityStore> entityStore,
+            PlayerRef playerRef,
+            String servicePrefix,
+            Color serviceColor
+    ) {
         this.streamData = streamData;
+        this.entityRef = entityRef;
+        this.entityStore = entityStore;
         this.playerRef = playerRef;
         this.username = playerRef.getUsername();
         this.servicePrefix = servicePrefix;
@@ -74,4 +97,34 @@ public abstract class AbstractService implements InterfaceService {
 
     @Override
     public Color getBadgeColor(List<String> badges) { return new Color(255, 255, 255); }
+
+    protected abstract String getPlatformName();
+
+    protected void triggerActionEvent(String eventType, JsonObject eventData) {
+        ActionContext context = ActionContext.builder()
+                .playerRef(this.playerRef)
+                .platform(getPlatformName()) // "twitch", "youtube", "kick"
+                .eventType(eventType)
+                .eventData(eventData)
+                .build();
+        World world = Universe.get().getWorld(playerRef.getWorldUuid());
+
+        world.execute(() -> {
+            actionManager.processEvent(context, entityRef, entityStore);
+        });
+    }
+
+    protected void triggerChatAction(AbstractChatMessage chatMessage) {
+        ActionContext context = ActionContext.builder()
+                .playerRef(this.playerRef)
+                .platform(getPlatformName())
+                .eventType("chat_message")
+                .chatMessage(chatMessage)
+                .build();
+        World world = Universe.get().getWorld(playerRef.getWorldUuid());
+
+        world.execute(() -> {
+            actionManager.processEvent(context, entityRef, entityStore);
+        });
+    }
 }

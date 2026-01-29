@@ -2,6 +2,7 @@ package com.kenta.commands;
 
 import static com.kenta.StreamLink.*;
 
+import com.hypixel.hytale.server.core.command.system.CommandManager;
 import com.kenta.data.StreamData;
 import com.kenta.hud.ChatHUD;
 import com.kenta.pages.DashboardPage;
@@ -17,14 +18,15 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
 
-public class StreamCommands extends AbstractCommandCollection {
+public class StreamlinkCommands extends AbstractCommandCollection {
 
-    public StreamCommands() {
+    public StreamlinkCommands() {
         super("streamlink", "Stream service integration.");
 
         this.addAliases("sl");
         this.addSubCommand(new SLDashboard());
         //this.addSubCommand(new SLChatHUD()); // TODO: Add back ChatHUD after YouTube and Kick are implemented.
+        this.addSubCommand(new ActionCommands());
         this.addSubCommand(new TwitchCommands.TwitchMainCommand());
         this.addSubCommand(new YouTubeCommands.YouTubeMainCommand());
     }
