@@ -1,0 +1,1242 @@
+[
+  {
+    "display": "Trilobite",
+    "value": "Trilobite"
+  },
+  {
+    "display": "Black Trilobite",
+    "value": "Trilobite_Black"
+  },
+  {
+    "display": "Moray Eel",
+    "value": "Eel_Moray"
+  },
+  {
+    "display": "Hammerhead Shark",
+    "value": "Shark_Hammerhead"
+  },
+  {
+    "display": "Lava Shellfish",
+    "value": "Shellfish_Lava"
+  },
+  {
+    "display": "Humpback Whale",
+    "value": "Whale_Humpback"
+  },
+  {
+    "display": "Frostgill",
+    "value": "Frostgill"
+  },
+  {
+    "display": "Rainbow Trout",
+    "value": "Trout_Rainbow"
+  },
+  {
+    "display": "Black Piranha",
+    "value": "Piranha_Black"
+  },
+  {
+    "display": "Pike",
+    "value": "Pike"
+  },
+  {
+    "display": "Bluegill",
+    "value": "Bluegill"
+  },
+  {
+    "display": "Snapjaw",
+    "value": "Snapjaw"
+  },
+  {
+    "display": "Piranha",
+    "value": "Piranha"
+  },
+  {
+    "display": "Salmon",
+    "value": "Salmon"
+  },
+  {
+    "display": "Catfish",
+    "value": "Catfish"
+  },
+  {
+    "display": "Minnow",
+    "value": "Minnow"
+  },
+  {
+    "display": "Red Jellyfish",
+    "value": "Jellyfish_Red"
+  },
+  {
+    "display": "Crab",
+    "value": "Crab"
+  },
+  {
+    "display": "Pufferfish",
+    "value": "Pufferfish"
+  },
+  {
+    "display": "Green Jellyfish",
+    "value": "Jellyfish_Green"
+  },
+  {
+    "display": "Sailfin Tang",
+    "value": "Tang_Sailfin"
+  },
+  {
+    "display": "Blue Tang",
+    "value": "Tang_Blue"
+  },
+  {
+    "display": "Yellow Jellyfish",
+    "value": "Jellyfish_Yellow"
+  },
+  {
+    "display": "Lobster",
+    "value": "Lobster"
+  },
+  {
+    "display": "Clownfish",
+    "value": "Clownfish"
+  },
+  {
+    "display": "Lemon Peel Tang",
+    "value": "Tang_Lemon_Peel"
+  },
+  {
+    "display": "Cyan Jellyfish",
+    "value": "Jellyfish_Cyan"
+  },
+  {
+    "display": "Man Of War",
+    "value": "Jellyfish_Man_Of_War"
+  },
+  {
+    "display": "Blue Jellyfish",
+    "value": "Jellyfish_Blue"
+  },
+  {
+    "display": "Chevron Tang",
+    "value": "Tang_Chevron"
+  },
+  {
+    "display": "Sparrow",
+    "value": "Sparrow"
+  },
+  {
+    "display": "Bat",
+    "value": "Bat"
+  },
+  {
+    "display": "Parrot",
+    "value": "Parrot"
+  },
+  {
+    "display": "Green Greenfinch",
+    "value": "Finch_Green"
+  },
+  {
+    "display": "Bluebird",
+    "value": "Bluebird"
+  },
+  {
+    "display": "Snowy Owl",
+    "value": "Owl_Snow"
+  },
+  {
+    "display": "Penguin",
+    "value": "Penguin"
+  },
+  {
+    "display": "Woodpecker",
+    "value": "Woodpecker"
+  },
+  {
+    "display": "Crow",
+    "value": "Crow"
+  },
+  {
+    "display": "Raven",
+    "value": "Raven"
+  },
+  {
+    "display": "Flamingo",
+    "value": "Flamingo"
+  },
+  {
+    "display": "Ice Bat",
+    "value": "Bat_Ice"
+  },
+  {
+    "display": "Brown Owl",
+    "value": "Owl_Brown"
+  },
+  {
+    "display": "Duck",
+    "value": "Duck"
+  },
+  {
+    "display": "Pigeon",
+    "value": "Pigeon"
+  },
+  {
+    "display": "Pterodactyl",
+    "value": "Pterodactyl"
+  },
+  {
+    "display": "Hawk",
+    "value": "Hawk"
+  },
+  {
+    "display": "Tetrabird",
+    "value": "Tetrabird"
+  },
+  {
+    "display": "Vulture",
+    "value": "Vulture"
+  },
+  {
+    "display": "Archaeopteryx",
+    "value": "Archaeopteryx"
+  },
+  {
+    "display": "Frost Skeleton Scout",
+    "value": "Skeleton_Frost_Scout"
+  },
+  {
+    "display": "Frost Skeleton Ranger",
+    "value": "Skeleton_Frost_Ranger"
+  },
+  {
+    "display": "Frost Skeleton Fighter",
+    "value": "Skeleton_Frost_Fighter"
+  },
+  {
+    "display": "Frost Skeleton Archer",
+    "value": "Skeleton_Frost_Archer"
+  },
+  {
+    "display": "Frost Skeleton Mage",
+    "value": "Skeleton_Frost_Mage"
+  },
+  {
+    "display": "Frost Skeleton Soldier",
+    "value": "Skeleton_Frost_Soldier"
+  },
+  {
+    "display": "Frost Skeleton Knight",
+    "value": "Skeleton_Frost_Knight"
+  },
+  {
+    "display": "Frost Skeleton Archmage",
+    "value": "Skeleton_Frost_Archmage"
+  },
+  {
+    "display": "Incandescent Skeleton Mage",
+    "value": "Skeleton_Incandescent_Mage"
+  },
+  {
+    "display": "Incandescent Skeleton Footman",
+    "value": "Skeleton_Incandescent_Footman"
+  },
+  {
+    "display": "Incandescent Skeleton Head",
+    "value": "Skeleton_Incandescent_Head"
+  },
+  {
+    "display": "Incandescent Skeleton Fighter",
+    "value": "Skeleton_Incandescent_Fighter"
+  },
+  {
+    "display": "Sandswept Skeleton Archmage",
+    "value": "Skeleton_Sand_Archmage"
+  },
+  {
+    "display": "Sandswept Skeleton Assassin",
+    "value": "Skeleton_Sand_Assassin"
+  },
+  {
+    "display": "Sandswept Skeleton Scout",
+    "value": "Skeleton_Sand_Scout"
+  },
+  {
+    "display": "Sandswept Skeleton Soldier",
+    "value": "Skeleton_Sand_Soldier"
+  },
+  {
+    "display": "Sandswept Skeleton Archer",
+    "value": "Skeleton_Sand_Archer"
+  },
+  {
+    "display": "Sandswept Skeleton Ranger",
+    "value": "Skeleton_Sand_Ranger"
+  },
+  {
+    "display": "Sandswept Skeleton Guard",
+    "value": "Skeleton_Sand_Guard"
+  },
+  {
+    "display": "Sandswept Skeleton Mage",
+    "value": "Skeleton_Sand_Mage"
+  },
+  {
+    "display": "Skeleton Pirate Captain",
+    "value": "Skeleton_Pirate_Captain"
+  },
+  {
+    "display": "Skeleton Pirate Striker",
+    "value": "Skeleton_Pirate_Striker"
+  },
+  {
+    "display": "Skeleton Pirate Gunner",
+    "value": "Skeleton_Pirate_Gunner"
+  },
+  {
+    "display": "Burnt Skeleton Alchemist",
+    "value": "Skeleton_Burnt_Alchemist"
+  },
+  {
+    "display": "Burnt Skeleton Praetorian",
+    "value": "Skeleton_Burnt_Praetorian"
+  },
+  {
+    "display": "Burnt Skeleton Knight",
+    "value": "Skeleton_Burnt_Knight"
+  },
+  {
+    "display": "Burnt Skeleton Gunner",
+    "value": "Skeleton_Burnt_Gunner"
+  },
+  {
+    "display": "Burnt Skeleton Wizard",
+    "value": "Skeleton_Burnt_Wizard"
+  },
+  {
+    "display": "Burnt Skeleton Archer",
+    "value": "Skeleton_Burnt_Archer"
+  },
+  {
+    "display": "Burnt Skeleton Lancer",
+    "value": "Skeleton_Burnt_Lancer"
+  },
+  {
+    "display": "Burnt Skeleton Soldier",
+    "value": "Skeleton_Burnt_Soldier"
+  },
+  {
+    "display": "Skeleton Scout",
+    "value": "Skeleton_Scout"
+  },
+  {
+    "display": "Skeleton Soldier",
+    "value": "Skeleton_Soldier"
+  },
+  {
+    "display": "Skeleton Knight",
+    "value": "Skeleton_Knight"
+  },
+  {
+    "display": "Skeleton Ranger",
+    "value": "Skeleton_Ranger"
+  },
+  {
+    "display": "Skeleton Archer",
+    "value": "Skeleton_Archer"
+  },
+  {
+    "display": "Skeleton Archmage",
+    "value": "Skeleton_Archmage"
+  },
+  {
+    "display": "Skeleton Fighter",
+    "value": "Skeleton_Fighter"
+  },
+  {
+    "display": "Skeleton Mage",
+    "value": "Skeleton_Mage"
+  },
+  {
+    "display": "Wander Skeleton Fighter",
+    "value": "Skeleton_Fighter_Wander"
+  },
+  {
+    "display": "Sandswept Zombie",
+    "value": "Zombie_Sand"
+  },
+  {
+    "display": "Zombie",
+    "value": "Zombie"
+  },
+  {
+    "display": "Frost Zombie",
+    "value": "Zombie_Frost"
+  },
+  {
+    "display": "Aberrant Zombie",
+    "value": "Zombie_Aberrant"
+  },
+  {
+    "display": "Small Aberrant Zombie",
+    "value": "Zombie_Aberrant_Small"
+  },
+  {
+    "display": "Large Aberrant Zombie",
+    "value": "Zombie_Aberrant_Big"
+  },
+  {
+    "display": "Burnt Zombie",
+    "value": "Zombie_Burnt"
+  },
+  {
+    "display": "Undead Chicken",
+    "value": "Chicken_Undead"
+  },
+  {
+    "display": "Ghoul",
+    "value": "Ghoul"
+  },
+  {
+    "display": "Undead Cow",
+    "value": "Cow_Undead"
+  },
+  {
+    "display": "Armored Skeleton Horse",
+    "value": "Horse_Skeleton_Armored"
+  },
+  {
+    "display": "Skeleton Horse",
+    "value": "Horse_Skeleton"
+  },
+  {
+    "display": "Undead Pig",
+    "value": "Pig_Undead"
+  },
+  {
+    "display": "Wraith",
+    "value": "Wraith"
+  },
+  {
+    "display": "Shadow Knight",
+    "value": "Shadow_Knight"
+  },
+  {
+    "display": "Bleached Hound",
+    "value": "Hound_Bleached"
+  },
+  {
+    "display": "Werewolf",
+    "value": "Werewolf"
+  },
+  {
+    "display": "Void Larva",
+    "value": "Larva_Void"
+  },
+  {
+    "display": "Void Crawler",
+    "value": "Crawler_Void"
+  },
+  {
+    "display": "Void Eye",
+    "value": "Eye_Void"
+  },
+  {
+    "display": "Void Spawn",
+    "value": "Spawn_Void"
+  },
+  {
+    "display": "Earthen Golem",
+    "value": "Golem_Crystal_Earth"
+  },
+  {
+    "display": "Firesteel Golem",
+    "value": "Golem_Firesteel"
+  },
+  {
+    "display": "Frost Golem",
+    "value": "Golem_Crystal_Frost"
+  },
+  {
+    "display": "Ember Golem",
+    "value": "Golem_Crystal_Flame"
+  },
+  {
+    "display": "Sandswept Golem",
+    "value": "Golem_Crystal_Sand"
+  },
+  {
+    "display": "Thunder Golem",
+    "value": "Golem_Crystal_Thunder"
+  },
+  {
+    "display": "Frost Spirit",
+    "value": "Spirit_Frost"
+  },
+  {
+    "display": "Thunder Spirit",
+    "value": "Spirit_Thunder"
+  },
+  {
+    "display": "Root Spirit",
+    "value": "Spirit_Root"
+  },
+  {
+    "display": "Ember Spirit",
+    "value": "Spirit_Ember"
+  },
+  {
+    "display": "Magma Rhino Toad",
+    "value": "Toad_Rhino_Magma"
+  },
+  {
+    "display": "Crocodile",
+    "value": "Crocodile"
+  },
+  {
+    "display": "Tortoise",
+    "value": "Tortoise"
+  },
+  {
+    "display": "Cave Raptor",
+    "value": "Raptor_Cave"
+  },
+  {
+    "display": "Rhino Toad",
+    "value": "Toad_Rhino"
+  },
+  {
+    "display": "Cave Rex",
+    "value": "Rex_Cave"
+  },
+  {
+    "display": "Sand Lizard",
+    "value": "Lizard_Sand"
+  },
+  {
+    "display": "Fen Stalker",
+    "value": "Fen_Stalker"
+  },
+  {
+    "display": "Living Spark",
+    "value": "Spark_Living"
+  },
+  {
+    "display": "Emberwulf",
+    "value": "Emberwulf"
+  },
+  {
+    "display": "Yeti",
+    "value": "Yeti"
+  },
+  {
+    "display": "Snapdragon",
+    "value": "Snapdragon"
+  },
+  {
+    "display": "Trillodon",
+    "value": "Trillodon"
+  },
+  {
+    "display": "Cactee",
+    "value": "Cactee"
+  },
+  {
+    "display": "Horse",
+    "value": "Horse"
+  },
+  {
+    "display": "Rabbit",
+    "value": "Rabbit"
+  },
+  {
+    "display": "Camel Calf",
+    "value": "Camel_Calf"
+  },
+  {
+    "display": "Desert Chick",
+    "value": "Chicken_Desert_Chick"
+  },
+  {
+    "display": "Calf",
+    "value": "Cow_Calf"
+  },
+  {
+    "display": "Kid",
+    "value": "Goat_Kid"
+  },
+  {
+    "display": "Lamb",
+    "value": "Sheep_Lamb"
+  },
+  {
+    "display": "Skrill",
+    "value": "Skrill"
+  },
+  {
+    "display": "Warthog Piglet",
+    "value": "Warthog_Piglet"
+  },
+  {
+    "display": "Skrill Chick",
+    "value": "Skrill_Chick"
+  },
+  {
+    "display": "Bison Calf",
+    "value": "Bison_Calf"
+  },
+  {
+    "display": "Bison",
+    "value": "Bison"
+  },
+  {
+    "display": "Mouflon",
+    "value": "Mouflon"
+  },
+  {
+    "display": "Piglet",
+    "value": "Pig_Piglet"
+  },
+  {
+    "display": "Camel",
+    "value": "Camel"
+  },
+  {
+    "display": "Bunny",
+    "value": "Bunny"
+  },
+  {
+    "display": "Ram",
+    "value": "Ram"
+  },
+  {
+    "display": "Boar",
+    "value": "Boar"
+  },
+  {
+    "display": "Warthog",
+    "value": "Warthog"
+  },
+  {
+    "display": "Sheep",
+    "value": "Sheep"
+  },
+  {
+    "display": "Boar Piglet",
+    "value": "Boar_Piglet"
+  },
+  {
+    "display": "Foal",
+    "value": "Horse_Foal"
+  },
+  {
+    "display": "Desert Chicken",
+    "value": "Chicken_Desert"
+  },
+  {
+    "display": "Turkey Chick",
+    "value": "Turkey_Chick"
+  },
+  {
+    "display": "Cow",
+    "value": "Cow"
+  },
+  {
+    "display": "Chick",
+    "value": "Chicken_Chick"
+  },
+  {
+    "display": "Chicken",
+    "value": "Chicken"
+  },
+  {
+    "display": "Turkey",
+    "value": "Turkey"
+  },
+  {
+    "display": "Ram Lamb",
+    "value": "Ram_Lamb"
+  },
+  {
+    "display": "Pig",
+    "value": "Pig"
+  },
+  {
+    "display": "Goat",
+    "value": "Goat"
+  },
+  {
+    "display": "Mouflon Lamb",
+    "value": "Mouflon_Lamb"
+  },
+  {
+    "display": "Black Wolf",
+    "value": "Wolf_Black"
+  },
+  {
+    "display": "Antelope",
+    "value": "Antelope"
+  },
+  {
+    "display": "Polar Bear",
+    "value": "Bear_Polar"
+  },
+  {
+    "display": "Stag",
+    "value": "Deer_Stag"
+  },
+  {
+    "display": "Snow Leopard",
+    "value": "Leopard_Snow"
+  },
+  {
+    "display": "Armadillo",
+    "value": "Armadillo"
+  },
+  {
+    "display": "Hyena",
+    "value": "Hyena"
+  },
+  {
+    "display": "Doe",
+    "value": "Deer_Doe"
+  },
+  {
+    "display": "Moose Cow",
+    "value": "Moose_Cow"
+  },
+  {
+    "display": "Grizzly Bear",
+    "value": "Bear_Grizzly"
+  },
+  {
+    "display": "Sabertooth Tiger",
+    "value": "Tiger_Sabertooth"
+  },
+  {
+    "display": "White Wolf",
+    "value": "Wolf_White"
+  },
+  {
+    "display": "Fox",
+    "value": "Fox"
+  },
+  {
+    "display": "Mosshorn",
+    "value": "Mosshorn"
+  },
+  {
+    "display": "Moose Bull",
+    "value": "Moose_Bull"
+  },
+  {
+    "display": "Mouse",
+    "value": "Mouse"
+  },
+  {
+    "display": "Orange Frog",
+    "value": "Frog_Orange"
+  },
+  {
+    "display": "Meerkat",
+    "value": "Meerkat"
+  },
+  {
+    "display": "Green Frog",
+    "value": "Frog_Green"
+  },
+  {
+    "display": "Gecko",
+    "value": "Gecko"
+  },
+  {
+    "display": "Blue Frog",
+    "value": "Frog_Blue"
+  },
+  {
+    "display": "Squirrel",
+    "value": "Squirrel"
+  },
+  {
+    "display": "Magma Snail",
+    "value": "Snail_Magma"
+  },
+  {
+    "display": "Marsh Snake",
+    "value": "Snake_Marsh"
+  },
+  {
+    "display": "Silk Larva",
+    "value": "Larva_Silk"
+  },
+  {
+    "display": "Spider",
+    "value": "Spider"
+  },
+  {
+    "display": "Dungeon Sandswept Skeleton Archer",
+    "value": "Dungeon_Skeleton_Sand_Archer"
+  },
+  {
+    "display": "Dungeon Sandswept Skeleton Assassin",
+    "value": "Dungeon_Skeleton_Sand_Assassin"
+  },
+  {
+    "display": "Sandswept Skeleton Warlock",
+    "value": "Dungeon_Skeleton_Sand_Mage"
+  },
+  {
+    "display": "Dungeon Sandswept Skeleton Soldier",
+    "value": "Dungeon_Skeleton_Sand_Soldier"
+  },
+  {
+    "display": "Skeleton",
+    "value": "Skeleton"
+  },
+  {
+    "display": "Wraith's Lantern",
+    "value": "Wraith_Lantern"
+  },
+  {
+    "display": "Hatworm",
+    "value": "Hatworm"
+  },
+  {
+    "display": "Rat",
+    "value": "Rat"
+  },
+  {
+    "display": "Cave Spider",
+    "value": "Spider_Cave"
+  },
+  {
+    "display": "Molerat",
+    "value": "Molerat"
+  },
+  {
+    "display": "Frost Snail",
+    "value": "Snail_Frost"
+  },
+  {
+    "display": "Cobra",
+    "value": "Snake_Cobra"
+  },
+  {
+    "display": "Magma Slug",
+    "value": "Slug_Magma"
+  },
+  {
+    "display": "Rattlesnake",
+    "value": "Snake_Rattle"
+  },
+  {
+    "display": "Scorpion",
+    "value": "Scorpion"
+  },
+  {
+    "display": "Outlander Stalker",
+    "value": "Outlander_Stalker"
+  },
+  {
+    "display": "Outlander Priest",
+    "value": "Outlander_Priest"
+  },
+  {
+    "display": "Hunting Wolf Sorcerer",
+    "value": "Wolf_Outlander_Sorcerer"
+  },
+  {
+    "display": "Outlander Berserker",
+    "value": "Outlander_Berserker"
+  },
+  {
+    "display": "Outlander Unsworn",
+    "value": "Outlander_Peon"
+  },
+  {
+    "display": "Outlander Brute",
+    "value": "Outlander_Brute"
+  },
+  {
+    "display": "Hunting Wolf Priest",
+    "value": "Wolf_Outlander_Priest"
+  },
+  {
+    "display": "Outlander Sorcerer",
+    "value": "Outlander_Sorcerer"
+  },
+  {
+    "display": "Outlander Hunter",
+    "value": "Outlander_Hunter"
+  },
+  {
+    "display": "Outlander Initiate",
+    "value": "Outlander_Cultist"
+  },
+  {
+    "display": "Outlander Marauder",
+    "value": "Outlander_Marauder"
+  },
+  {
+    "display": "Scarak Broodmother",
+    "value": "Scarak_Broodmother"
+  },
+  {
+    "display": "Scarak Defender",
+    "value": "Scarak_Defender"
+  },
+  {
+    "display": "Scarak Fighter",
+    "value": "Scarak_Fighter"
+  },
+  {
+    "display": "Patrol Scarak Defender",
+    "value": "Scarak_Defender_Patrol"
+  },
+  {
+    "display": "Scarak Seeker",
+    "value": "Scarak_Seeker"
+  },
+  {
+    "display": "Scarak Louse",
+    "value": "Scarak_Louse"
+  },
+  {
+    "display": "Patrol Scarak Seeker",
+    "value": "Scarak_Seeker_Patrol"
+  },
+  {
+    "display": "Patrol Goblin Scrapper",
+    "value": "Goblin_Scrapper_Patrol"
+  },
+  {
+    "display": "Goblin Hermit",
+    "value": "Goblin_Hermit"
+  },
+  {
+    "display": "Goblin Scavenger Battleaxe",
+    "value": "Goblin_Scavenger_Battleaxe"
+  },
+  {
+    "display": "Goblin Lobber Patrol",
+    "value": "Goblin_Lobber_Patrol"
+  },
+  {
+    "display": "Goblin Scavenger Sword",
+    "value": "Goblin_Scavenger_Sword"
+  },
+  {
+    "display": "Goblin Lobber",
+    "value": "Goblin_Lobber"
+  },
+  {
+    "display": "Goblin Miner",
+    "value": "Goblin_Miner"
+  },
+  {
+    "display": "Goblin Ogre",
+    "value": "Goblin_Ogre"
+  },
+  {
+    "display": "Patrol Goblin Thief",
+    "value": "Goblin_Thief_Patrol"
+  },
+  {
+    "display": "Goblin Scrapper",
+    "value": "Goblin_Scrapper"
+  },
+  {
+    "display": "Goblin Duke",
+    "value": "Goblin_Duke"
+  },
+  {
+    "display": "Patrol Goblin Miner",
+    "value": "Goblin_Miner_Patrol"
+  },
+  {
+    "display": "Goblin Thief",
+    "value": "Goblin_Thief"
+  },
+  {
+    "display": "Trork Elder",
+    "value": "Trork_Shaman"
+  },
+  {
+    "display": "Trork Elder Witch",
+    "value": "Trork_Doctor_Witch"
+  },
+  {
+    "display": "Hunting Wolf",
+    "value": "Wolf_Trork_Hunter"
+  },
+  {
+    "display": "Trork Sentry",
+    "value": "Trork_Sentry"
+  },
+  {
+    "display": "Trork Brawler",
+    "value": "Trork_Brawler"
+  },
+  {
+    "display": "Patrol Trork Sentry",
+    "value": "Trork_Sentry_Patrol"
+  },
+  {
+    "display": "Trork Mauler",
+    "value": "Trork_Mauler"
+  },
+  {
+    "display": "Hunting Wolf Shaman",
+    "value": "Wolf_Trork_Shaman"
+  },
+  {
+    "display": "Patrol Trork Warrior",
+    "value": "Trork_Warrior_Patrol"
+  },
+  {
+    "display": "Trork Warrior",
+    "value": "Trork_Warrior"
+  },
+  {
+    "display": "Trork Guard",
+    "value": "Trork_Guard"
+  },
+  {
+    "display": "Trork Chieftain",
+    "value": "Trork_Chieftain"
+  },
+  {
+    "display": "Trork Hunter",
+    "value": "Trork_Hunter"
+  },
+  {
+    "display": "The Hedera",
+    "value": "Hedera"
+  },
+  {
+    "display": "Feran Burrower",
+    "value": "Feran_Burrower"
+  },
+  {
+    "display": "Feran Civilian",
+    "value": "Feran_Civilian"
+  },
+  {
+    "display": "Feran Sharptooth",
+    "value": "Feran_Sharptooth"
+  },
+  {
+    "display": "Feran Cub",
+    "value": "Feran_Cub"
+  },
+  {
+    "display": "Feran Windwalker",
+    "value": "Feran_Windwalker"
+  },
+  {
+    "display": "Feran Longtooth",
+    "value": "Feran_Longtooth"
+  },
+  {
+    "display": "Orange Kweebec Sapling",
+    "value": "Kweebec_Sapling_Orange"
+  },
+  {
+    "display": "Kweebec Seedling",
+    "value": "Kweebec_Seedling"
+  },
+  {
+    "display": "Patrol Kweebec Sproutling",
+    "value": "Kweebec_Sproutling_Patrol"
+  },
+  {
+    "display": "Patrol Kweebec Razorleaf",
+    "value": "Kweebec_Razorleaf_Patrol"
+  },
+  {
+    "display": "Kweebec Sapling",
+    "value": "Kweebec_Sapling"
+  },
+  {
+    "display": "Kweebec Elder",
+    "value": "Kweebec_Elder"
+  },
+  {
+    "display": "Pink Kweebec Sapling",
+    "value": "Kweebec_Sapling_Pink"
+  },
+  {
+    "display": "Kweebec Razorleaf",
+    "value": "Kweebec_Razorleaf"
+  },
+  {
+    "display": "Kweebec Sproutling",
+    "value": "Kweebec_Sproutling"
+  },
+  {
+    "display": "Rootling Merchant",
+    "value": "Temple_Kweebec_Merchant"
+  },
+  {
+    "display": "Temple Stag",
+    "value": "Temple_Deer_Stag"
+  },
+  {
+    "display": "Kweebec Rootling",
+    "value": "Temple_Kweebec_Rootling_Static"
+  },
+  {
+    "display": "Temple Orange Frog",
+    "value": "Temple_Frog_Orange"
+  },
+  {
+    "display": "Greenfinch",
+    "value": "Temple_Finch_Green"
+  },
+  {
+    "display": "Temple Green Frog",
+    "value": "Temple_Frog_Green"
+  },
+  {
+    "display": "Temple Bluebird",
+    "value": "Temple_Bluebird"
+  },
+  {
+    "display": "Temple Static Kweebec Sapling",
+    "value": "Temple_Kweebec_Static"
+  },
+  {
+    "display": "Temple Kweebec Sapling",
+    "value": "Temple_Kweebec"
+  },
+  {
+    "display": "Temple Patrol Kweebec Razorleaf",
+    "value": "Temple_Kweebec_Razorleaf_Patrol"
+  },
+  {
+    "display": "Temple Squirrel",
+    "value": "Temple_Squirrel"
+  },
+  {
+    "display": "Temple Blue Frog",
+    "value": "Temple_Frog_Blue"
+  },
+  {
+    "display": "Temple Kweebec Razorleaf",
+    "value": "Temple_Kweebec_Razorleaf"
+  },
+  {
+    "display": "Temple Kweebec Seedling",
+    "value": "Temple_Kweebec_Seedling"
+  },
+  {
+    "display": "Temple Bunny",
+    "value": "Temple_Bunny"
+  },
+  {
+    "display": "Temple Brown Owl",
+    "value": "Temple_Owl_Brown"
+  },
+  {
+    "display": "Temple Duck",
+    "value": "Temple_Duck"
+  },
+  {
+    "display": "Temple Static Kweebec Seedling",
+    "value": "Temple_Kweebec_Seedling_Static"
+  },
+  {
+    "display": "Temple Doe",
+    "value": "Temple_Deer_Doe"
+  },
+  {
+    "display": "Temple Feran Longtooth",
+    "value": "Temple_Feran_Longtooth"
+  },
+  {
+    "display": "Temple Kweebec Elder",
+    "value": "Temple_Kweebec_Elder"
+  },
+  {
+    "display": "Temple Feran Civilian",
+    "value": "Temple_Feran"
+  },
+  {
+    "display": "Frost Dragon",
+    "value": "Dragon_Frost"
+  },
+  {
+    "display": "Dungeon Scarak Broodmother",
+    "value": "Dungeon_Scarak_Broodmother"
+  },
+  {
+    "display": "Dungeon Scarak Louse",
+    "value": "Dungeon_Scarak_Louse"
+  },
+  {
+    "display": "Fledgling Scarak Broodmother",
+    "value": "Dungeon_Scarak_Broodmother_Young"
+  },
+  {
+    "display": "Dungeon Patrol Scarak Defender",
+    "value": "Dungeon_Scarak_Defender_Patrol"
+  },
+  {
+    "display": "Dungeon Scarak Fighter",
+    "value": "Dungeon_Scarak_Fighter"
+  },
+  {
+    "display": "Dungeon Patrol Scarak Seeker",
+    "value": "Dungeon_Scarak_Seeker_Patrol"
+  },
+  {
+    "display": "Dungeon Scarak Defender",
+    "value": "Dungeon_Scarak_Defender"
+  },
+  {
+    "display": "Dungeon Scarak Seeker",
+    "value": "Dungeon_Scarak_Seeker"
+  },
+  {
+    "display": "Scarak Imperial Guard",
+    "value": "Scarak_Fighter_Royal_Guard"
+  },
+  {
+    "display": "Fast Phase 3 Goblin Duke",
+    "value": "Goblin_Duke_Phase_3_Fast"
+  },
+  {
+    "display": "Slow Phase 3 Goblin Duke",
+    "value": "Goblin_Duke_Phase_3_Slow"
+  },
+  {
+    "display": "Edible Goblin Scrapper",
+    "value": "Edible_Goblin_Scrapper"
+  },
+  {
+    "display": "Edible Rat",
+    "value": "Edible_Rat"
+  },
+  {
+    "display": "Phase 2 Goblin Duke",
+    "value": "Goblin_Duke_Phase_2"
+  },
+  {
+    "display": "Trork",
+    "value": "Trork_Unarmed"
+  },
+  {
+    "display": "Tuluk Fisherman",
+    "value": "Tuluk_Fisherman"
+  },
+  {
+    "display": "Klops Gentleman",
+    "value": "Klops_Gentleman"
+  },
+  {
+    "display": "Klops Miner",
+    "value": "Klops_Miner"
+  },
+  {
+    "display": "Ember Dragon",
+    "value": "Dragon_Fire"
+  }
+]

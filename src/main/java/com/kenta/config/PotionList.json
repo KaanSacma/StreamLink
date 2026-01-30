@@ -1,0 +1,146 @@
+[
+  {
+    "display": "Potion of Pigeon Morphing",
+    "value": "Potion_Morph_Pigeon"
+  },
+  {
+    "display": "Lesser Health Potion",
+    "value": "Potion_Health_Lesser"
+  },
+  {
+    "display": "Small Potion of Health Regeneration",
+    "value": "Potion_Regen_Health_Small"
+  },
+  {
+    "display": "Small Potion of Mana",
+    "value": "Potion_Mana_Small"
+  },
+  {
+    "display": "Large Potion of Mana Regeneration",
+    "value": "Potion_Regen_Mana_Large"
+  },
+  {
+    "display": "Small Potion of Poison",
+    "value": "Potion_Poison_Minor"
+  },
+  {
+    "display": "Small Potion of Stamina",
+    "value": "Potion_Stamina_Small"
+  },
+  {
+    "display": "Large Potion of Health",
+    "value": "Potion_Health_Large"
+  },
+  {
+    "display": "Large Potion of Health Regeneration",
+    "value": "Potion_Regen_Health_Large"
+  },
+  {
+    "display": "Large Potion of Mana",
+    "value": "Potion_Mana_Large"
+  },
+  {
+    "display": "Small Potion of Mana Regeneration",
+    "value": "Potion_Regen_Mana_Small"
+  },
+  {
+    "display": "Large Potion of Stamina",
+    "value": "Potion_Stamina_Large"
+  },
+  {
+    "display": "Small Potion of Health",
+    "value": "Potion_Health_Small"
+  },
+  {
+    "display": "Potion of Stamina Regeneration",
+    "value": "Potion_Regen_Stamina"
+  },
+  {
+    "display": "Potion of Purification",
+    "value": "Potion_Purify"
+  },
+  {
+    "display": "Large Potion of Poison",
+    "value": "Potion_Poison_Large"
+  },
+  {
+    "display": "Potion of Mana",
+    "value": "Potion_Mana"
+  },
+  {
+    "display": "Empty Potion Bottle",
+    "value": "Potion_Empty"
+  },
+  {
+    "display": "Potion of Mana Regeneration",
+    "value": "Potion_Regen_Mana"
+  },
+  {
+    "display": "Small Potion Bottle",
+    "value": "Potion_Empty_Small"
+  },
+  {
+    "display": "Small Potion of Stamina Regeneration",
+    "value": "Potion_Regen_Stamina_Small"
+  },
+  {
+    "display": "Potion of Poison",
+    "value": "Potion_Poison"
+  },
+  {
+    "display": "Greater Stamina Potion",
+    "value": "Potion_Stamina_Greater"
+  },
+  {
+    "display": "Potion of Mouse Morphing",
+    "value": "Potion_Morph_Mouse"
+  },
+  {
+    "display": "Potion of Frog Morphing",
+    "value": "Potion_Morph_Frog"
+  },
+  {
+    "display": "Large Potion Bottle",
+    "value": "Potion_Empty_Large"
+  },
+  {
+    "display": "Potion of Health",
+    "value": "Potion_Template"
+  },
+  {
+    "display": "Large Potion of Stamina Regeneration",
+    "value": "Potion_Regen_Stamina_Large"
+  },
+  {
+    "display": "Potion of Health Regeneration",
+    "value": "Potion_Regen_Health"
+  },
+  {
+    "display": "Greater Energy Potion",
+    "value": "Potion_Signature_Greater"
+  },
+  {
+    "display": "Lesser Stamina Potion",
+    "value": "Potion_Stamina_Lesser"
+  },
+  {
+    "display": "Potion of Dog Morphing",
+    "value": "Potion_Morph_Dog"
+  },
+  {
+    "display": "Potion of Stamina",
+    "value": "Potion_Stamina"
+  },
+  {
+    "display": "Greater Health Potion",
+    "value": "Potion_Health_Greater"
+  },
+  {
+    "display": "Potion of Health",
+    "value": "Potion_Health"
+  },
+  {
+    "display": "Lesser Energy Potion",
+    "value": "Potion_Signature_Lesser"
+  }
+]
