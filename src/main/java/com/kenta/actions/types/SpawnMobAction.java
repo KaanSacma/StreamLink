@@ -37,10 +37,6 @@ public class SpawnMobAction implements Action {
         this.mobType = mobType;
         this.count = count;
         this.radius = radius;
-        System.out.println(String.format(
-                "[SpawnMobAction] Mob Setup: mobType=%s | count=%d | radius=%d",
-                mobType, count, radius
-        ));
     }
 
     @Override

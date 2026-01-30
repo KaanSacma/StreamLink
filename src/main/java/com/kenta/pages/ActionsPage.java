@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.kenta.StreamLink.getNPCMap;
+import static com.kenta.StreamLink.getPotionMap;
+
 public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
     private UIBuilder ui;
@@ -228,8 +231,9 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private void setEffectParamInput(String selector) {
         int index = extractIndexFromSelector(selector);
 
-        ui.textInput(selector + "#EffectType")
+        ui.dropdown(selector + "#EffectType")
                 .value(((FormData.GiveEffectData) actionFormData.get().get(index).data).effectID)
+                .options(getPotionMap())
                 .onChange(value -> { setEffectID(value, index); })
         .build();
         ui.numberInput(selector + "#EffectDuration")
@@ -251,19 +255,24 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private void setSpawnMobParamInput(String selector) {
         int index = extractIndexFromSelector(selector);
 
-        // TODO: Change MobType to Dropdown
-        ui.textInput(selector + "#MobType")
+        ui.dropdown(selector + "#MobType")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).mobID)
-                .onChange(value -> { setMobId(value, index); })
-        .build();
+                .options(getNPCMap()).onChange(value -> {
+                    setMobId(value, index);
+                })
+        .update();
+        //ui.textInput(selector + "#MobType")
+        //        .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).mobID)
+        //        .onChange(value -> { setMobId(value, index); })
+        //.build();
         ui.numberInput(selector + "#MobCount")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).count)
                 .onChange((int value) -> { setMobCount(value, index); })
-        .build();
+        .update();
         ui.numberInput(selector + "#MobRadius")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).radius)
                 .onChange((int value) -> { setMobRadius(value, index); })
-        .build();
+        .update();
     }
 
     private void setMobId(String value, int index) {
@@ -332,7 +341,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             }
             case "spawn_mob": {
                 if (actionFormData.get().get(indexToUpdate).data.getClass() != FormData.SpawnMobData.class)
-                    actionFormData.get().get(indexToUpdate).data = new FormData.SpawnMobData("Zombie", 0, 0);
+                    actionFormData.get().get(indexToUpdate).data = new FormData.SpawnMobData("Random", 0, 0);
                 setSpawnMobParamInput(selector);
                 ui.group(selector + "#SpawnMobParams").visible(true).update();
                 break;

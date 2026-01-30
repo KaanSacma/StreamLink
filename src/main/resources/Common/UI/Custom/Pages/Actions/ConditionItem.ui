@@ -17,7 +17,7 @@ $C = "../../Common.ui";
             Style: (FontSize: 12, TextColor: #96a9be, VerticalAlignment: Center);
         }
 
-        Group { Anchor: (Width: 8); }
+        Group { Anchor: (Width: 4); }
 
         $C.@DropdownBox #ConditionTypeDropdown {
             Anchor: (Width: 150, Height: 32);

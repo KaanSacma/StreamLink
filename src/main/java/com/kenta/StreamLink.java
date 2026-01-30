@@ -11,6 +11,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.actions.factory.RuleBuilder;
 import com.kenta.commands.StreamlinkCommands;
+import com.kenta.config.ConfigItem;
+import com.kenta.config.ConfigLoader;
 import com.kenta.data.ActionData;
 import com.kenta.data.StreamData;
 import com.kenta.libs.SLMessage;
@@ -21,8 +23,12 @@ import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
 import javax.annotation.Nonnull;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"null", "removal"})
 public class StreamLink extends JavaPlugin {
@@ -33,6 +39,16 @@ public class StreamLink extends JavaPlugin {
 
     public static ComponentType<EntityStore, StreamData> streamDataComponentType;
     public static ComponentType<EntityStore, ActionData> actionDataComponentType;
+
+    private static List<ConfigItem> npcList;
+    private static List<ConfigItem> potionList;
+    private static Map<String, String> npcMap;
+    private static Map<String, String> potionMap;
+
+    public static List<ConfigItem> getNPCList() { return npcList; }
+    public static List<ConfigItem> getPotionList() { return potionList; }
+    public static Map<String, String> getNPCMap() { return npcMap; }
+    public static Map<String, String> getPotionMap() { return potionMap; }
 
     public StreamLink(@Nonnull JavaPluginInit init) { super(init); }
 
@@ -46,8 +62,34 @@ public class StreamLink extends JavaPlugin {
 
         getCommandRegistry().registerCommand(new StreamlinkCommands());
         registerEvents();
+        loadConfigurations();
 
         getLogger().at(Level.INFO).log("StreamLink setup complete!");
+    }
+
+    private void loadConfigurations() {
+        getLogger().at(Level.INFO).log("Loading configuration files...");
+
+        npcList = ConfigLoader.loadConfig("/com/kenta/config/NPCList.json");
+        potionList = ConfigLoader.loadConfig("/com/kenta/config/PotionList.json");
+
+        npcMap = npcList.stream()
+                .collect(Collectors.toMap(
+                        ConfigItem::getValue,
+                        ConfigItem::getDisplay,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
+
+        potionMap = potionList.stream()
+                .collect(Collectors.toMap(
+                        ConfigItem::getValue,
+                        ConfigItem::getDisplay,
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
+
+        getLogger().at(Level.INFO).log("Loaded " + npcMap.size() + " NPCs and " + potionMap.size() + " potions");
     }
 
     @Override

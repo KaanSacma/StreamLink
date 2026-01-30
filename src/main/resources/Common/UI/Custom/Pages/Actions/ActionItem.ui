@@ -138,9 +138,9 @@ Group #ActionItem {
 
         // For Spawn Mob
         Group #SpawnMobParams {
-            Anchor: (Top: 0, Height: 60);
+            Anchor: (Top: 0, Height: 128);
             FlexWeight: 1;
-            LayoutMode: Left;
+            LayoutMode: Top;
             Visible: false;
 
             // Mob Type Input
@@ -156,60 +156,68 @@ Group #ActionItem {
 
                 Group { Anchor: (Height: 4); }
 
-                $C.@TextField #MobType {
-                    Anchor: (Width: 180, Height: 40);
-                    PlaceholderText: "e.g., Zombie";
+                $C.@DropdownBox #MobType {
+                    FlexWeight: 1;
+                    Anchor: (Height: 40);
+                    Value: "Random";
+
                 }
             }
 
-            Group { Anchor: (Width: 8); }
+            Group { Anchor: (Height: 8); }
 
-            Group #MobCountGroup {
+            Group #MobInputGroup {
                 Anchor: (Height: 60);
-                LayoutMode: Top;
+                LayoutMode: Left;
 
-                Label {
-                    Text: "Count:";
-                    Anchor: (Width: 80, Height: 16);
-                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                Group #MobCountGroup {
+                    Anchor: (Height: 60);
+                    LayoutMode: Top;
+
+                    Label {
+                        Text: "Count:";
+                        Anchor: (Width: 80, Height: 16);
+                        Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                    }
+
+                    Group { Anchor: (Height: 4); }
+
+                    $C.@NumberField #MobCount {
+                        @Anchor = (Width: 80, Height: 40);
+                        Value: 1;
+                        Format: (MaxDecimalPlaces:0, Step:1, MinValue:1);
+                    }
                 }
 
-                Group { Anchor: (Height: 4); }
+                Group { Anchor: (Width: 8); }
 
-                $C.@NumberField #MobCount {
-                    @Anchor = (Width: 80, Height: 40);
-                    Value: 1;
-                    Format: (MaxDecimalPlaces:0, Step:1, MinValue:1);
+                Group #MobRadiusGroup {
+                    Anchor: (Height: 60);
+                    LayoutMode: Top;
+
+                    Label {
+                        Text: "Spawn Radius:";
+                        Anchor: (Width: 80, Height: 16);
+                        Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
+                    }
+
+                    Group { Anchor: (Height: 4); }
+
+                    $C.@NumberField #MobRadius {
+                        @Anchor = (Width: 80, Height: 40);
+                        Value: 5;
+                        Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
+                    }
                 }
-            }
 
-            Group { Anchor: (Width: 8); }
-
-            Group #MobRadiusGroup {
-                Anchor: (Height: 60);
-                LayoutMode: Top;
-
-                Label {
-                    Text: "Spawn Radius:";
-                    Anchor: (Width: 80, Height: 16);
-                    Style: (FontSize: 10, TextColor: #96a9be, VerticalAlignment: Center);
-                }
-
-                Group { Anchor: (Height: 4); }
-
-                $C.@NumberField #MobRadius {
-                    @Anchor = (Width: 80, Height: 40);
-                    Value: 5;
-                    Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
-                }
             }
         }
 
         // For Give Effect
         Group #EffectParams {
-            Anchor: (Top: 0, Height: 60);
+            Anchor: (Top: 0, Height: 128);
             FlexWeight: 1;
-            LayoutMode: Left;
+            LayoutMode: Top;
             Visible: false;
 
             // Effect Type Input
@@ -225,13 +233,15 @@ Group #ActionItem {
 
                 Group { Anchor: (Height: 4); }
 
-                $C.@TextField #EffectType {
-                    Anchor: (Width: 150, Height: 40, Left: 0);
-                    PlaceholderText: "e.g., Potion_Health";
+                $C.@DropdownBox #EffectType {
+                    FlexWeight: 1;
+                    Anchor: (Width: 340, Height: 40, Left: 0);
+                    Value: "Random";
+
                 }
             }
 
-            Group { Anchor: (Width: 8); }
+            Group { Anchor: (Height: 8); }
 
             // Duration Input
             Group #DurationInput {
@@ -247,7 +257,7 @@ Group #ActionItem {
                 Group { Anchor: (Height: 4); }
 
                 $C.@NumberField #EffectDuration {
-                    @Anchor = (Width: 100, Height: 40);
+                    @Anchor = (Width: 100, Height: 40, Left: 0);
                     Value: 10;
                     Format: (MaxDecimalPlaces:0, Step:1, MinValue:1);
                 }
