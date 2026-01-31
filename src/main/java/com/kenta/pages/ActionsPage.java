@@ -40,6 +40,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private UIBuilder ui;
     private EventDispatcher dispatcher;
 
+    private UIState<String> currentEditMode = new UIState<>("create");
+    private UIState<String> editingRuleId = new UIState<>(null);
     private UIState<String> newRuleName = new UIState<>("New Rule");
     private UIState<String> newPlatformSelected = new UIState<>("twitch");
     private UIState<Integer> newCooldown = new UIState<>(0);
@@ -100,6 +102,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     }
 
     private void addRuleHandler() {
+        currentEditMode.set("create");
+        editingRuleId.set(null);
         newRuleName.set("New Rule");
         conditionFormData.set(new FormData("event", new FormData.TwitchConditionEventData("channel.follow")));
         newPlatformSelected.set("twitch");
@@ -110,6 +114,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
         ui.group("#EmptyState").visible(false).update();
         ui.group("#RuleEditor").visible(true).update();
+        ui.label("#EditorTitle").text("New Action Rule").update();
 
         ui.textInput("#RuleNameInput").value(newRuleName.get()).update();
 
@@ -121,6 +126,71 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ui.group("#ConditionEventParams").visible(true).update();
         ui.group("#ConditionMessageParams").visible(false).update();
         //ui.group("#ConditionUserParams").visible(false).update();
+    }
+
+    private void editRuleHandler(ActionRule rule) {
+        currentEditMode.set("edit");
+        editingRuleId.set(rule.getId());
+        newRuleName.set(rule.getName());
+        newPlatformSelected.set(rule.getEnabledPlatform());
+        newCooldown.set(rule.getCooldownSeconds());
+
+        ui.group("#EmptyState").visible(false).update();
+        ui.group("#RuleEditor").visible(true).update();
+        ui.label("#EditorTitle").text("Edit Action Rule").update();
+        ui.group("#TwitchToggleActive").visible(newPlatformSelected.get().equals("twitch")).update();
+        ui.group("#YoutubeToggleActive").visible(newPlatformSelected.get().equals("youtube")).update();
+
+        Condition condition = rule.getCondition();
+        if (condition instanceof EventCondition eventCondition) {
+            conditionFormData.set(new FormData("event",
+                    new FormData.TwitchConditionEventData(eventCondition.getEventType())));
+            ui.dropdown("#ConditionTypeDropdown").value("event").update();
+            ui.dropdown("#TwitchEventDropdown").value(eventCondition.getEventType()).update();
+            ui.group("#ConditionEventParams").visible(true).update();
+            ui.group("#ConditionMessageParams").visible(false).update();
+        }
+        else if (condition instanceof ChatMessageCondition chatCondition) {
+            conditionFormData.set(new FormData("chat_message",
+                    new FormData.MessageConditionData(
+                            chatCondition.getMatchType().name().toLowerCase(),
+                            chatCondition.getPattern()
+                    )));
+            ui.dropdown("#ConditionTypeDropdown").value("chat_message").update();
+            ui.dropdown("#ConditionMessageTypeDropdown").value(chatCondition.getMatchType().name().toLowerCase()).update();
+            ui.textInput("#ConditionMessagePattern").value(chatCondition.getPattern()).update();
+            ui.group("#ConditionEventParams").visible(false).update();
+            ui.group("#ConditionMessageParams").visible(true).update();
+        }
+
+        actionFormData.get().clear();
+        ui.clear("#ActionsList");
+
+        for (Action action : rule.getActions()) {
+            FormData formData = convertActionToFormData(action);
+            actionFormData.get().add(formData);
+
+            int index = actionFormData.get().size() - 1;
+            String selector = "#ActionsList[" + index + "] ";
+
+            ui.append("#ActionsList", "Pages/Actions/ActionItem.ui");
+            ui.dropdown(selector + "#ActionTypeDropdown")
+                    .value(formData.type)
+                    .onChange(value -> { this.updateActionType(selector, value, false); })
+                    .build();
+
+            ui.textButton(selector + "#RemoveAction")
+                    .onClick(() -> { removeActionHandler(selector); })
+                    .build();
+
+            this.updateActionType(selector, formData.type, true);
+        }
+
+        ui.textInput("#RuleNameInput").value(newRuleName.get()).update();
+        ui.numberInput("#CooldownValue").value(newCooldown.get()).update();
+
+        ui.applyNew();
+        dispatcher.refresh();
     }
 
     private void updatePlatformToggle(String newPlatform) {
@@ -149,7 +219,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 ui.dropdown("#TwitchEventDropdown")
                         .value(((FormData.TwitchConditionEventData) conditionFormData.get().data).event)
                         .onChange(this::updateConditionTwitchEventParam)
-                .update();
+                .build();
                 ui.group("#ConditionEventParams").visible(true).update();
                 break;
             }
@@ -158,11 +228,11 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 ui.dropdown("#ConditionMessageTypeDropdown")
                         .value(((FormData.MessageConditionData) conditionFormData.get().data).method)
                         .onChange(this::updateConditionMessageMethodParam)
-                .update();
+                .build();
                 ui.textInput("#ConditionMessagePattern")
                         .value(((FormData.MessageConditionData) conditionFormData.get().data).value)
                         .onChange(this::updateConditionMessageValueParam)
-                .update();
+                .build();
                 ui.group("#ConditionMessageParams").visible(true).update();
                 break;
             }
@@ -261,10 +331,6 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                     setMobId(value, index);
                 })
         .update();
-        //ui.textInput(selector + "#MobType")
-        //        .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).mobID)
-        //        .onChange(value -> { setMobId(value, index); })
-        //.build();
         ui.numberInput(selector + "#MobCount")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).count)
                 .onChange((int value) -> { setMobCount(value, index); })
@@ -404,6 +470,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         if (newRuleName.get().isEmpty())
             newRuleName.set("New Rule");
 
+        // Validate condition
         switch (conditionFormData.get().type) {
             case "event": { break; }
             case "chat_message": {
@@ -424,47 +491,68 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         }
 
         try {
-            ActionRule.Builder builder = ActionRule.builder()
-                    .id(UUID.randomUUID().toString())
-                    .name(newRuleName.get())
-                    .platform(newPlatformSelected.get())
-                    .cooldown(Math.max(newCooldown.get(), 0))
-                    .enabled(true);
-            Condition condition = buildConditionFromForm();
+            String username = playerRef.getUsername();
 
+            Condition condition = buildConditionFromForm();
             if (condition == null) {
                 playerRef.sendMessage(SLMessage.formatMessageWithError("Your condition trigger is not setup correctly!"));
                 return;
             }
-            builder.condition(condition);
 
+            List<Action> actions = new ArrayList<>();
             for (int i = 0; i < actionFormData.get().size(); i++) {
                 Action action = buildActionFromForm(actionFormData.get().get(i));
                 if (action == null) {
                     playerRef.sendMessage(SLMessage.formatMessageWithError("Your action " + i + " is not setup correctly!"));
                     return;
                 }
-                builder.action(action);
+                actions.add(action);
             }
 
-            ActionRule rule = builder.build();
-            String username = playerRef.getUsername();
+            if (currentEditMode.get().equals("edit")) {
+                String ruleId = editingRuleId.get();
+                ActionManager.getInstance().removeRule(username, ruleId);
 
-            ActionManager.getInstance().addRule(username, rule);
+                ActionRule updatedRule = ActionRule.builder()
+                        .id(ruleId)
+                        .name(newRuleName.get())
+                        .platform(newPlatformSelected.get())
+                        .cooldown(Math.max(newCooldown.get(), 0))
+                        .enabled(true)
+                        .condition(condition)
+                        .actions(actions)
+                        .build();
+
+                ActionManager.getInstance().addRule(username, updatedRule);
+                playerRef.sendMessage(SLMessage.formatMessage("Rule '" + newRuleName.get() + "' updated successfully!"));
+            } else {
+                ActionRule newRule = ActionRule.builder()
+                        .id(UUID.randomUUID().toString())
+                        .name(newRuleName.get())
+                        .platform(newPlatformSelected.get())
+                        .cooldown(Math.max(newCooldown.get(), 0))
+                        .enabled(true)
+                        .condition(condition)
+                        .actions(actions)
+                        .build();
+
+                ActionManager.getInstance().addRule(username, newRule);
+                playerRef.sendMessage(SLMessage.formatMessage("Rule '" + newRuleName.get() + "' created successfully!"));
+            }
+
             RuleBuilder.saveRulesForPlayer(username, actionData);
 
-            playerRef.sendMessage(SLMessage.formatMessage("Rule '" + newRuleName.get() + "' created successfully!"));
-
             handleCancelEdit();
-
             initializeRulesList();
+
             newRuleName.set("New Rule");
             conditionFormData.set(new FormData("event", new FormData.TwitchConditionEventData("channel.follow")));
             newPlatformSelected.set("twitch");
             actionFormData.get().clear();
             newCooldown.set(0);
+
         } catch (Exception e) {
-            playerRef.sendMessage(SLMessage.formatMessageWithError("Failed to create rule: " + e.getMessage()));
+            playerRef.sendMessage(SLMessage.formatMessageWithError("Failed to save rule: " + e.getMessage()));
             e.printStackTrace();
         }
     }
@@ -554,14 +642,16 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
             }).text(toggleText).defaultBackground(toggleColor).update();
+
             ui.textButton(selector + "#DeleteButton").onClick(() -> {
                 boolean success = ActionManager.getInstance().removeRule(username, rule.getId());
                 if (!success) return;
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
             }).update();
+
             ui.textButton(selector + "#EditButton").onClick(() -> {
-                playerRef.sendMessage(SLMessage.formatMessageWithDebug("Edit button coming soon!"));
+                editRuleHandler(rule);
             }).update();
         }
         ui.applyNew();
@@ -586,6 +676,39 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ActionManager.getInstance().toggleAllRule(username, enabled);
         RuleBuilder.saveRulesForPlayer(username, actionData);
         initializeRulesList();
+    }
+
+    private FormData convertActionToFormData(Action action) {
+        if (action instanceof TeleportAction teleport) {
+            return new FormData("teleport",
+                    new FormData.TeleportData(
+                            teleport.getRadiusX(),
+                            teleport.getRadiusY(),
+                            teleport.getRadiusZ(),
+                            teleport.getRelative()
+                    ));
+        }
+        else if (action instanceof SpawnMobAction spawnMob) {
+            return new FormData("spawn_mob",
+                    new FormData.SpawnMobData(
+                            spawnMob.getMobType(),
+                            spawnMob.getCount(),
+                            spawnMob.getRadius()
+                    ));
+        }
+        else if (action instanceof GiveEffectAction giveEffect) {
+            return new FormData("give_effect",
+                    new FormData.GiveEffectData(
+                            giveEffect.getEffectType(),
+                            giveEffect.getDurationSeconds()
+                    ));
+        }
+        else if (action instanceof RunCommandAction runCommand) {
+            return new FormData("run_command",
+                    new FormData.RunCommandData(runCommand.getBuffer()));
+        }
+
+        return new FormData("teleport", new FormData.TeleportData(0, 0, 0, true));
     }
 
     @Override
