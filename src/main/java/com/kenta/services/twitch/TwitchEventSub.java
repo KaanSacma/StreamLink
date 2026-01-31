@@ -2,7 +2,9 @@ package com.kenta.services.twitch;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.framing.Framedata;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -47,7 +49,7 @@ public class TwitchEventSub {
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    System.out.println("[EventSub] Disconnected: " + reason);
+                    System.out.println("[EventSub] Disconnected (code: " + code + "): " + reason);
                     connected = false;
                 }
 
@@ -56,8 +58,19 @@ public class TwitchEventSub {
                     System.err.println("[EventSub] Error: " + ex.getMessage());
                     ex.printStackTrace();
                 }
+
+                @Override
+                public void onWebsocketPing(WebSocket conn, Framedata f) {
+                    super.onWebsocketPing(conn, f);
+                }
+
+                @Override
+                public void onWebsocketPong(WebSocket conn, Framedata f) {
+                    super.onWebsocketPong(conn, f);
+                }
             };
 
+            client.setConnectionLostTimeout(30);
             client.connect();
 
         } catch (Exception e) {
@@ -72,10 +85,9 @@ public class TwitchEventSub {
             JsonObject metadata = json.getAsJsonObject("metadata");
             String messageType = metadata.get("message_type").getAsString();
 
-            System.out.println("[EventSub] Received: " + messageType);
-
             switch (messageType) {
                 case "session_welcome":
+                    System.out.println("[EventSub] Received: session_welcome");
                     handleWelcome(json);
                     break;
 
