@@ -40,13 +40,13 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private UIBuilder ui;
     private EventDispatcher dispatcher;
 
-    private UIState<String> currentEditMode = new UIState<>("create");
-    private UIState<String> editingRuleId = new UIState<>(null);
-    private UIState<String> newRuleName = new UIState<>("New Rule");
-    private UIState<String> newPlatformSelected = new UIState<>("twitch");
-    private UIState<Integer> newCooldown = new UIState<>(0);
-    private UIState<FormData> conditionFormData = new UIState<>(new FormData("event", new FormData.TwitchConditionEventData("channel.follow")));
-    private UIState<List<FormData>> actionFormData = new UIState<>(new ArrayList<>());
+    private final UIState<String> currentEditMode = new UIState<>("create");
+    private final UIState<String> editingRuleId = new UIState<>(null);
+    private final UIState<String> newRuleName = new UIState<>("New Rule");
+    private final UIState<String> newPlatformSelected = new UIState<>("twitch");
+    private final UIState<Integer> newCooldown = new UIState<>(0);
+    private final UIState<FormData> conditionFormData = new UIState<>(new FormData("event", new FormData.TwitchConditionEventData("channel.follow")));
+    private final UIState<List<FormData>> actionFormData = new UIState<>(new ArrayList<>());
 
     private final ActionData actionData;
     private final Ref<EntityStore> entityRef;
@@ -83,8 +83,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
     private void buildButtons() {
         ui.textButton("#AddRuleButton").onClick(this::addRuleHandler).build();
-        ui.textButton("#TwitchToggleButton").onClick(() -> { updatePlatformToggle("twitch"); }).build();
-        ui.textButton("#YoutubeToggleButton").onClick(() -> { updatePlatformToggle("youtube"); }).build();
+        ui.textButton("#TwitchToggleButton").onClick(() -> updatePlatformToggle("twitch")).build();
+        ui.textButton("#YoutubeToggleButton").onClick(() -> updatePlatformToggle("youtube")).build();
         ui.textInput("#RuleNameInput").onChange(newRuleName::set).build();
         ui.dropdown("#ConditionTypeDropdown").onChange(this::updateConditionType).build();
         ui.dropdown("#TwitchEventDropdown")
@@ -96,8 +96,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ui.textButton("#CancelButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#CloseEditorButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#SaveRuleButton").onClick(this::handleSaveRule).build();
-        ui.textButton("#OnRulesButton").onClick(() -> { this.toggleAllRuleHandler(true); }).build();
-        ui.textButton("#OffRulesButton").onClick(() -> { this.toggleAllRuleHandler(false); }).build();
+        ui.textButton("#OnRulesButton").onClick(() -> this.toggleAllRuleHandler(true)).build();
+        ui.textButton("#OffRulesButton").onClick(() -> this.toggleAllRuleHandler(false)).build();
         ui.textButton("#ClearRulesButton").onClick(this::removeAllRuleHandler).build();
     }
 
@@ -149,8 +149,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             ui.dropdown("#TwitchEventDropdown").value(eventCondition.getEventType()).update();
             ui.group("#ConditionEventParams").visible(true).update();
             ui.group("#ConditionMessageParams").visible(false).update();
-        }
-        else if (condition instanceof ChatMessageCondition chatCondition) {
+        } else if (condition instanceof ChatMessageCondition chatCondition) {
             conditionFormData.set(new FormData("chat_message",
                     new FormData.MessageConditionData(
                             chatCondition.getMatchType().name().toLowerCase(),
@@ -176,11 +175,11 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             ui.append("#ActionsList", "Pages/Actions/ActionItem.ui");
             ui.dropdown(selector + "#ActionTypeDropdown")
                     .value(formData.type)
-                    .onChange(value -> { this.updateActionType(selector, value, false); })
+                    .onChange(value -> this.updateActionType(selector, value, false))
                     .build();
 
             ui.textButton(selector + "#RemoveAction")
-                    .onClick(() -> { removeActionHandler(selector); })
+                    .onClick(() -> removeActionHandler(selector))
                     .build();
 
             this.updateActionType(selector, formData.type, true);
@@ -272,11 +271,11 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
         ui.dropdown(selector + "#ActionTypeDropdown")
                 .value("teleport")
-                .onChange(value -> { this.updateActionType(selector, value, false); })
+                .onChange(value -> this.updateActionType(selector, value, false))
         .build();
 
         ui.textButton(selector + "#RemoveAction")
-                .onClick(() -> { removeActionHandler(selector); })
+                .onClick(() -> removeActionHandler(selector))
         .build();
 
         setTeleportParamInput(selector);
@@ -290,7 +289,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
         ui.textInput(selector + "#CommandBuffer")
                 .value(((FormData.RunCommandData) actionFormData.get().get(index).data).buffer)
-                .onChange(value -> { setCommandBuffer(value, index); })
+                .onChange(value -> setCommandBuffer(value, index))
         .build();
     }
 
@@ -304,11 +303,11 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         ui.dropdown(selector + "#EffectType")
                 .value(((FormData.GiveEffectData) actionFormData.get().get(index).data).effectID)
                 .options(getPotionMap())
-                .onChange(value -> { setEffectID(value, index); })
+                .onChange(value -> setEffectID(value, index))
         .build();
         ui.numberInput(selector + "#EffectDuration")
                 .value(((FormData.GiveEffectData) actionFormData.get().get(index).data).duration)
-                .onChange((int value) -> { setDurationEffect(value, index); })
+                .onChange((int value) -> setDurationEffect(value, index))
         .build();
     }
 
@@ -327,17 +326,15 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
         ui.dropdown(selector + "#MobType")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).mobID)
-                .options(getNPCMap()).onChange(value -> {
-                    setMobId(value, index);
-                })
+                .options(getNPCMap()).onChange(value -> setMobId(value, index))
         .update();
         ui.numberInput(selector + "#MobCount")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).count)
-                .onChange((int value) -> { setMobCount(value, index); })
+                .onChange((int value) -> setMobCount(value, index))
         .update();
         ui.numberInput(selector + "#MobRadius")
                 .value(((FormData.SpawnMobData) actionFormData.get().get(index).data).radius)
-                .onChange((int value) -> { setMobRadius(value, index); })
+                .onChange((int value) -> setMobRadius(value, index))
         .update();
     }
 
@@ -359,17 +356,20 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
         ui.numberInput(selector + "#TeleportX")
                 .value(((FormData.TeleportData) actionFormData.get().get(index).data).x)
-                .onChange((int value) -> { setTeleportX(value, index); })
+                .onChange((int value) -> setTeleportX(value, index))
         .build();
         ui.numberInput(selector + "#TeleportY")
                 .value(((FormData.TeleportData) actionFormData.get().get(index).data).y)
-                .onChange((int value) -> { setTeleportY(value, index); })
+                .onChange((int value) -> setTeleportY(value, index))
         .build();
         ui.numberInput(selector + "#TeleportZ")
                 .value(((FormData.TeleportData) actionFormData.get().get(index).data).z)
-                .onChange((int value) -> { setTeleportZ(value, index); })
+                .onChange((int value) -> setTeleportZ(value, index))
         .build();
-        // TODO: ADD Checkbox Input
+        ui.checkbox(selector + "#TeleportRelative")
+                .value(((FormData.TeleportData) actionFormData.get().get(index).data).isRelative)
+                .onChange(value -> setTeleportRelative(value, index))
+        .build();
     }
 
     private void setTeleportX(int value, int index) {
@@ -383,6 +383,10 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private void setTeleportZ(int value, int index) {
         FormData.TeleportData oldData = (FormData.TeleportData) actionFormData.get().get(index).data;
         actionFormData.get().get(index).setData(new FormData.TeleportData(oldData.x, oldData.y, value, oldData.isRelative));
+    }
+    private void setTeleportRelative(boolean value, int index) {
+        FormData.TeleportData oldData = (FormData.TeleportData) actionFormData.get().get(index).data;
+        actionFormData.get().get(index).setData(new FormData.TeleportData(oldData.x, oldData.y, oldData.z, value));
     }
 
     private void updateActionType(String selector, String newType, boolean forceUpdate) {
@@ -443,10 +447,10 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             ui.append("#ActionsList", "Pages/Actions/ActionItem.ui");
             ui.dropdown(selector + "#ActionTypeDropdown")
                     .value(actionFormData.get().get(i).type)
-                    .onChange(value -> { this.updateActionType(selector, value, false); })
+                    .onChange(value -> this.updateActionType(selector, value, false))
             .update();
             ui.textButton(selector + "#RemoveAction")
-                    .onClick(() -> { removeActionHandler(selector); })
+                    .onClick(() -> removeActionHandler(selector))
             .update();
 
             this.updateActionType(selector, actionFormData.get().get(i).type, true);
@@ -646,13 +650,13 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             ui.textButton(selector + "#DeleteButton").onClick(() -> {
                 boolean success = ActionManager.getInstance().removeRule(username, rule.getId());
                 if (!success) return;
+                if (currentEditMode.get().equals("edit") && editingRuleId.get().equals(rule.getId()))
+                    ui.group("#RuleEditor").visible(false).update();
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
             }).update();
 
-            ui.textButton(selector + "#EditButton").onClick(() -> {
-                editRuleHandler(rule);
-            }).update();
+            ui.textButton(selector + "#EditButton").onClick(() -> editRuleHandler(rule)).update();
         }
         ui.applyNew();
         dispatcher.refresh();
@@ -718,7 +722,8 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
             InteractiveData data
     ) {
         if (dispatcher.dispatch(data.eventId, data.value)) return;
-        dispatcher.dispatch(data.eventId, data.valueInt);
+        if (dispatcher.dispatch(data.eventId, data.valueInt)) return;
+        dispatcher.dispatch(data.eventId, data.valueBoolean);
     }
 
     private String capitalize(String str) {
