@@ -1,4 +1,3 @@
-// Rule Item Template for Actions List
 Group #RuleItem {
   LayoutMode: Top;
   Background: #1a2332(0.8);
@@ -92,6 +91,23 @@ Group #RuleItem {
         ));
       Anchor: (Width: 70, Height: 32, Bottom: 0);
       Text: "ON";
+    }
+
+    Group { FlexWeight: 1; }
+
+    TextButton #TestButton {
+      Style: (TextButtonStyle(
+            Default: (
+                Background: #6b7280,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            ),
+            Hovered: (
+                Background: #7b8190,
+                LabelStyle: (FontSize: 12, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center)
+            )
+        ));
+      Anchor: (Width: 70, Height: 32, Bottom: 0);
+      Text: "Test";
     }
 
     Group { FlexWeight: 1; }

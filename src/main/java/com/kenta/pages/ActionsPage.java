@@ -13,6 +13,7 @@ import com.kenta.actions.ActionManager;
 import com.kenta.actions.conditions.Condition;
 import com.kenta.actions.conditions.types.ChatMessageCondition;
 import com.kenta.actions.conditions.types.EventCondition;
+import com.kenta.actions.context.ActionContext;
 import com.kenta.actions.factory.RuleBuilder;
 import com.kenta.actions.rules.ActionRule;
 import com.kenta.actions.types.GiveEffectAction;
@@ -640,12 +641,13 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
             String toggleText = rule.isEnabled() ? "ON" : "OFF";
             String toggleColor = rule.isEnabled() ? "#00D166" : "#E74C3C";
+            String toggleHovered = rule.isEnabled() ? "#00E675" : "#ff5c4d";
             ui.textButton(selector + "#EnableToggle").onClick(() -> {
                 boolean success = ActionManager.getInstance().toggleRuleEnabled(username, rule.getId());
                 if (!success) return;
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
-            }).text(toggleText).defaultBackground(toggleColor).update();
+            }).text(toggleText).defaultBackground(toggleColor).hoveredBackground(toggleHovered).update();
 
             ui.textButton(selector + "#DeleteButton").onClick(() -> {
                 boolean success = ActionManager.getInstance().removeRule(username, rule.getId());
@@ -654,6 +656,10 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                     ui.group("#RuleEditor").visible(false).update();
                 RuleBuilder.saveRulesForPlayer(username, actionData);
                 initializeRulesList();
+            }).update();
+
+            ui.textButton(selector + "TestButton").onClick(() -> {
+                // TODO: Run All actions of the rule.
             }).update();
 
             ui.textButton(selector + "#EditButton").onClick(() -> editRuleHandler(rule)).update();
