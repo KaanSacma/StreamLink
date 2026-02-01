@@ -1,5 +1,6 @@
 package com.kenta.pages;
 
+import com.google.gson.JsonObject;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -7,6 +8,8 @@ import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCu
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.kenta.actions.Action;
 import com.kenta.actions.ActionManager;
@@ -658,14 +661,57 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 initializeRulesList();
             }).update();
 
-            ui.textButton(selector + "TestButton").onClick(() -> {
-                // TODO: Run All actions of the rule.
-            }).update();
-
+            ui.textButton(selector + "#TestButton").onClick(() -> testRuleHandler(rule)).update();
             ui.textButton(selector + "#EditButton").onClick(() -> editRuleHandler(rule)).update();
         }
         ui.applyNew();
         dispatcher.refresh();
+    }
+
+    private void testRuleHandler(ActionRule rule) {
+        String username = playerRef.getUsername();
+
+        JsonObject mockEvent = new JsonObject();
+        mockEvent.addProperty("test_mode", true);
+        mockEvent.addProperty("user_name", username);
+
+        ActionContext testContext = ActionContext.builder()
+                .playerRef(playerRef)
+                .platform(rule.getEnabledPlatform())
+                .eventType("test_event")
+                .eventData(mockEvent)
+                .build();
+
+        World world = Universe.get().getWorld(playerRef.getWorldUuid());
+
+        world.execute(() -> {
+            int actionCount = rule.getActions().size();
+            playerRef.sendMessage(SLMessage.formatMessage("Testing rule '" + rule.getName() + "' - Executing " + actionCount + " action(s)..."));
+
+            for (int i = 0; i < rule.getActions().size(); i++) {
+                Action action = rule.getActions().get(i);
+                try {
+                    if (action.canExecute(testContext)) {
+                        action.execute(testContext, entityRef, entityStore);
+                        System.out.println(String.format(
+                                "[ActionsPage] Test executed action %d/%d: %s",
+                                i + 1, actionCount, action.getDescription()
+                        ));
+                    } else {
+                        System.out.println(String.format(
+                                "[ActionsPage] Test skipped action %d/%d: %s (canExecute returned false)",
+                                i + 1, actionCount, action.getDescription()
+                        ));
+                    }
+                } catch (Exception e) {
+                    System.err.println("[ActionsPage] Error executing test action: " + action.getType());
+                    e.printStackTrace();
+                    playerRef.sendMessage(SLMessage.formatMessageWithError("Failed to execute action " + (i + 1) + ": " + e.getMessage()));
+                }
+            }
+
+            playerRef.sendMessage(SLMessage.formatMessage("Test complete! All actions from '" + rule.getName() + "' have been executed."));
+        });
     }
 
     private void removeAllRuleHandler() {
