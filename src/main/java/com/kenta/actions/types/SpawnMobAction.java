@@ -8,6 +8,7 @@ import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.math.vector.Vector2d;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.model.config.ModelAsset;
 import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -25,7 +26,9 @@ import com.kenta.actions.Action;
 import com.kenta.actions.context.ActionContext;
 import it.unimi.dsi.fastutil.Pair;
 
-import java.util.Random;
+import java.util.*;
+
+import static com.kenta.StreamLink.getNPCMap;
 
 public class SpawnMobAction implements Action {
     private final String mobType;
@@ -49,6 +52,17 @@ public class SpawnMobAction implements Action {
 
         world.execute(() -> {
             for (int i = 0; i < count; i++) {
+                String mobToSpawn = mobType;
+                if (mobToSpawn.equals("Random")) {
+                    Random random = new Random();
+                    Map.Entry<String, String> randomEntry = getNPCMap().entrySet().stream()
+                            .skip(1)
+                            .skip(new Random().nextInt(getNPCMap().size() - 1))
+                            .findFirst()
+                            .orElse(null);
+                    mobToSpawn = randomEntry.getKey();
+                }
+
                 Vector2d offset = new Vector2d(
                         (random.nextDouble() * 2 - 1) * radius,
                         (random.nextDouble() * 2 - 1) * radius
@@ -63,7 +77,7 @@ public class SpawnMobAction implements Action {
                 Pair<Ref<EntityStore>, INonPlayerCharacter> result =
                         NPCPlugin.get().spawnNPC(
                                 store,
-                                mobType,
+                                mobToSpawn,
                                 null,
                                 spawnMob,
                                 rotationMob

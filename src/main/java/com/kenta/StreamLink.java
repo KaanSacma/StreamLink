@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class StreamLink extends JavaPlugin {
 
     private static StreamLink instance;
-    private static final String CURRENT_VERSION = "1.2.0";
+    private static final String CURRENT_VERSION = "1.3.0";
     private static UpdateChecker.VersionInfo currentVersionInfo;
 
     public static ComponentType<EntityStore, StreamData> streamDataComponentType;

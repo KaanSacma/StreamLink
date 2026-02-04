@@ -401,7 +401,7 @@ Group #ActionsPage {
                                 @Anchor = (Width: 100, Height: 44);
                                 Value: 0;
 
-                                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0, MaxValue:60);
+                                Format: (MaxDecimalPlaces:0, Step:1, MinValue:0);
                             }
 
                             Group { Anchor: (Width: 12); }

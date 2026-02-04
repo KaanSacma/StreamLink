@@ -44,7 +44,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
     private UIBuilder ui;
     private EventDispatcher dispatcher;
 
-    private final UIState<String> currentEditMode = new UIState<>("create");
+    private final UIState<String> currentEditMode = new UIState<>("none");
     private final UIState<String> editingRuleId = new UIState<>(null);
     private final UIState<String> newRuleName = new UIState<>("New Rule");
     private final UIState<String> newPlatformSelected = new UIState<>("twitch");
@@ -96,7 +96,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 .onChange(this::updateConditionTwitchEventParam)
         .build();
         ui.textButton("#AddActionButton").onClick(this::addActionHandler).build();
-        ui.numberInput("#CooldownValue").value(newCooldown.get()).min(0).max(60).onChange(newCooldown::set).build();
+        ui.numberInput("#CooldownValue").value(newCooldown.get()).min(0).onChange(newCooldown::set).build();
         ui.textButton("#CancelButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#CloseEditorButton").onClick(this::handleCancelEdit).build();
         ui.textButton("#SaveRuleButton").onClick(this::handleSaveRule).build();
@@ -550,6 +550,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
 
             RuleBuilder.saveRulesForPlayer(username, actionData);
 
+            currentEditMode.set("none");
             handleCancelEdit();
             initializeRulesList();
 
@@ -620,7 +621,7 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
         String username = playerRef.getUsername();
         List<ActionRule> rules = ActionManager.getInstance().getRules(username);
 
-        ui.group("#EmptyState").visible(rules.isEmpty()).update();
+        ui.group("#EmptyState").visible(rules.isEmpty() && currentEditMode.get().equals("none")).update();
         ui.label("#RuleCount").text(rules.size() + " rules").update();
         ui.clear("#RulesList");
 
@@ -649,15 +650,19 @@ public class ActionsPage extends InteractiveCustomUIPage<InteractiveData> {
                 boolean success = ActionManager.getInstance().toggleRuleEnabled(username, rule.getId());
                 if (!success) return;
                 RuleBuilder.saveRulesForPlayer(username, actionData);
+                currentEditMode.set("none");
                 initializeRulesList();
             }).text(toggleText).defaultBackground(toggleColor).hoveredBackground(toggleHovered).update();
 
             ui.textButton(selector + "#DeleteButton").onClick(() -> {
                 boolean success = ActionManager.getInstance().removeRule(username, rule.getId());
                 if (!success) return;
-                if (currentEditMode.get().equals("edit") && editingRuleId.get().equals(rule.getId()))
+                if (currentEditMode.get().equals("edit") && editingRuleId.get().equals(rule.getId())) {
                     ui.group("#RuleEditor").visible(false).update();
+                    currentEditMode.set("none");
+                }
                 RuleBuilder.saveRulesForPlayer(username, actionData);
+
                 initializeRulesList();
             }).update();
 
